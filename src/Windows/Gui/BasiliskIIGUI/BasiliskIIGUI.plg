@@ -1,0 +1,122 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: BasiliskIIGUI - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "E:\TEMP\RSP51A.tmp" with contents
+[
+/nologo /MT /W3 /GX /Os /I "\BasiliskII\src\include" /I "\BasiliskII\src\Windows" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /FR"Release/" /Fp"Release/BasiliskIIGUI.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\BasiliskII\src\Windows\Gui\BasiliskIIGUI\scsi_windows_wrapper.cpp"
+]
+Creating command line "cl.exe @E:\TEMP\RSP51A.tmp" 
+Creating temporary file "E:\TEMP\RSP51B.tmp" with contents
+[
+ddraw.lib dxguid.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/BasiliskIIGUI.pdb" /machine:I386 /out:"Release/BasiliskIIGUI.exe" 
+.\Release\AskSCSIReplacement.obj
+.\Release\BasiliskIIGUI.obj
+.\Release\BasiliskIIGUIDlg.obj
+.\Release\ConfirmDASDDialog.obj
+.\Release\ConfirmRWDlg.obj
+.\Release\dummies.obj
+.\Release\filetypemapping.obj
+.\Release\FullScreenHelp.obj
+.\Release\KeyCodes.obj
+.\Release\MakeNewHFV.obj
+.\Release\MountModeHelp.obj
+.\Release\PageAbout.obj
+.\Release\PageAudio.obj
+.\Release\PageCDROM.obj
+.\Release\PageDebug.obj
+.\Release\PageDisk.obj
+.\Release\PageDR.obj
+.\Release\PageEthernet.obj
+.\Release\PageExperiment.obj
+.\Release\PageExtFS.obj
+.\Release\PageFloppy.obj
+.\Release\PageGeneral.obj
+.\Release\PageKeyboard.obj
+.\Release\PageMemory.obj
+.\Release\PageMouse.obj
+.\Release\PagePorts.obj
+.\Release\PagePriorities.obj
+.\Release\PageScreen.obj
+.\Release\PageSCSI.obj
+.\Release\PageSMP.obj
+.\Release\PageTools.obj
+.\Release\StdAfx.obj
+.\Release\typemap_wrapper.obj
+.\Release\keyboard_windows_wrapper.obj
+.\Release\packet32_wrapper.obj
+.\Release\prefs_windows_wrapper.obj
+.\Release\prefs_wrapper.obj
+.\Release\scsi_windows_wrapper.obj
+.\Release\thread_windows_wrapper.obj
+.\Release\user_strings_windows_wrapper.obj
+.\Release\user_strings_wrapper.obj
+.\Release\util_windows_wrapper.obj
+.\Release\BasiliskIIGUI.res
+]
+Creating command line "link.exe @E:\TEMP\RSP51B.tmp"
+<h3>Output Window</h3>
+Compiling...
+scsi_windows_wrapper.cpp
+Linking...
+Creating temporary file "E:\TEMP\RSP51D.tmp" with contents
+[
+/nologo /o"Release/BasiliskIIGUI.bsc" 
+.\Release\StdAfx.sbr
+.\Release\AskSCSIReplacement.sbr
+.\Release\BasiliskIIGUI.sbr
+.\Release\BasiliskIIGUIDlg.sbr
+.\Release\ConfirmDASDDialog.sbr
+.\Release\ConfirmRWDlg.sbr
+.\Release\dummies.sbr
+.\Release\filetypemapping.sbr
+.\Release\FullScreenHelp.sbr
+.\Release\KeyCodes.sbr
+.\Release\MakeNewHFV.sbr
+.\Release\MountModeHelp.sbr
+.\Release\PageAbout.sbr
+.\Release\PageAudio.sbr
+.\Release\PageCDROM.sbr
+.\Release\PageDebug.sbr
+.\Release\PageDisk.sbr
+.\Release\PageDR.sbr
+.\Release\PageEthernet.sbr
+.\Release\PageExperiment.sbr
+.\Release\PageExtFS.sbr
+.\Release\PageFloppy.sbr
+.\Release\PageGeneral.sbr
+.\Release\PageKeyboard.sbr
+.\Release\PageMemory.sbr
+.\Release\PageMouse.sbr
+.\Release\PagePorts.sbr
+.\Release\PagePriorities.sbr
+.\Release\PageScreen.sbr
+.\Release\PageSCSI.sbr
+.\Release\PageSMP.sbr
+.\Release\PageTools.sbr
+.\Release\typemap_wrapper.sbr
+.\Release\keyboard_windows_wrapper.sbr
+.\Release\packet32_wrapper.sbr
+.\Release\prefs_windows_wrapper.sbr
+.\Release\prefs_wrapper.sbr
+.\Release\scsi_windows_wrapper.sbr
+.\Release\thread_windows_wrapper.sbr
+.\Release\user_strings_windows_wrapper.sbr
+.\Release\user_strings_wrapper.sbr
+.\Release\util_windows_wrapper.sbr]
+Creating command line "bscmake.exe @E:\TEMP\RSP51D.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+BasiliskIIGUI.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
