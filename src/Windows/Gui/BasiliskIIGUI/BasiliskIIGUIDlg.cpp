@@ -38,6 +38,7 @@ void CBasiliskIIGUIDlg::add_pages()
 	AddPage(&m_page_scsi);
 	AddPage(&m_page_ports);
 	AddPage(&m_page_ethernet);
+	AddPage(&m_page_router);
 	AddPage(&m_page_priorities);
 	AddPage(&m_page_audio);
 	AddPage(&m_page_tools);
@@ -103,6 +104,7 @@ void CBasiliskIIGUIDlg::save_to_file( LPCSTR path )
 	for(i=0; i<100; i++) PrefsRemoveItem("disk");
 	for(i=0; i<100; i++) PrefsRemoveItem("floppy");
 	for(i=0; i<100; i++) PrefsRemoveItem("replacescsi");
+	for(i=0; i<100; i++) PrefsRemoveItem("tcp_port");
 
 	PrefsRemoveItem("scsi0");
 	PrefsRemoveItem("scsi1");
@@ -154,6 +156,8 @@ void CBasiliskIIGUIDlg::save_to_file( LPCSTR path )
 	PrefsReplaceBool( "usealttab", m_page_keyboard.m_use_alt_tab );
 	PrefsReplaceBool( "usecontrolescape", m_page_keyboard.m_use_control_escape );
 	PrefsReplaceBool( "usealtspace", m_page_keyboard.m_use_alt_space );
+	PrefsReplaceBool( "usealtenter", m_page_keyboard.m_use_alt_enter );
+	PrefsReplaceInt16( "keyboardtype", atoi(m_page_keyboard.m_keyboard_type) );
 
 	PrefsReplaceInt16( "rightmouse", m_page_mouse.m_right_mouse );
 	PrefsReplaceBool( "stickymenu", m_page_mouse.m_os8_mouse );
@@ -251,6 +255,10 @@ void CBasiliskIIGUIDlg::save_to_file( LPCSTR path )
 	PrefsReplaceBool( "disableaccuratetimer", m_page_debug.m_debug_disable_accurate_timer );
 
 	::WritePrivateProfileString( "Experiments", "DisableLowMemCache", m_page_tools.m_lowmem_cache ? "true" : "false", "BasiliskII.ini" );
+	PrefsReplaceInt32( "idlesleep", m_page_tools.m_sleep );
+	PrefsReplaceBool( "idlesleepenabled", m_page_tools.m_sleep_enabled );
+	PrefsReplaceInt32( "idletimeout", m_page_tools.m_idle_sleep_timeout );
+	PrefsReplaceBool( "disablescreensaver", m_page_tools.m_disable_screensaver );
 
 	if(m_page_ethernet.m_mac  != "" && m_page_ethernet.m_mac != "<None>") {
 		PrefsReplaceString( ether_name(), m_page_ethernet.m_mac );
@@ -263,6 +271,14 @@ void CBasiliskIIGUIDlg::save_to_file( LPCSTR path )
 		PrefsReplaceString( "etherfakeaddress", m_page_ethernet.m_ether_fake_address );
 	} else {
 		PrefsRemoveItem("etherfakeaddress");
+	}
+
+	PrefsReplaceBool( "routerenabled", m_page_router.m_router_enabled );
+	PrefsReplaceString( "ftp_port_list", m_page_router.m_ftp_ports_param );
+
+	int32 tcp_inx = 0, tcp_count = m_page_router.m_tcp_ports_param.GetSize();
+	for( tcp_inx=0; tcp_inx<tcp_count; tcp_inx++ ) {
+		PrefsAddString("tcp_port", m_page_router.m_tcp_ports_param.GetAt(tcp_inx));
 	}
 
 	PrefsReplaceBool( "enableextfs", m_page_extfs.m_enabled );
@@ -365,6 +381,8 @@ void CBasiliskIIGUIDlg::read_from_file( LPCSTR path )
 	m_page_keyboard.m_use_alt_tab = PrefsFindBool("usealttab");
 	m_page_keyboard.m_use_control_escape = PrefsFindBool("usecontrolescape");
 	m_page_keyboard.m_use_alt_space = PrefsFindBool("usealtspace");
+	m_page_keyboard.m_use_alt_enter = PrefsFindBool("usealtenter");
+	m_page_keyboard.m_keyboard_type.Format( "%d", PrefsFindInt16( "keyboardtype" ) );
 
 	m_page_mouse.m_right_mouse = PrefsFindInt16("rightmouse");
 	m_page_mouse.m_os8_mouse = PrefsFindBool("stickymenu");
@@ -454,6 +472,13 @@ void CBasiliskIIGUIDlg::read_from_file( LPCSTR path )
 	::GetPrivateProfileString( "Experiments", "DisableLowMemCache", "false", exp_str, sizeof(exp_str), "BasiliskII.ini" );
 	m_page_tools.m_lowmem_cache = stricmp(exp_str,"true") == 0;
 
+	m_page_tools.m_sleep = PrefsFindInt32("idlesleep");
+	if(m_page_tools.m_sleep < 1) m_page_tools.m_sleep = 1;
+	if(m_page_tools.m_sleep > 30) m_page_tools.m_sleep = 30;
+	m_page_tools.m_sleep_enabled = PrefsFindBool("idlesleepenabled");
+	m_page_tools.m_idle_sleep_timeout = PrefsFindInt32("idletimeout");
+	m_page_tools.m_disable_screensaver = PrefsFindBool("disablescreensaver");
+
 	const char *ets;
 	ets = PrefsFindString(ether_name());
 	if(ets == 0 || *ets == 0) {
@@ -472,6 +497,14 @@ void CBasiliskIIGUIDlg::read_from_file( LPCSTR path )
 	  m_page_ethernet.m_ether_fake_address = ets2;
 	}
 
+	m_page_router.m_router_enabled = PrefsFindBool("routerenabled");
+	m_page_router.m_ftp_ports_param = PrefsFindString("ftp_port_list");
+
+	int32 tcp_port_inx = 0;
+	while ((str = PrefsFindString("tcp_port", tcp_port_inx++)) != NULL) {
+		m_page_router.m_tcp_ports_param.Add(str);
+	}
+	
 	m_page_extfs.m_enabled = PrefsFindBool("enableextfs");
 	get_typemap_file_name( AfxGetInstanceHandle(), m_page_extfs.m_path.GetBuffer(_MAX_PATH) );
 	m_page_extfs.m_path.ReleaseBuffer();

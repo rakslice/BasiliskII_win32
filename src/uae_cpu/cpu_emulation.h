@@ -43,7 +43,8 @@ extern uint32 ROMSize;			// Size of ROM
 // The memory must be allocated by VideoInit(). If multiple monitors are used, they must
 // share the frame buffer
 #ifdef OPTIMIZED_8BIT_MEMORY_ACCESS
-const uint32 MacFrameBaseMac = 0xf0000000;
+// const uint32 MacFrameBaseMac = 0xf0000000;
+extern uint32 MacFrameBaseMac;
 #else
 const uint32 MacFrameBaseMac = 0xa0000000;
 #endif

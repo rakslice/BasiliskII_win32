@@ -6,9 +6,9 @@ What you need
 - MASM
 
 
-Building Basilisk II Windows port, NT version
----------------------------------------------
-The CPU core of the NT version is already in assembler.
+Building Basilisk II Windows port, assembler optimized version
+--------------------------------------------------------------
+The CPU core of this version is already in assembler.
 You don't need to run build68k, gencpu or vc5opti.
 
 - get the latest sources
@@ -18,8 +18,8 @@ You don't need to run build68k, gencpu or vc5opti.
 - Rebuild all
 
 
-Building Basilisk II Windows port, 9x compatible version
---------------------------------------------------------
+Building Basilisk II Windows port, old version
+----------------------------------------------
 It is no longer necessary to generate the UAE core files unless you
 change the CPU core ("build68k" and "gencpu").
 
@@ -67,18 +67,26 @@ MASM
 The URL "http://support.microsoft.com/support/kb/articles/q228/4/54.asp"
 has this to say:
 
-<quote>
-MASM 6.11 is no longer available as a retail product. There are currently
-two ways to obtain MASM 6.11: 
+	"MASM 6.11 is no longer available as a retail product. There are currently
+	two ways to obtain MASM 6.11: 
 
-1.As a fulfillment option for Visual C++, if you have a registered copy of
-Visual C++, you can contact Microsoft at 1-800-360-7561 to obtain a copy of
-MASM 6.11 for the cost of shipping & handling. The supplemental part number is
-016-051-S02.
+	1.As a fulfillment option for Visual C++, if you have a registered copy of
+	Visual C++, you can contact Microsoft at 1-800-360-7561 to obtain a copy of
+	MASM 6.11 for the cost of shipping & handling. The supplemental part number is
+	016-051-S02.
 
-2.MASM 6.11 is included with some levels of the Microsoft Developer Network
-(MSDN). You can order MSDN by contacting Microsoft Sales and Service at 1-800-426-9400.
-</quote>
+	2.MASM 6.11 is included with some levels of the Microsoft Developer Network
+	(MSDN). You can order MSDN by contacting Microsoft Sales and Service at 1-800-426-9400."
 
 
+A Basilisk II user Akihiko Matsuo kindly reported the following:
+
+	"By an article <3A422A40.6F9943EF@pluto.dti.ne.jp> in a newsgroup
+	fj.comp.lang.asm(written in Japanese), MASM6.11d is in Windows98 DDK
+	and it can obtain from http://www.microsoft.com/ddk/ddk98.htm . Only
+	BINS_DDK.EXE is required. There is a file named BIN_WIN98_ML.EXE in
+	the archive file. To build BasiliskII, extract the file and rename it
+	to ML.EXE."
+
+--
 Lauri

@@ -120,7 +120,7 @@
  *		- to_double() may need renormalization code. Or then again, maybe not.
  *		- Signaling NANs should be handled better. The current mapping of
  *			signaling nan exception to denormalized operand exception is only
- *			based on the idea that the (possible) handler sees that "something
+ *			based on the idea that the (possible) handler sees that "something is
  *			seriously wrong" and takes the same action. Should not really get (m)any
  *			of those since normalization is handled in to_exten()
  *
@@ -1147,6 +1147,7 @@ static void _fastcall do_ftan( float80 dest, float80 src )
 		MOV			EDI, [dest]
     FLD     TBYTE PTR [ESI]
 		FPTAN
+		FSTP    ST(0)	; pop 1.0 (the 8087/287 compatibility thing)
 		FXAM
     FNSTSW  sw
 		FSTP    TBYTE PTR [EDI]
@@ -5603,7 +5604,7 @@ static void build_fpsr_lookup_tables()
 			exception_host2mac[i] |= DZ;
 		}
 		// denormalized operand exception.
-		// wrong, but should not get here, normalization is done in elsewhere
+		// wrong, but should not get here, normalization is done elsewhere
 		if(i & SW_DE) {
 			exception_host2mac[i] |= SNAN;
 		}

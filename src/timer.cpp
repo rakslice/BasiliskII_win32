@@ -57,7 +57,14 @@ struct TMDesc {
 };
 
 const int NUM_DESCS = 64;		// Maximum number of descriptors
+static int num_descs = 0;		// First free descriptor
 static TMDesc desc[NUM_DESCS];
+
+#define NEXT_WAKEUP 1
+
+#if NEXT_WAKEUP
+static tm_time_t next_wakeup = 0;	// Next scheduled wakeup time
+#endif
 
 
 /*
@@ -71,9 +78,27 @@ static int alloc_desc(uint32 tm)
 		if (!desc[i].in_use) {
 			desc[i].task = tm;
 			desc[i].in_use = true;
+			desc[i].wakeup = 0;
+			if (i >= num_descs) num_descs = i+1;
 			return i;
 		}
 	return -1;
+}
+
+
+inline static void update_next_wakeup(void)
+{
+#if NEXT_WAKEUP
+	next_wakeup = 0;
+
+	for (int i=0; i<num_descs; i++) {
+		if (desc[i].in_use && desc[i].wakeup) {
+			if (!next_wakeup || timer_cmp_time(desc[i].wakeup, next_wakeup) < 0) {
+				next_wakeup = desc[i].wakeup;
+			}
+		}
+	}
+#endif
 }
 
 
@@ -84,6 +109,15 @@ static int alloc_desc(uint32 tm)
 inline static void free_desc(int i)
 {
 	desc[i].in_use = false;
+
+	if (i+1 == num_descs) {
+		int j;
+		for (j=i-1; j>=0; j--) {
+			if(desc[j].in_use) break;
+		}
+		num_descs = j+1;
+	}
+	update_next_wakeup();
 }
 
 
@@ -93,7 +127,7 @@ inline static void free_desc(int i)
 
 inline static int find_desc(uint32 tm)
 {
-	for (int i=0; i<NUM_DESCS; i++)
+	for (int i=0; i<num_descs; i++)
 		if (desc[i].in_use && desc[i].task == tm)
 			return i;
 	return -1;
@@ -282,6 +316,9 @@ int16 PrimeTime(uint32 tm, int32 time)
 	// Make task active and enqueue it in the Time Manager queue
 	WriteMacInt16(tm + qType, ReadMacInt16(tm + qType) | 0x8000);
 	enqueue_tm(tm);
+
+	update_next_wakeup();
+
 	return 0;
 }
 
@@ -292,27 +329,38 @@ int16 PrimeTime(uint32 tm, int32 time)
 
 void TimerInterrupt(void)
 {
+	// D(bug("TimerInterrupt num_descs= %ld\n", num_descs));
+
 	// Look for active TMTasks that have expired
 	tm_time_t now;
 	timer_current_time(now);
-	for (int i=0; i<NUM_DESCS; i++)
-		if (desc[i].in_use) {
-			uint32 tm = desc[i].task;
-			if ((ReadMacInt16(tm + qType) & 0x8000) && timer_cmp_time(desc[i].wakeup, now) < 0) {
 
-				// Found one, mark as inactive and remove it from the Time Manager queue
-				WriteMacInt16(tm + qType, ReadMacInt16(tm + qType) & 0x7fff);
-				dequeue_tm(tm);
+#if NEXT_WAKEUP
+	// time-critical -- get out of here ASAP
+	if( next_wakeup && timer_cmp_time(next_wakeup, now) < 0) {
+#endif
+		for (int i=0; i<num_descs; i++)
+			if (desc[i].in_use && desc[i].wakeup) {
+				uint32 tm = desc[i].task;
+				if ((ReadMacInt16(tm + qType) & 0x8000) && timer_cmp_time(desc[i].wakeup, now) < 0) {
 
-				// Call timer function
-				uint32 addr = ReadMacInt32(tm + tmAddr);
-				if (addr) {
-					D(bug("Calling TimeTask %08lx, addr %08lx\n", tm, addr));
-					M68kRegisters r;
-					r.a[0] = addr;
-					r.a[1] = tm;
-					Execute68k(addr, &r);
+					// Found one, mark as inactive and remove it from the Time Manager queue
+					WriteMacInt16(tm + qType, ReadMacInt16(tm + qType) & 0x7fff);
+					dequeue_tm(tm);
+
+					// Call timer function
+					uint32 addr = ReadMacInt32(tm + tmAddr);
+					if (addr) {
+						D(bug("Calling TimeTask %08lx, addr %08lx\n", tm, addr));
+						M68kRegisters r;
+						r.a[0] = addr;
+						r.a[1] = tm;
+						Execute68k(addr, &r);
+						D(bug("Returned from TimeTask\n"));
+					}
 				}
 			}
-		}
+#if NEXT_WAKEUP
+	}
+#endif
 }

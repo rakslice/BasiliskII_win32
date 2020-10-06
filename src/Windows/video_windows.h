@@ -32,6 +32,13 @@ char *get_wnd_class_name(void);
 void save_window_position( int width, int height, int x, int y );
 void save_ontop( void );
 void toggle_full_screen_mode( void );
+void get_video_mode(
+	int &width, 
+	int &height, 
+	int &depth_mac, 
+	int &depth_win
+);
+int calc_bytes_per_row( int width, int depth );
 
 enum {
 	FB_NONE = 0, FB_QUIT,
@@ -39,6 +46,8 @@ enum {
 	FB_LOCK, FB_UNLOCK
 };
 void fb_command( uint8 cmd, LPBYTE param, uint32 sz );
+
+extern bool classic_mode;
 
 // Current palette in "MacOS values".
 extern uint8 current_mac_palette[256*3];

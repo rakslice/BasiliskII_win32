@@ -67,6 +67,7 @@ uint16 b2_htons( uint16 s );
 #define ntohs b2_ntohs
 #define htons b2_htons
 
+#ifdef __cplusplus
 static uae_u32 inline b2_is_front_window(void)
 {
 	if(GetForegroundWindow() == hMainWnd) {
@@ -75,6 +76,7 @@ static uae_u32 inline b2_is_front_window(void)
 		return 0;
 	}
 }
+#endif
 
 BOOL exists( const char *path );
 int32 get_file_size( const char *path );

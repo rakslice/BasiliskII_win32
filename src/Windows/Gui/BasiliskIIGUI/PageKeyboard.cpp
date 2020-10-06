@@ -25,6 +25,8 @@ CPageKeyboard::CPageKeyboard() : CPropertyPage(CPageKeyboard::IDD)
 	m_use_alt_tab = FALSE;
 	m_use_control_escape = FALSE;
 	m_use_alt_space = FALSE;
+	m_use_alt_enter = FALSE;
+	m_keyboard_type = _T("");
 	//}}AFX_DATA_INIT
 }
 
@@ -41,6 +43,8 @@ void CPageKeyboard::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_KEYBOARD_USE_ALT_TAB, m_use_alt_tab);
 	DDX_Check(pDX, IDC_KEYBOARD_USE_CONTROL_ESCAPE, m_use_control_escape);
 	DDX_Check(pDX, IDC_KEYBOARD_USE_ALT_SPACE, m_use_alt_space);
+	DDX_Check(pDX, IDC_KEYBOARD_USE_ALT_ENTER, m_use_alt_enter);
+	DDX_CBString(pDX, IDC_KEYBOARD_TYPE, m_keyboard_type);
 	//}}AFX_DATA_MAP
 }
 

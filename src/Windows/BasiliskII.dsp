@@ -293,6 +293,10 @@ SOURCE=..\rsrc_patches.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\screen_saver.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\scsi.cpp
 # End Source File
 # Begin Source File
@@ -442,10 +446,6 @@ SOURCE=..\include\ether.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\experiment_windows.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\include\extfs.h
 # End Source File
 # Begin Source File
@@ -511,30 +511,6 @@ SOURCE=..\include\sys.h
 # Begin Source File
 
 SOURCE=..\include\timer.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\include\uae_compiler.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\include\uae_cputbl.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\include\uae_m68k.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\include\uae_memory.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\include\uae_newcpu.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\include\uae_readcpu.h
 # End Source File
 # Begin Source File
 
@@ -618,6 +594,14 @@ SOURCE=.\dialog_windows.h
 # Begin Source File
 
 SOURCE=..\Include\ether_defs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ether_windows.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\experiment_windows.h
 # End Source File
 # Begin Source File
 
@@ -884,6 +868,10 @@ SOURCE=..\uae_cpu\get_disp_ea_020.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\MASM\LISTING.INC
+# End Source File
+# Begin Source File
+
 SOURCE=.\uae_cpu_windows\Memory.cpp
 
 !IF  "$(CFG)" == "BasiliskII - Win32 Release"
@@ -1010,7 +998,7 @@ SOURCE=.\ether_windows.cpp
 
 !IF  "$(CFG)" == "BasiliskII - Win32 Release"
 
-# ADD CPP /Zi /O2
+# ADD CPP /Zi /Od
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
@@ -1036,7 +1024,8 @@ SOURCE=.\extfs_windows.cpp
 
 !IF  "$(CFG)" == "BasiliskII - Win32 Release"
 
-# ADD CPP /O1 /Yu
+# ADD CPP /O2
+# SUBTRACT CPP /YX /Yc /Yu
 
 !ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
 
@@ -1131,6 +1120,19 @@ SOURCE=.\posix_emu.cpp
 # Begin Source File
 
 SOURCE=.\prefs_windows.cpp
+
+!IF  "$(CFG)" == "BasiliskII - Win32 Release"
+
+# ADD CPP /O1
+
+!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
+
+!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -1139,6 +1141,23 @@ SOURCE=.\progress.cpp
 # Begin Source File
 
 SOURCE=.\scsi_windows.cpp
+
+!IF  "$(CFG)" == "BasiliskII - Win32 Release"
+
+# ADD CPP /O2
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
+
+!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
+
+# ADD CPP /O2
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -1327,6 +1346,114 @@ SOURCE=.\xpram_windows.cpp
 
 # End Source File
 # End Group
+# Begin Group "Router"
+
+# PROP Default_Filter ""
+# Begin Group "Router headers"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\router\arp.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\dump.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\dynsockets.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\ftp.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\icmp.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\mib\interfaces.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\iphelp.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\ipsocket.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\mib\MibAccess.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\router.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\router_types.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\tcp.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\udp.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\router\arp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\dump.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\dynsockets.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\ftp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\icmp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\mib\interfaces.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\iphelp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\ipsocket.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\mib\MibAccess.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\router.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\tcp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\router\udp.cpp
+# End Source File
+# End Group
 # End Group
 # Begin Group "uae"
 
@@ -1440,894 +1567,11 @@ SOURCE=..\uae_cpu\readcpu.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\uae_cpu\table68k
+# End Source File
+# Begin Source File
+
 SOURCE=..\uae_cpu\table68k.cpp
-# End Source File
-# End Group
-# Begin Group "AmigaOS"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\AmigaOS\asm_support.asm
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\audio_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\clip_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\ether_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\extfs_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\main_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\prefs_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\scsi_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\serial_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\sys_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\sysdeps.h
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\timer_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\video_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\AmigaOS\xpram_amiga.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# End Group
-# Begin Group "BeOS"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\BeOS\audio_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\clip_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\ether_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\main_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\prefs_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\scsi_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\serial_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\sys_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\sysdeps.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\timer_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\video_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\BeOS\xpram_beos.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# End Group
-# Begin Group "Unix"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\Unix\clip_unix.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\Unix\Linux\ether_linux.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\Unix\main_unix.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\Unix\prefs_unix.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\Unix\serial_unix.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\Unix\sys_unix.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\Unix\sysdeps.h
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\Unix\timer_unix.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\Unix\video_x.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\Unix\xpram_unix.cpp
-
-!IF  "$(CFG)" == "BasiliskII - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Profile"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "BasiliskII - Win32 Win9x"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
 # End Source File
 # End Group
 # Begin Group "Documents"
@@ -2371,6 +1615,10 @@ SOURCE="..\..\Setup\Windows-specific documents\Changes.win32.txt"
 # Begin Source File
 
 SOURCE="..\..\Setup\Windows-specific documents\Ethernet.win32.txt"
+# End Source File
+# Begin Source File
+
+SOURCE="..\..\Setup\Windows-specific documents\NAT-Router FAQ.html"
 # End Source File
 # Begin Source File
 

@@ -96,6 +96,7 @@ prefs_desc platform_prefs_items[] = {
 	{"usealttab", TYPE_BOOLEAN, false},
 	{"usecontrolescape", TYPE_BOOLEAN, false},
 	{"usealtspace", TYPE_BOOLEAN, false},
+	{"usealtenter", TYPE_BOOLEAN, false},
 	{"disableaccuratetimer", TYPE_BOOLEAN, false},
 	{"guiautorestart", TYPE_INT16, false},
 	{"gethardwarevolume", TYPE_BOOLEAN, false},
@@ -121,6 +122,15 @@ prefs_desc platform_prefs_items[] = {
 	{"smp_dx", TYPE_INT32, false},
 	{"smp_fb", TYPE_INT32, false},
 	{"smp_audio", TYPE_INT32, false},
+	{"idlesleep", TYPE_INT32, false},
+	{"idlesleepenabled", TYPE_BOOLEAN, false},
+	{"idletimeout", TYPE_INT32, false},
+	{"routerenabled", TYPE_BOOLEAN, false},
+	{"tcp_port", TYPE_STRING, true},
+	{"udp_port", TYPE_STRING, true},
+	{"ftp_port_list", TYPE_STRING, false},
+	{"disablescreensaver", TYPE_BOOLEAN, false},
+	{"keyboardtype", TYPE_INT16, false},
 	{NULL, TYPE_END, false}	// End of list
 };
 
@@ -233,6 +243,7 @@ void AddPlatformPrefsDefaults(void)
 	PrefsReplaceBool( "usealttab", true );
 	PrefsReplaceBool( "usecontrolescape", true );
 	PrefsReplaceBool( "usealtspace", true );
+	PrefsReplaceBool( "usealtenter", true );
 	PrefsReplaceBool( "disableaccuratetimer", false );
 	PrefsReplaceInt16( "guiautorestart", 0 );
 	PrefsReplaceString( "extfs", "" );
@@ -240,8 +251,8 @@ void AddPlatformPrefsDefaults(void)
 	PrefsReplaceBool( "enableextfs", false );
 	PrefsReplaceBool( "usentfsafp", false );
 	PrefsReplaceString( "extdrives", "CDEFGHIJKLMNOPQRSTUVWXYZ" );
-	PrefsReplaceString( "portfile0", "C:\\B2TEMP.OUT" );
-	PrefsReplaceString( "portfile1", "C:\\B2TEMP.OUT" );
+	PrefsReplaceString( "portfile0", "C:\\B2TEMP0.OUT" );
+	PrefsReplaceString( "portfile1", "C:\\B2TEMP1.OUT" );
 	PrefsReplaceString( "DX_fullscreen_refreshrate", "Monitor default" );
 	PrefsReplaceInt16( "mousemovementmode", 0 );
 	PrefsReplaceBool( "usestartupsound", true );
@@ -257,5 +268,12 @@ void AddPlatformPrefsDefaults(void)
 	PrefsReplaceInt32( "smp_dx", 0 );
 	PrefsReplaceInt32( "smp_fb", 0 );
 	PrefsReplaceInt32( "smp_audio", 0 );
+	PrefsReplaceInt32( "idlesleep", 1 );
+	PrefsReplaceBool( "idlesleepenabled", false );
+	PrefsReplaceInt32( "idletimeout", 0 );
+	PrefsReplaceBool( "routerenabled", false );
+	PrefsReplaceString( "ftp_port_list", "21" );
+	PrefsReplaceBool( "disablescreensaver", false );
+	PrefsReplaceInt16( "keyboardtype", 5 );
 	// No default for "typemapfile"
 }

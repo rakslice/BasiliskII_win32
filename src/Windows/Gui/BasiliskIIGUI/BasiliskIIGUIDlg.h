@@ -20,6 +20,7 @@
 #include "PageTools.h"
 #include "PageAbout.h"
 #include "PageEthernet.h"
+#include "PageRouter.h"
 #include "PagePriorities.h"
 #include "PageSMP.h"
 #include "PageAudio.h"
@@ -82,6 +83,7 @@ protected:
 	CPageTools			m_page_tools;
 	CPageAbout			m_page_about;
 	CPageEthernet		m_page_ethernet;
+	CPageRouter			m_page_router;
 	CPagePriorities m_page_priorities;
 	CPageSMP				m_page_smp;
 	CPageAudio			m_page_audio;

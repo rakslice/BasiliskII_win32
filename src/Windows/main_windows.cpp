@@ -67,6 +67,7 @@
 #include "counter.h"
 #include "startupsound.h"
 #include "mem_limits.h"
+#include "screen_saver.h"
 
 
 #include <dbt.h>
@@ -135,6 +136,7 @@ HINSTANCE hInst = 0;
 #define IDM_MAINWINDOW_MEDIA_HD			0x7050
 #define IDM_MAINWINDOW_OS8_MOUSE		0x7060
 #define IDM_MAINWINDOW_ROM_PROTECT	0x7070
+#define IDM_MAINWINDOW_SLEEP_ENABLE	0x7080
 
 // mouse and keyboard
 static bool capturing = false;
@@ -164,11 +166,17 @@ bool m_use_alt_escape = false;
 bool m_use_alt_tab = false;
 bool m_use_control_escape = false;
 bool m_use_alt_space = false;
+bool m_use_alt_enter = true;
 
 bool m_debug_disable_accurate_timer = false;
 
 static int16 m_gui_autorestart = 0;
 
+int32 m_sleep = 1;
+bool m_sleep_enabled = false;
+static int32 m_idle_timeout = 0;
+static int32 m_idle_seconds = 0;
+static int32 m_idle_counter = 0;
 
 // Keep track what Mac keys are down so we can make them up when we lose focus.
 #define MAX_KEYS 256
@@ -517,6 +525,16 @@ void update_system_menu( HWND hWnd )
 				ChangeMenu( hmsys, 0, "Sticky menu bar (OS8 style mouse clicks)", IDM_MAINWINDOW_OS8_MOUSE, 
 					m_os8_mouse ? MF_APPEND|MF_STRING|MF_CHECKED : MF_APPEND|MF_STRING );
 
+				if(m_idle_timeout) {
+					ChangeMenu( hmsys, 0, "Low power mode (controlled by timer)", IDM_MAINWINDOW_SLEEP_ENABLE,
+						MF_APPEND|MF_STRING|MF_GRAYED|MF_DISABLED );
+				} else {
+					ChangeMenu( hmsys, 0, "Low power mode", IDM_MAINWINDOW_SLEEP_ENABLE,
+						m_sleep_enabled ? MF_APPEND|MF_STRING|MF_CHECKED : MF_APPEND|MF_STRING );
+				}
+
+				ChangeMenu( hmsys, 0, NULL, 999, MF_APPEND | MF_SEPARATOR );
+
 #ifdef OPTIMIZED_8BIT_MEMORY_ACCESS
 				ChangeMenu( hmsys, 0, "ROM is write-protected", IDM_MAINWINDOW_ROM_PROTECT,
 					m_ROM_is_protected ? MF_APPEND|MF_STRING|MF_CHECKED : MF_APPEND|MF_STRING );
@@ -580,280 +598,6 @@ static void stop_1HZ_thread(void)
 	Sleep(20);
 }
 
-#define GIGABYTES(n) ( (DWORD)0x40000000 * (n) )
-
-// Cannot use a single mapping.
-static HANDLE m_map_ram = 0;
-static HANDLE m_map_rom = 0;
-static HANDLE m_map_vid = 0;
-static LPVOID m_view_ram = 0;
-static LPVOID m_view_rom = 0;
-static LPVOID m_view_vid = 0;
-
-static void free_triple(void)
-{
-	if(m_view_ram) {
-		UnmapViewOfFile( m_view_ram );
-		m_view_ram = 0;
-	}
-	if(m_view_rom) {
-		UnmapViewOfFile( m_view_rom );
-		m_view_rom = 0;
-	}
-	if(m_view_vid) {
-		UnmapViewOfFile( m_view_vid );
-		m_view_vid = 0;
-	}
-	if(m_map_ram) {
-		CloseHandle(m_map_ram);
-		m_map_ram = 0;
-	}
-	if(m_map_rom) {
-		CloseHandle(m_map_rom);
-		m_map_rom = 0;
-	}
-	if(m_map_vid) {
-		CloseHandle(m_map_vid);
-		m_map_vid = 0;
-	}
-}
-
-static BOOL allocate_triple(
-	DWORD a1, DWORD sz1,
-	DWORD a2, DWORD sz2,
-	DWORD a3, DWORD sz3
-)
-{
-	BOOL result = FALSE;
-	MEMORY_BASIC_INFORMATION inf1, inf2, inf3;
-
-	if( VirtualQuery( (LPCVOID)a1, &inf1, sizeof(inf1) ) == sizeof(inf1) &&
-			VirtualQuery( (LPCVOID)a2, &inf2, sizeof(inf2) ) == sizeof(inf2) &&
-			VirtualQuery( (LPCVOID)a3, &inf3, sizeof(inf3) ) == sizeof(inf3) )
-	{
-		if( inf1.State == MEM_FREE &&
-		    inf2.State == MEM_FREE &&
-		    inf3.State == MEM_FREE &&
-				inf1.RegionSize >= sz1 + (a1 - (DWORD)inf1.BaseAddress) &&
-				inf2.RegionSize >= sz2 + (a2 - (DWORD)inf2.BaseAddress) &&
-				inf3.RegionSize >= sz3 + (a3 - (DWORD)inf3.BaseAddress) )
-		{
-			m_map_ram = CreateFileMapping(
-				(HANDLE)0xFFFFFFFF, NULL,
-				PAGE_READWRITE,
-				0, sz1, NULL
-			);
-			m_map_rom = CreateFileMapping(
-				(HANDLE)0xFFFFFFFF, NULL,
-				PAGE_READWRITE,
-				0, sz2, NULL
-			);
-			m_map_vid = CreateFileMapping(
-				(HANDLE)0xFFFFFFFF, NULL,
-				PAGE_READWRITE,
-				0, sz3, NULL
-			);
-			if(m_map_ram && m_map_rom && m_map_vid) {
-				m_view_ram = MapViewOfFileEx(
-					m_map_ram,
-					FILE_MAP_WRITE|FILE_MAP_READ,
-					0, 0, sz1, (LPVOID)a1
-				);
-				m_view_rom = MapViewOfFileEx(
-					m_map_rom,
-					FILE_MAP_WRITE|FILE_MAP_READ,
-					0, 0, sz2, (LPVOID)a2
-				);
-				m_view_vid = MapViewOfFileEx(
-					m_map_vid,
-					FILE_MAP_WRITE|FILE_MAP_READ,
-					0, 0, sz3, (LPVOID)a3
-				);
-				if(m_view_ram && m_view_rom && m_view_vid) {
-					result = TRUE;
-				}
-			}
-		}
-	}
-
-	if(!result) free_triple();
-
-	return(result);
-}
-
-static DWORD map_address_space(
-	DWORD diff_rom_ram,
-	DWORD diff_vid_ram,
-	DWORD sz_ram,
-	DWORD sz_rom,
-	DWORD sz_vid
-)
-{
-	DWORD base = 0;
-	DWORD result = 0;
-	DWORD ram, rom, vid;
-	DWORD start, end, step;
-	SYSTEM_INFO sysinfo;
-
-	GetSystemInfo( &sysinfo );
-
-	step = sysinfo.dwAllocationGranularity * 64;
-	if(win_os == VER_PLATFORM_WIN32_WINDOWS) {
-		start = GIGABYTES(2);
-		end   = GIGABYTES(3);
-	} else {
-		start = GIGABYTES(0);
-		end   = GIGABYTES(2);
-	}
-
-	// a speedup
-	if(MacFrameBaseMac == 0xf0000000) {
-		start += 0x10000000;
-	}
-
-	base = start;
-	BOOL still_trying = TRUE;
-
-	while( still_trying ) {
-#ifdef SWAPPED_ADDRESS_SPACE
-		vid = base;
-		rom = base + sz_vid + diff_vid_ram - diff_rom_ram - sz_rom;
-		ram = base + sz_vid + diff_vid_ram - sz_ram;
-#else
-		ram = base;
-		rom = base + diff_rom_ram;
-		vid = base + diff_vid_ram;
-#endif
-		if(allocate_triple( ram, sz_ram, rom, sz_rom, vid, sz_vid )) {
-			result = base;
-			still_trying = FALSE;
-		} else {
-			base += step;
-			if(base >= end) still_trying = FALSE;
-		}
-	}
-
-	return(result);
-}
-
-/*
-static LPVOID all_mem = 0;
-
-static void free_triple(void)
-{
-	if(the_buffer) {
-		VirtualFree( the_buffer, 0, MEM_DECOMMIT );
-		the_buffer = 0;
-	}
-	if(RAMBaseHost) {
-		VirtualFree( RAMBaseHost, 0, MEM_DECOMMIT );
-		RAMBaseHost = 0;
-	}
-	if(ROMBaseHost) {
-		VirtualFree( ROMBaseHost, 0, MEM_DECOMMIT );
-		ROMBaseHost = 0;
-	}
-	if(all_mem) {
-		VirtualFree( all_mem, 0, MEM_RELEASE );
-		all_mem = 0;
-	}
-}
-
-static BOOL map_address_space(
-	DWORD diff_rom_ram,
-	DWORD diff_vid_ram,
-	DWORD sz_ram,
-	DWORD sz_rom,
-	DWORD sz_vid
-)
-{
-	SYSTEM_INFO sysinfo;
-	DWORD start, end;
-
-	GetSystemInfo( &sysinfo );
-
-	if(win_os == VER_PLATFORM_WIN32_WINDOWS) {
-		start = GIGABYTES(2);
-		end   = GIGABYTES(3);
-	} else {
-		start = GIGABYTES(0);
-		end   = GIGABYTES(2);
-	}
-
-	DWORD best_base = 0;
-	DWORD best_size = 0;
-
-	BOOL prev_was_ok = FALSE;
-	DWORD prev_base = 0;
-	DWORD prev_size = 0;
-
-	MEMORY_BASIC_INFORMATION inf;
-	for( DWORD base=start; base<end; ) {
-		if( VirtualQuery( (LPCVOID)base, &inf, sizeof(inf) ) == sizeof(inf) &&
-		    inf.RegionSize > 0 )
-		{
-			if( inf.State == MEM_FREE ) {
-				if(prev_was_ok) {
-					prev_size += inf.RegionSize;
-				} else {
-					prev_base = (DWORD)inf.BaseAddress;
-					prev_size = inf.RegionSize;
-					prev_was_ok = TRUE;
-				}
-				if( prev_size > best_size ) {
-					best_size = prev_size;
-					best_base = prev_base;
-				}
-			} else {
-				prev_was_ok = FALSE;
-			}
-			base += inf.RegionSize;
-		} else {
-			prev_was_ok = FALSE;
-			base += sysinfo.dwAllocationGranularity;
-		}
-	}
-
-	BOOL ok = FALSE;
-
-	// Now [best_base,best_size] is the largest block we can reserve.
-
-	// Align to 64kB boundary -- upwards.
-	DWORD diff = best_base & 0xFFFF;
-	if(diff) {
-		diff = 0x10000 - diff;
-		best_base += diff;
-		best_size -= diff;
-	}
-
-	if(best_base && best_size) {
-		all_mem = VirtualAlloc( 
-			(LPVOID *)best_base,
-			best_size,
-			MEM_RESERVE,
-			PAGE_NOACCESS
-		);
-		if(all_mem) {
-			DWORD vid = best_base;
-			DWORD ram = best_base - diff_vid_ram;
-			DWORD rom = best_base + diff_rom_ram - diff_vid_ram;
-			the_buffer = (uint8 *)VirtualAlloc( (LPVOID*)vid, sz_vid, MEM_COMMIT, PAGE_READWRITE );
-			RAMBaseHost = (uint8 *)VirtualAlloc( (LPVOID*)ram, sz_ram, MEM_COMMIT, PAGE_READWRITE );
-			ROMBaseHost = (uint8 *)VirtualAlloc( (LPVOID*)rom, sz_rom, MEM_COMMIT, PAGE_READWRITE );
-			ok = (the_buffer == (uint8 *)vid) &&
-					 (RAMBaseHost == (uint8 *)ram) &&
-					 (ROMBaseHost == (uint8 *)rom);
-			MEMBaseDiff = ram;
-		} else {
-			DWORD err = GetLastError();
-			_asm int 3
-		}
-	}
-	if(!ok) free_triple();
-	return ok;
-}
-*/
-
 static DWORD word_align( DWORD x )
 {
 	return( ((x + 15) / 16) * 16 );
@@ -869,73 +613,55 @@ static DWORD page_align( DWORD x )
 
 static void alloc_memory_8(void)
 {
-	// Now create mappings and views so that:
-	//		(MacFrameBaseMac - ROMBaseMac) == (the_buffer - ROMBaseHost)
-	// and
-	//		(ROMBaseMac - RAMBaseMac) == (ROMBaseHost - RAMBaseHost)
-
-// _asm int 3
-
-	DWORD ram_mac = (DWORD)RAMBaseMac;
-	DWORD rom_mac = (DWORD)ROMBaseMac;
-	DWORD vid_mac = (DWORD)MacFrameBaseMac;
-
-	DWORD diff_rom_ram = rom_mac - ram_mac;
-	DWORD diff_vid_ram = vid_mac - ram_mac;
-
+#ifdef OPTIMIZED_8BIT_MEMORY_ACCESS
 	DWORD ram_mem_sz = page_align( RAMSize );
-	DWORD rom_mem_sz = page_align( 0x100000 );
+	DWORD rom_mem_sz = page_align( max(ROMSize,0x100000) );
+
+  int scr_width, scr_height, depth_mac, depth_win;
+	get_video_mode( scr_width, scr_height, depth_mac, depth_win );
 	DWORD vid_mem_sz = page_align(
-		word_align(GetSystemMetrics(SM_CXSCREEN)) *
-		GetSystemMetrics(SM_CYSCREEN) *
-		4 +
+		calc_bytes_per_row(scr_width,depth_mac) * scr_height +
 		65536
 	);
 
-	DWORD base = map_address_space(
-		diff_rom_ram,
-		diff_vid_ram,
-		RAMSize,
-		ROMSize, // 0x100000,
-		vid_mem_sz
-	);
-	if(!base) {
-		ErrorAlert(
-			"Could not map the memory to the process address space. "
-			"Try to define a smaller amount of RAM, or use the generic version of Basilisk II."
-		);
-		QuitEmulator();
-	}
-#ifdef SWAPPED_ADDRESS_SPACE
-	the_buffer  = (uint8 *)( base + 0 );
-	ROMBaseHost = (uint8 *)( base + vid_mem_sz + diff_vid_ram - diff_rom_ram - rom_mem_sz );
-	RAMBaseHost = (uint8 *)( base + vid_mem_sz + diff_vid_ram - ram_mem_sz );
-#else
-	RAMBaseHost = (uint8 *)( base + 0 );
-	ROMBaseHost = (uint8 *)( base	+ diff_rom_ram );
-	the_buffer  = (uint8 *)( base	+ diff_vid_ram );
-#endif
+	DWORD total_size = ram_mem_sz + rom_mem_sz + vid_mem_sz;
 
+  LONG flags = MEM_RESERVE|MEM_COMMIT;
+
+	// Need to rewrite some video code before enabling this.
+	pfnGetWriteWatch = 0;
 	/*
-	BOOL ok = map_address_space(
-		diff_rom_ram,
-		diff_vid_ram,
-		RAMSize,
-		ROMSize, // 0x100000,
-		vid_mem_sz
-	);
-	if(!ok) {
-		ErrorAlert(
-			"Could not allocate memory for RAM, ROM and Video buffer. "
-			"Try to define a smaller amount of RAM, or use the generic version of Basilisk II."
-		);
-		QuitEmulator();
+	if(pfnGetWriteWatch && win_os == VER_PLATFORM_WIN32_WINDOWS) {
+		flags |= MEM_WRITE_WATCH;
 	}
 	*/
 
+	uint8 *base = (uint8 *)VirtualAlloc( 0, total_size, flags, PAGE_READWRITE );
+	if(!base) {
+		char *msg = new char [512];
+		if(msg) {
+			sprintf(
+				msg, 
+				"Could not allocate total of %d megabytes of memory "
+				"Try to define a smaller amount of RAM in GUI memory page.",
+				(total_size + 0x100000 - 1) / 0x100000
+			);
+			ErrorAlert(msg);
+			delete [] msg;
+		}
+		QuitEmulator();
+	}
+
+	RAMBaseHost = base;
+	ROMBaseHost = base + ram_mem_sz;
+	the_buffer = base + ram_mem_sz + rom_mem_sz;
+
+	RAMBaseMac = 0;
+	ROMBaseMac = ram_mem_sz;
+	MacFrameBaseMac = (uint32)(ram_mem_sz + rom_mem_sz);
+
 	memset( the_buffer, 0, vid_mem_sz );
 
-#ifdef OPTIMIZED_8BIT_MEMORY_ACCESS
 	total_mem_limits.mem_start	= (DWORD)the_buffer;
 	total_mem_limits.mem_end		= (DWORD)ROMBaseHost + ROMSize;
 
@@ -947,16 +673,14 @@ static void alloc_memory_8(void)
 
 	Video_mem_limits.mem_start	= (DWORD)the_buffer;
 	Video_mem_limits.mem_end		= (DWORD)the_buffer + vid_mem_sz;
-#endif
 
-#ifdef OPTIMIZED_8BIT_MEMORY_ACCESS
-	MEMBaseDiff = base;
-#ifdef SWAPPED_ADDRESS_SPACE
-	MEMBaseLongTop = vid_mac + vid_mem_sz - 4;
-	MEMBaseWordTop = vid_mac + vid_mem_sz - 2;
-	MEMBaseByteTop = vid_mac + vid_mem_sz - 1;
-#endif
-#endif
+	MEMBaseDiff = (uae_u32)base;
+
+	if(experiment_get_bool("DisableLowMemCache")) {
+		DWORD OldProtect;
+		VirtualProtect( (LPVOID)RAMBaseHost, 64*1024, PAGE_READWRITE|PAGE_NOCACHE, &OldProtect );
+	}
+#endif // OPTIMIZED_8BIT_MEMORY_ACCESS
 }
 
 static void alloc_memory(void)
@@ -986,6 +710,8 @@ static void alloc_memory(void)
 void QuitEmulator(void)
 {
 	D(bug("quitting...\r\n"));
+
+	screen_saver_enable();
 
 	if(threads[THREAD_CPU].h) {
 		if(GetCurrentThreadId() == threads[THREAD_CPU].tid) {
@@ -1086,7 +812,7 @@ void QuitEmulator(void)
 
 	D(bug("Freeing ROM and RAM\r\n"));
 	if(mem_8_only) {
-		// free_triple();
+    if(RAMBaseHost) VirtualFree( RAMBaseHost, 0, MEM_RELEASE  );
 	} else {
     if(ROMBaseHost) VirtualFree( ROMBaseHost, 0, MEM_RELEASE  );
     if(RAMBaseHost) VirtualFree( RAMBaseHost, 0, MEM_RELEASE  );
@@ -1147,14 +873,6 @@ static int check_os(void)
 		return 0;
 	}
 
-#ifdef OPTIMIZED_8BIT_MEMORY_ACCESS
-	if(win_os != VER_PLATFORM_WIN32_NT) {
-		ErrorAlert( "This version of Basilisk II does not run under Windows 9x." );
-		// ... but it actually should run already.
-		return 0;
-	}
-#endif
-
 	return 1;
 }
 
@@ -1209,6 +927,14 @@ static void protect_ROM( bool protect )
 	}
 }
 
+static void __inline__ reset_idle_counter(void)
+{
+	m_idle_counter = m_idle_seconds;
+	if(m_idle_timeout && m_sleep_enabled) {
+		m_sleep_enabled = false;
+	}
+}
+
 static void initialize(void)
 {
 	if(win_os == VER_PLATFORM_WIN32_WINDOWS && win_os_major < 5) {
@@ -1228,6 +954,8 @@ static void initialize(void)
 
 	// Read preferences
 	PrefsInit();
+
+	ADBInit();
 
 	m_disable_internal_wait = GetPrivateProfileInt( "Debug", "disable_internal_wait", 0, ini_file_name );
 
@@ -1316,6 +1044,10 @@ static void initialize(void)
 			TwentyFourBitAddressing = false;
 			break;
 	}
+
+	// Only ROM_VERSION_CLASSIC is supported.
+	classic_mode = ROMVersion == ROM_VERSION_64K || ROMVersion == ROM_VERSION_PLUS || ROMVersion == ROM_VERSION_CLASSIC;
+
 	CPUIs68060 = false;
 
 	if(!Init680x0()) {
@@ -1328,12 +1060,8 @@ static void initialize(void)
 		alloc_memory();
 	}
 
-	// call it again ...now we have valid MemBaseDiff
-	if(mem_8_only) {
-		if(!Init680x0()) {
-			QuitEmulator();
-		}
-	}
+	// Work around the MMU32bit problem
+	memset( RAMBaseHost, 0, min(128*1024,RAMSize) );
 
 #if !REAL_ADDRESSING
 	// Reinitialize UAE memory banks (alloc_memory*() may relocate buffers)
@@ -1375,9 +1103,17 @@ static void initialize(void)
 		m_use_control_escape = PrefsFindBool("usecontrolescape");
 		m_use_alt_space = PrefsFindBool("usealtspace");
 	}
+	m_use_alt_enter = PrefsFindBool("usealtenter");
 
 	m_debug_disable_accurate_timer = PrefsFindBool("disableaccuratetimer");
 	m_gui_autorestart = PrefsFindInt16("guiautorestart");
+	m_sleep = PrefsFindInt32("idlesleep");
+	if(m_sleep < 1) m_sleep = 1;
+	if(m_sleep > 30) m_sleep = 30;
+	m_sleep_enabled = PrefsFindBool("idlesleepenabled");
+	m_idle_timeout = PrefsFindInt32("idletimeout");
+	m_idle_seconds = 60 * m_idle_timeout;
+	reset_idle_counter();
 
 	// Init drivers
 
@@ -1424,7 +1160,7 @@ static void initialize(void)
 	load_key_codes( key_file, keymap );
 
 	// Init video
-	if (!VideoInit(ROMVersion == ROM_VERSION_64K || ROMVersion == ROM_VERSION_PLUS || ROMVersion == ROM_VERSION_CLASSIC)) {
+	if (!VideoInit(classic_mode)) {
 		ErrorAlert("Failed to initialize video.");
 		QuitEmulator();
 	}
@@ -1479,6 +1215,8 @@ static void initialize(void)
 
 	if(PrefsFindBool("usestartupsound") && !PrefsFindBool("nosound"))
 		play_startup_sound(ROM_checksum);
+
+	screen_saver_disable();
 }
 
 void WarningAlert(const char *text)
@@ -1625,7 +1363,12 @@ static bool is_maximize_disabled()
 
 static LRESULT do_syscommand( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
-	if((LOWORD(wParam) & 0xFFF0) == IDM_MAINWINDOW_ROM_PROTECT) {
+	if((LOWORD(wParam) & 0xFFF0) == IDM_MAINWINDOW_SLEEP_ENABLE) {
+		m_sleep_enabled = !m_sleep_enabled;
+		HMENU hmsys = GetSystemMenu(hWnd,FALSE);
+		CheckMenuItem( hmsys, IDM_MAINWINDOW_SLEEP_ENABLE, m_sleep_enabled ? MF_CHECKED : MF_UNCHECKED );
+		return 0;
+	} else if((LOWORD(wParam) & 0xFFF0) == IDM_MAINWINDOW_ROM_PROTECT) {
 		m_ROM_is_protected = !m_ROM_is_protected;
 		protect_ROM( m_ROM_is_protected );
 		HMENU hmsys = GetSystemMenu(hWnd,FALSE);
@@ -1663,16 +1406,30 @@ static LRESULT do_syscommand( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam 
 		if(!is_maximize_disabled()) {
 			if(0 == GetPrivateProfileInt( "Tips", "Alt-Enter tip", 0, ini_file_name )) {
 				WritePrivateProfileInt( "Tips", "Alt-Enter tip", 1, ini_file_name );
-				MessageBox(
-					hWnd,
-					"Basilisk II will now switch to full screen mode.\n"
-					"Windowed mode can be restored by pressing ALT-ENTER.\n"
-					"\n"
-					"You will not see this tip again.\n"
-					,
-					GetString(STR_WINDOW_TITLE),
-					MB_OK|MB_ICONINFORMATION
-				);
+				if(m_use_alt_enter) {
+					MessageBox(
+						hWnd,
+						"Basilisk II will now switch to full screen mode.\n"
+						"Windowed mode can be restored by pressing ALT-ENTER.\n"
+						"\n"
+						"You will not see this tip again.\n"
+						,
+						GetString(STR_WINDOW_TITLE),
+						MB_OK|MB_ICONINFORMATION
+					);
+				} else {
+					MessageBox(
+						hWnd,
+						"Basilisk II will now switch to full screen mode.\n"
+						"Since you have disabled the Alt-Enter key, the windowed mode cannot be restored.\n"
+						"Otherwise you could have switched back to the windowed mode by pressing ALT-ENTER.\n"
+						"\n"
+						"You will not see this tip again.\n"
+						,
+						GetString(STR_WINDOW_TITLE),
+						MB_OK|MB_ICONINFORMATION
+					);
+				}
 			}
 			toggle_full_screen_mode();
 		}
@@ -1813,6 +1570,15 @@ unsigned int WINAPI one_sec_func(LPVOID param)
 		// WriteMacInt32( 0x20c, ReadMacInt32(0x20c)+1 );
 		SetInterruptFlag(INTFLAG_1HZ);
 		TriggerInterrupt();
+
+		if(m_idle_timeout && !m_sleep_enabled) {
+			if(m_idle_counter == 0) {
+				m_sleep_enabled = true;
+			} else {
+				m_idle_counter--;
+			}
+		}
+
 		should_have_ticks += 1000;
 	}
 
@@ -1841,6 +1607,9 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 
+		case WM_MENUCHAR:
+			return MAKELRESULT(0,MNC_CLOSE);
+
 		case WM_MENUSELECT:
 			m_menu_select = true;
 			return DefWindowProc(hWnd, msg, wParam, lParam);
@@ -1851,10 +1620,12 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		case WM_MBUTTONDOWN:
 		case WM_MBUTTONDBLCLK:
+			reset_idle_counter();
 			do_mbutton_down();
 			return 0;
 
 		case WM_MOUSEWHEEL:
+			reset_idle_counter();
 			do_mouse_wheel(hWnd,(short)HIWORD(wParam));
 			return 0;
 
@@ -1882,9 +1653,11 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			return DefWindowProc(hWnd, msg, wParam, lParam);
 
 		case WM_SYSCOMMAND:
+			//reset_idle_counter();
 			return do_syscommand( hWnd, msg, wParam, lParam );
 
 		case WM_COMMAND:
+			//reset_idle_counter();
 			return DefWindowProc(hWnd, msg, wParam, lParam);
 
 		case WM_DESTROY:
@@ -1903,6 +1676,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 #endif
 
 	  case WM_HOTKEY:
+			reset_idle_counter();
 			do_hotkey( wParam );
       return(0);
 
@@ -1959,6 +1733,8 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_KEYDOWN:
 			// debugging_fpp = 0;
 
+			reset_idle_counter();
+
 			if(is_control_down() && is_shift_down()) {
 				if(wParam == get_registered_media_hotkey()) {
 					media_check(MEDIA_REMOVABLE);
@@ -1980,6 +1756,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			return(0);
 
 		case WM_KEYUP:
+			reset_idle_counter();
 			if( is_control_down() && is_shift_down() &&
 					( wParam == get_registered_media_hotkey() ||
 					  wParam == get_registered_floppy_hotkey() ||
@@ -1995,15 +1772,18 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			return(0);
 
 		case WM_SYSKEYDOWN:
+			//reset_idle_counter();
 			do_key_down(hWnd,msg,wParam,lParam,1);
 			return(0);
 
 		case WM_SYSKEYUP:
+			//reset_idle_counter();
 			do_key_up(hWnd,msg,wParam,lParam,1);
 			return(0);
 
 		case WM_RBUTTONDOWN:
 		case WM_RBUTTONDBLCLK:
+			reset_idle_counter();
 			if(m_right_mouse == 1) {
 				do_mac_key_down( 0x36 );
 
@@ -2026,6 +1806,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 
 		case WM_RBUTTONUP:
+			reset_idle_counter();
 			if(m_right_mouse == 1) {
 				ADBMouseUp(0);
 				if(capturing) {
@@ -2041,6 +1822,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		case WM_LBUTTONDOWN:
 		case WM_LBUTTONDBLCLK:
+			reset_idle_counter();
 			if(m_os8_mouse) {
 				int y = (int)ReadMacInt16(0x82c);
 				if(y < 20) {
@@ -2059,6 +1841,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 
 		case WM_LBUTTONUP:
+			reset_idle_counter();
 			if(m_os8_mouse) {
 				int y = (int)ReadMacInt16(0x82c);
 				if(m_menu_clicked && y < 20) break;
@@ -2074,6 +1857,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 
 		case WM_MOUSEMOVE:
+			reset_idle_counter();
 			if(dragging) {
 				drag_window_move(hWnd);
 			}
@@ -2081,6 +1865,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		default:
 			if(m_mousewheel_old_msg && (msg == m_mousewheel_old_msg)) {
+				reset_idle_counter();
 				do_mouse_wheel(hWnd,(short)HIWORD(wParam));
 				return 0;
 			} else {

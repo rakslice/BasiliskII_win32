@@ -37,13 +37,15 @@
 #include "main_windows.h"
 #include "b2ether\multiopt.h"
 #include "b2ether\inc\b2ether_hl.h"
+#include "ether_windows.h"
+#include "router\router.h"
 
 
 #define DEBUG 0
+#define MONITOR 0
 
 #if DEBUG
 #pragma optimize("",off)
-#define MONITOR 1
 #endif
 
 #include "debug.h"
@@ -54,6 +56,13 @@ bool ether_use_permanent = true;
 static int16 ether_multi_mode = ETHER_MULTICAST_MAC;
 
 
+// Need to fake a NIC if there is none but the router module is activated.
+bool ether_fake = false;
+
+// Ethernet traffic routed to COM or LPT ports
+bool ether_port_emulation = false;
+int ether_com_port = 0;
+int ether_lpt_port = 0;
 
 
 // These are protected by queue_csection
@@ -167,10 +176,11 @@ static NetProtocol *find_protocol(uint16 type)
 
 void EtherInit(void)
 {
-  int nonblock = 1;
   char str[256];
 
   D(bug("EtherInit\r\n"));
+
+	router_init();
 
   // Do nothing if no Ethernet device specified
 
@@ -188,40 +198,62 @@ void EtherInit(void)
 
 	if(name) strcpy( edevice, name );
 
-  if (!name || !*name)
-		return;
+	bool there_is_a_router = PrefsFindBool("routerenabled");
+
+  if (!name || !*name) {
+		if( there_is_a_router ) {
+			strcpy( edevice, "None" );
+			ether_fake = true;
+		} else {
+			return;
+		}
+	}
+
+	if( strnicmp( edevice, "COM", 3 ) == 0 && isdigit(edevice[3]) ) {
+		ether_com_port = edevice[3] - '0';
+		ether_port_emulation = true;
+		ether_fake = true;
+	} else if( strnicmp( edevice, "LPT", 3 ) == 0 && isdigit(edevice[3])) {
+		ether_lpt_port = edevice[3] - '0';
+		ether_port_emulation = true;
+		ether_fake = true;
+	}
 
 	ether_use_permanent = PrefsFindBool("etherpermanentaddress");
 	ether_multi_mode = PrefsFindInt16("ethermulticastmode");
 
   // Open ethernet device
-	fd = PacketOpenAdapter( name, ether_multi_mode );
-  if (!fd) {
-    sprintf(str, "Could not open ethernet adapter %s.", name);
-    WarningAlert(str);
-    goto open_error;
-  }
-
-  // Get Ethernet address
-
-	if(!PacketGetMAC(fd,ether_addr,ether_use_permanent)) {
-		sprintf(str, "Could not get hardware address of device %s. Ethernet is not available.", name);
-		WarningAlert(str);
-		goto open_error;
-	}
-	D(bug("Real ethernet address %02x %02x %02x %02x %02x %02x\r\n", ether_addr[0], ether_addr[1], ether_addr[2], ether_addr[3], ether_addr[4], ether_addr[5]));
-
-  const char *ether_fake_address;
-  ether_fake_address = PrefsFindString("etherfakeaddress");
-  if(ether_fake_address && strlen(ether_fake_address) == 12) {
-		char sm[10];
-		strcpy( sm, "0x00" );
-		for( int i=0; i<6; i++ ) {
-			sm[2] = ether_fake_address[i*2];
-			sm[3] = ether_fake_address[i*2+1];
-			ether_addr[i] = (uint8)strtoul(sm,0,0);
+	if(ether_fake) {
+		memcpy( ether_addr, router_mac_addr, 6 );
+		D(bug("Fake ethernet address (same as router) %02x %02x %02x %02x %02x %02x\r\n", ether_addr[0], ether_addr[1], ether_addr[2], ether_addr[3], ether_addr[4], ether_addr[5]));
+	} else {
+		fd = PacketOpenAdapter( name, ether_multi_mode );
+		if (!fd) {
+			sprintf(str, "Could not open ethernet adapter %s.", name);
+			WarningAlert(str);
+			goto open_error;
 		}
-		D(bug("Fake ethernet address %02x %02x %02x %02x %02x %02x\r\n", ether_addr[0], ether_addr[1], ether_addr[2], ether_addr[3], ether_addr[4], ether_addr[5]));
+
+		// Get Ethernet address
+		if(!PacketGetMAC(fd,ether_addr,ether_use_permanent)) {
+			sprintf(str, "Could not get hardware address of device %s. Ethernet is not available.", name);
+			WarningAlert(str);
+			goto open_error;
+		}
+		D(bug("Real ethernet address %02x %02x %02x %02x %02x %02x\r\n", ether_addr[0], ether_addr[1], ether_addr[2], ether_addr[3], ether_addr[4], ether_addr[5]));
+
+		const char *ether_fake_address;
+		ether_fake_address = PrefsFindString("etherfakeaddress");
+		if(ether_fake_address && strlen(ether_fake_address) == 12) {
+			char sm[10];
+			strcpy( sm, "0x00" );
+			for( int i=0; i<6; i++ ) {
+				sm[2] = ether_fake_address[i*2];
+				sm[3] = ether_fake_address[i*2+1];
+				ether_addr[i] = (uint8)strtoul(sm,0,0);
+			}
+			D(bug("Fake ethernet address %02x %02x %02x %02x %02x %02x\r\n", ether_addr[0], ether_addr[1], ether_addr[2], ether_addr[3], ether_addr[4], ether_addr[5]));
+		}
 	}
 
   // Start packet reception thread
@@ -319,7 +351,9 @@ open_error:
 		int_send_now = 0;
     thread_active = false;
   }
-  PacketCloseAdapter(fd);
+	if(!ether_fake) {
+		PacketCloseAdapter(fd);
+	}
 	fd = 0;
 }
 
@@ -394,18 +428,23 @@ void EtherExit(void)
 	if(int_sig2) ReleaseSemaphore(int_sig2,1,NULL);
 	if(int_send_now) ReleaseSemaphore(int_send_now,1,NULL);
 
-	cancel_pending_reads();
+	if(ether_fake) {
+		if(ether_port_emulation) {
+		}
+	} else {
+		cancel_pending_reads();
 
-  D(bug("CancelIO if needed\r\n"));
-	if(fd && fd->hFile && pfnCancelIo && win_os == VER_PLATFORM_WIN32_NT) {
-		pfnCancelIo(fd->hFile);
-	}
+		D(bug("CancelIO if needed\r\n"));
+		if(fd && fd->hFile && pfnCancelIo && win_os == VER_PLATFORM_WIN32_NT) {
+			pfnCancelIo(fd->hFile);
+		}
 
-	// Wait max 2 secs to shut down pending io. After that, kill them.
-  D(bug("Wait delay\r\n"));
-	for( int i=0; i<10; i++ ) {
-		if(!thread_active_1 && !thread_active_2 && !thread_active_3) break;
-		Sleep(200);
+		// Wait max 2 secs to shut down pending io. After that, kill them.
+		D(bug("Wait delay\r\n"));
+		for( int i=0; i<10; i++ ) {
+			if(!thread_active_1 && !thread_active_2 && !thread_active_3) break;
+			Sleep(200);
+		}
 	}
 
 	if(thread_active_1) {
@@ -477,6 +516,9 @@ void EtherExit(void)
   D(bug("Finalizing queue\r\n"));
 	final_queue();
 
+  D(bug("Stopping router\r\n"));
+	router_final();
+
   D(bug("EtherExit done\r\n"));
 }
 
@@ -514,7 +556,7 @@ int16 ether_add_multicast(uint32 pb)
 	// We wouldn't need to do this
 	// if(ether_multi_mode != ETHER_MULTICAST_MAC) return noErr;
 
-  if (!PacketAddMulticast( fd, Mac2HostAddr(pb + eMultiAddr))) {
+  if (!ether_fake && !PacketAddMulticast( fd, Mac2HostAddr(pb + eMultiAddr))) {
     D(bug("WARNING: couldn't enable multicast address\r\n"));
     return eMultiErr;
   } else {
@@ -538,7 +580,7 @@ int16 ether_del_multicast(uint32 pb)
 	// We wouldn't need to do this
 	// if(ether_multi_mode != ETHER_MULTICAST_MAC) return noErr;
 
-  if (!PacketDelMulticast( fd, Mac2HostAddr(pb + eMultiAddr))) {
+  if (!ether_fake && !PacketDelMulticast( fd, Mac2HostAddr(pb + eMultiAddr))) {
     D(bug("WARNING: couldn't disable multicast address\r\n"));
     return eMultiErr;
   } else
@@ -601,6 +643,7 @@ int16 ether_detach_ph(uint16 type)
   return lapProtErr;
 }
 
+#if MONITOR
 static void dump_packet( uint8 *packet, int length )
 {
 	char buf[1000], sm[10];
@@ -610,12 +653,13 @@ static void dump_packet( uint8 *packet, int length )
 	if(length > 256) length = 256;
 
   for (int i=0; i<length; i++) {
-    sprintf(sm,"%02x ", (int)packet[i]);
+    sprintf(sm,"%02x", (int)packet[i]);
 		strcat( buf, sm );
   }
 	strcat( buf, "\r\n" );
   bug(buf);
 }
+#endif
 
 
 /*
@@ -724,7 +768,15 @@ static unsigned int ether_thread_write_packets(void *arg)
 		// must be alertable, otherwise write completion is never called
 		WaitForSingleObjectEx(int_send_now,INFINITE,TRUE);
 		while( thread_active && (Packet = get_send_head()) != 0 ) {
-			if(!PacketSendPacket( fd, Packet, FALSE, TRUE )) {
+			if(m_router_enabled && router_write_packet((uint8 *)Packet->Buffer, Packet->Length)) {
+				Packet->bIoComplete = TRUE;
+				recycle_write_packet(Packet);
+			} else if(ether_fake) {
+				if(ether_port_emulation) {
+				}
+				Packet->bIoComplete = TRUE;
+				recycle_write_packet(Packet);
+			} else if(!PacketSendPacket( fd, Packet, FALSE, TRUE )) {
 				// already recycled if async
 			}
 		}
@@ -794,7 +846,7 @@ int16 ether_write(uint32 wds)
 	}
 
   // Transmit packet
-  if (!write_packet( packet, len)) {
+  if (!write_packet(packet, len)) {
     D(bug("WARNING: couldn't transmit packet\r\n"));
     return excessCollsns;
   } else {
@@ -825,12 +877,13 @@ static void final_queue(void)
 	}
 }
 
-static void enqueue_packet( int sz, uint8 *buf )
+void enqueue_packet( uint8 *buf, int sz )
 {
 	EnterCriticalSection( &queue_csection );
 	if(queue[queue_inx].sz > 0) {
     D(bug("ethernet queue full, packet dropped\r\n"));
 	} else {
+		if(sz > 1514) sz = 1514;
 		queue[queue_inx].sz = sz;
 		memcpy( queue[queue_inx].buf, buf, sz );
 		queue_inx++;
@@ -926,7 +979,9 @@ VOID CALLBACK packet_read_completion(
 				}
 			}
 			if(dwNumberOfBytesTransfered) {
-				enqueue_packet( dwNumberOfBytesTransfered, (LPBYTE)lpPacket->Buffer );
+				if(!m_router_enabled || !router_read_packet((uint8 *)lpPacket->Buffer, dwNumberOfBytesTransfered)) {
+					enqueue_packet( (LPBYTE)lpPacket->Buffer, dwNumberOfBytesTransfered );
+				}
 			}
 		}
 	}
@@ -994,21 +1049,24 @@ static unsigned int ether_thread_get_packets_nt(void *arg)
   // Wait for packets to arrive.
 	// Obey the golden rules; keep the reads pending.
   while(thread_active) {
-	  D(bug("Pending reads\r\n"));
-		for( i=0; thread_active && i<PACKET_POOL_COUNT; i++ ) {
-			if(packets[i]->free) {
-				packets[i]->free = FALSE;
-				if(PacketReceivePacket(fd,packets[i],FALSE)) {
-					if(packets[i]->bIoComplete) {
-						D(bug("Early io completion...\r\n"));
-						packet_read_completion(
-								ERROR_SUCCESS,
-								packets[i]->BytesReceived,
-								&packets[i]->OverLapped
-						);
+
+		if(!ether_fake) {
+			D(bug("Pending reads\r\n"));
+			for( i=0; thread_active && i<PACKET_POOL_COUNT; i++ ) {
+				if(packets[i]->free) {
+					packets[i]->free = FALSE;
+					if(PacketReceivePacket(fd,packets[i],FALSE)) {
+						if(packets[i]->bIoComplete) {
+							D(bug("Early io completion...\r\n"));
+							packet_read_completion(
+									ERROR_SUCCESS,
+									packets[i]->BytesReceived,
+									&packets[i]->OverLapped
+							);
+						}
+					} else {
+						packets[i]->free = TRUE;
 					}
-				} else {
-					packets[i]->free = TRUE;
 				}
 			}
 		}
@@ -1038,63 +1096,70 @@ static unsigned int ether_thread_get_packets_9x(void *arg)
 
 	D(bug("ether_thread_get_packets_9x start\r\n"));
 
-  // Wait for packets to arrive.
-	// Obey the golden rules; keep the reads pending.
-  while(thread_active) {
-	  D(bug("Pending reads\r\n"));
+	if(ether_fake) {
+		// Should not start in the first place.
+		while(thread_active) {
+			Sleep(300);
+		}
+	} else {
+		// Wait for packets to arrive.
+		// Obey the golden rules; keep the reads pending.
+		while(thread_active) {
+			D(bug("Pending reads\r\n"));
 
-		// Got to keep them in order.
-		i = oldest_9x_pending;
-		if(i < 0) i = 0;
+			// Got to keep them in order.
+			i = oldest_9x_pending;
+			if(i < 0) i = 0;
 
-		for( j=0; thread_active && j<PACKET_POOL_COUNT; j++ ) {
-			if(packets[i]->free) {
-try_again:
-				packets[i]->free = FALSE;
-				if(PacketReceivePacket(fd,packets[i],FALSE)) {
-					if(packets[i]->bIoComplete) {
-						D(bug("Early io completion...\r\n"));
-						packet_read_completion(
-								ERROR_SUCCESS,
-								packets[i]->BytesReceived,
-								&packets[i]->OverLapped
-						);
+			for( j=0; thread_active && j<PACKET_POOL_COUNT; j++ ) {
+				if(packets[i]->free) {
+	try_again:
+					packets[i]->free = FALSE;
+					if(PacketReceivePacket(fd,packets[i],FALSE)) {
+						if(packets[i]->bIoComplete) {
+							D(bug("Early io completion...\r\n"));
+							packet_read_completion(
+									ERROR_SUCCESS,
+									packets[i]->BytesReceived,
+									&packets[i]->OverLapped
+							);
+						} else {
+							if(oldest_9x_pending < 0) oldest_9x_pending = i;
+						}
 					} else {
-						if(oldest_9x_pending < 0) oldest_9x_pending = i;
+						D(bug("Packet receive error...\r\n"));
+						if(thread_active) goto try_again;
 					}
-				} else {
-					D(bug("Packet receive error...\r\n"));
-					if(thread_active) goto try_again;
 				}
-			}
-			if(++i == PACKET_POOL_COUNT) i = 0;
-		}
-
-		if(!thread_active) break;
-
-		i = oldest_9x_pending;
-		if( i >= 0 ) {
-			packets[i]->bIoComplete =
-						GetOverlappedResult(
-									fd->hFile,
-									&packets[i]->OverLapped,
-									&packets[i]->BytesReceived,
-									TRUE );
-			packet_read_completion(
-				packets[i]->bIoComplete ? ERROR_SUCCESS : ERROR_INVALID_ACCESS,
-				packets[i]->BytesReceived,
-				&packets[i]->OverLapped
-			);
-			do {
 				if(++i == PACKET_POOL_COUNT) i = 0;
-				if( i == oldest_9x_pending ) {
-					i = -1;
-					break;
-				}
-			}	while(packets[i]->free);
-			oldest_9x_pending = i;
+			}
+
+			if(!thread_active) break;
+
+			i = oldest_9x_pending;
+			if( i >= 0 ) {
+				packets[i]->bIoComplete =
+							GetOverlappedResult(
+										fd->hFile,
+										&packets[i]->OverLapped,
+										&packets[i]->BytesReceived,
+										TRUE );
+				packet_read_completion(
+					packets[i]->bIoComplete ? ERROR_SUCCESS : ERROR_INVALID_ACCESS,
+					packets[i]->BytesReceived,
+					&packets[i]->OverLapped
+				);
+				do {
+					if(++i == PACKET_POOL_COUNT) i = 0;
+					if( i == oldest_9x_pending ) {
+						i = -1;
+						break;
+					}
+				}	while(packets[i]->free);
+				oldest_9x_pending = i;
+			}
 		}
-  }
+	}
 
 	D(bug("ether_thread_get_packets_9x exit\r\n"));
 

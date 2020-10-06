@@ -2,26 +2,26 @@
 
 [General Info]
 Version=1
-LastClass=CPageScreen
-LastTemplate=CPropertyPage
+LastClass=CPageKeyboard
+LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "BasiliskIIGUI.h"
 
-ClassCount=30
+ClassCount=34
 Class1=CBasiliskIIGUIApp
 Class2=CBasiliskIIGUIDlg
 Class3=CPageAudio
 
-ResourceCount=57
+ResourceCount=61
 Resource1=IDR_MAINFRAME
-Resource2=IDD_PAGE_AUDIO
+Resource2=IDD_DASD_CONFIRM
 Class4=CPagePorts
-Resource3=IDD_PAGE_ABOUT
+Resource3=IDD_PAGE_GENERAL
 Resource4=IDD_PAGE_DISK
-Resource5=IDD_PAGE_DEBUG
-Resource6=IDD_PAGE_TOOLS
-Resource7=IDD_FILETYPE_MAPPINGS
-Resource8=IDD_PAGE_PRIORITIES
+Resource5=IDD_NEW_HFV
+Resource6=IDD_KEYBOARD_BACKUP
+Resource7=IDD_PAGE_TOOLS
+Resource8=IDD_PAGE_SCREEN
 Class5=CPageCDROM
 Class6=CPageFloppy
 Class7=CPageGeneral
@@ -29,26 +29,26 @@ Class8=CPageMemory
 Class9=CPageScreen
 Class10=CPageSCSI
 Class11=CPageDisk
-Resource9=IDD_PAGE_ETHERNET
+Resource9=IDD_PAGE_MEMORY
 Resource10=IDD_DX_FULL_SCREEN_HELP (English (U.S.))
 Class12=CPageKeyboard
 Class13=CKeyCodes
-Resource11=IDD_NEW_HFV
-Resource12=IDD_ASK_SCSI_REPLACEMENT
+Resource11=IDD_RW_CONFIRM
+Resource12=IDD_PAGE_MOUSE
 Class14=CPageTools
 Class15=CPageAbout
-Resource13=IDD_PAGE_MOUSE
+Resource13=IDD_PAGE_AUDIO
 Class16=CPageEthernet
-Resource14=IDD_MOUNT_MODE_HELP
+Resource14=IDD_ROUTER_HELP
 Class17=CMakeNewHFV
 Resource15=IDD_RW_CONFIRM (English (U.S.))
 Class18=CAskSCSIReplacement
-Resource16=IDD_PAGE_SCSI
+Resource16=IDD_PAGE_FLOPPY
 Class19=CPagePriorities
-Resource17=IDD_PAGE_EXTFS
-Resource18=IDD_DX_FULL_SCREEN_HELP
+Resource17=IDD_PAGE_ABOUT
+Resource18=IDD_PAGE_EXPERIMENT
 Class20=CPageDebug
-Resource19=IDD_PAGE_KEYBOARD
+Resource19=IDD_PAGE_SMP
 Resource20=IDD_FILETYPE_MAPPINGS (English (U.S.))
 Resource21=IDD_PAGE_GENERAL (English (U.S.))
 Resource22=IDD_KEYBOARD (English (U.S.))
@@ -61,27 +61,27 @@ Resource28=IDD_PAGE_DISK (English (U.S.))
 Resource29=IDD_PAGE_AUDIO (English (U.S.))
 Resource30=IDD_PAGE_DEBUG (English (U.S.))
 Resource31=IDD_ASK_SCSI_REPLACEMENT (English (U.S.))
-Resource32=IDD_PAGE_PORTS
+Resource32=IDD_PAGE_DEBUG
 Resource33=IDD_PAGE_PRIORITIES (English (U.S.))
 Resource34=IDD_PAGE_EXPERIMENT (English (U.S.))
 Resource35=IDD_PAGE_MOUSE (English (U.S.))
 Resource36=IDD_PAGE_EXTFS (English (U.S.))
-Resource37=IDD_PAGE_SCREEN
+Resource37=IDD_FILETYPE_MAPPINGS
 Class21=CConfirmDASDDialog
-Resource38=IDD_PAGE_MEMORY
+Resource38=IDD_PAGE_PRIORITIES
 Class22=CConfirmRWDlg
-Resource39=IDD_PAGE_CDROM
+Resource39=IDD_PAGE_ROUTER
 Class23=CPageMouse
-Resource40=IDD_KEYBOARD_BACKUP
+Resource40=IDD_PAGE_SCSI
 Class24=CPageExperiment
-Resource41=IDD_PAGE_DR
-Resource42=IDD_KEYBOARD
+Resource41=IDD_PAGE_PORTS
+Resource42=IDD_PAGE_CDROM
 Class25=CPageExtFS
-Resource43=IDD_DASD_CONFIRM
+Resource43=IDD_PAGE_EXTFS
 Class26=CFileTypeMapping
 Class27=CPageDR
-Resource44=IDD_PAGE_EXPERIMENT
-Resource45=IDD_RW_CONFIRM
+Resource44=IDD_PAGE_DR
+Resource45=IDD_PAGE_ETHERNET
 Class28=CFullScreenHelp
 Resource46=IDD_DASD_CONFIRM (English (U.S.))
 Resource47=IDD_KEYBOARD_BACKUP (English (U.S.))
@@ -92,11 +92,19 @@ Resource51=IDD_PAGE_PORTS (English (U.S.))
 Resource52=IDD_PAGE_MEMORY (English (U.S.))
 Resource53=IDD_PAGE_SCREEN (English (U.S.))
 Resource54=IDD_PAGE_SCSI (English (U.S.))
-Resource55=IDD_PAGE_FLOPPY
+Resource55=IDD_ASK_NEW_PORT
 Class29=CMountModeHelp
-Resource56=IDD_PAGE_GENERAL
+Resource56=IDD_MOUNT_MODE_HELP
 Class30=CPageSMP
-Resource57=IDD_PAGE_SMP
+Resource57=IDD_KEYBOARD
+Class31=CPageRouter
+Resource58=IDD_DX_FULL_SCREEN_HELP
+Class32=RouterHelp
+Resource59=IDD_PAGE_KEYBOARD
+Class33=CAskNewPort
+Resource60=IDD_ASK_SCSI_REPLACEMENT
+Class34=CAskNewPortAndInterface
+Resource61=IDD_ASK_NEW_PORT_AND_IF
 
 [CLS:CBasiliskIIGUIApp]
 Type=0
@@ -172,19 +180,21 @@ Control12=IDC_CD_REAL_MODE_CD,button,1342242819
 [DLG:IDD_PAGE_MEMORY]
 Type=1
 Class=CPageMemory
-ControlCount=12
+ControlCount=14
 Control1=IDC_MEMORY_RAM_SIZE,edit,1350631552
 Control2=IDC_MEMORY_ROM_PATH,edit,1350631552
 Control3=IDC_MEMORY_ROM_BROWSE,button,1342242816
-Control4=IDC_MEMORY_ROM_TYPE,static,1342308353
-Control5=IDC_MEMORY_ROM_CHECKSUM,static,1342308353
-Control6=IDC_MEMORY_ROM_CHECKSUM_CALC,static,1342308353
-Control7=IDC_STATIC,static,1342308352
+Control4=IDC_MEMORY_ROM_TYPE,edit,1350633600
+Control5=IDC_MEMORY_ROM_CHECKSUM,edit,1350633600
+Control6=IDC_MEMORY_ROM_CHECKSUM_CALC,edit,1350633600
+Control7=IDC_MEMORY_INFO,edit,1350633604
 Control8=IDC_STATIC,static,1342308352
 Control9=IDC_STATIC,static,1342308352
 Control10=IDC_STATIC,static,1342308352
 Control11=IDC_STATIC,static,1342308352
 Control12=IDC_STATIC,static,1342308352
+Control13=IDC_STATIC,static,1342308352
+Control14=IDC_STATIC,static,1342308352
 
 [DLG:IDD_PAGE_SCREEN]
 Type=1
@@ -197,7 +207,7 @@ Control4=IDC_SCREEN_BITS,combobox,1344339971
 Control5=IDC_SCREEN_REFRESH_RATE,combobox,1344340226
 Control6=IDC_SCREEN_SLEEP_TICKS,edit,1350631552
 Control7=IDC_SCREEN_SHOW_FPS,button,1342242819
-Control8=IDC_SCREEN_DISABLE_98OPT,button,1342242819
+Control8=IDC_SCREEN_DISABLE_98OPT,button,1476460547
 Control9=IDC_STATIC,static,1342308352
 Control10=IDC_STATIC,static,1342308352
 Control11=IDC_STATIC,static,1342308352
@@ -229,7 +239,7 @@ Control14=IDC_STATIC,static,1342308352
 [DLG:IDD_PAGE_GENERAL]
 Type=1
 Class=CPageGeneral
-ControlCount=16
+ControlCount=15
 Control1=IDC_GENERAL_BOOT_DRIVE,edit,1350631552
 Control2=IDC_GENERAL_BOOT_DRIVER,combobox,1344339970
 Control3=IDC_GENERAL_MODEL_ID,combobox,1344339971
@@ -242,10 +252,9 @@ Control9=IDC_STATIC,static,1342308352
 Control10=IDC_STATIC,static,1342308352
 Control11=IDC_STATIC,static,1342308352
 Control12=IDC_STATIC,static,1342308352
-Control13=IDC_STATIC,static,1342308352
-Control14=IDC_GENERAL_OS8_OK,static,1342308352
+Control13=IDC_GENERAL_OS8_OK,static,1342308352
+Control14=IDC_STATIC,static,1342308352
 Control15=IDC_STATIC,static,1342308352
-Control16=IDC_STATIC,static,1342308352
 
 [CLS:CPageCDROM]
 Type=0
@@ -280,7 +289,7 @@ HeaderFile=PageMemory.h
 ImplementationFile=PageMemory.cpp
 BaseClass=CPropertyPage
 Filter=D
-LastObject=CPageMemory
+LastObject=IDC_MEMORY_ROM_PATH
 VirtualFilter=idWC
 
 [CLS:CPageScreen]
@@ -289,7 +298,7 @@ HeaderFile=PageScreen.h
 ImplementationFile=PageScreen.cpp
 BaseClass=CPropertyPage
 Filter=D
-LastObject=IDC_SCREEN_NTDX5HACK
+LastObject=CPageScreen
 VirtualFilter=idWC
 
 [CLS:CPageSCSI]
@@ -453,15 +462,18 @@ Control111=IDC_STATIC,static,1342308352
 [DLG:IDD_PAGE_KEYBOARD]
 Type=1
 Class=CPageKeyboard
-ControlCount=8
-Control1=IDC_KEYBOARD_MAP_FILE_PATH,edit,1350631552
-Control2=IDC_KEYBOARD_MAP_BROWSE,button,1342242816
-Control3=IDC_KEYBOARD_EDIT_CODES,button,1342242816
-Control4=IDC_STATIC,static,1342308352
-Control5=IDC_KEYBOARD_USE_ALT_ESCAPE,button,1342242819
-Control6=IDC_KEYBOARD_USE_CONTROL_ESCAPE,button,1342242819
-Control7=IDC_KEYBOARD_USE_ALT_TAB,button,1342242819
-Control8=IDC_KEYBOARD_USE_ALT_SPACE,button,1342242819
+ControlCount=11
+Control1=IDC_KEYBOARD_TYPE,combobox,1344339970
+Control2=IDC_KEYBOARD_MAP_FILE_PATH,edit,1350631552
+Control3=IDC_KEYBOARD_MAP_BROWSE,button,1342242816
+Control4=IDC_KEYBOARD_EDIT_CODES,button,1342242816
+Control5=IDC_KEYBOARD_USE_ALT_ENTER,button,1342242819
+Control6=IDC_KEYBOARD_USE_ALT_ESCAPE,button,1342242819
+Control7=IDC_KEYBOARD_USE_CONTROL_ESCAPE,button,1342242819
+Control8=IDC_KEYBOARD_USE_ALT_TAB,button,1342242819
+Control9=IDC_KEYBOARD_USE_ALT_SPACE,button,1342242819
+Control10=IDC_STATIC,static,1342308352
+Control11=IDC_STATIC,static,1342308352
 
 [CLS:CPageKeyboard]
 Type=0
@@ -470,7 +482,7 @@ ImplementationFile=PageKeyboard.cpp
 BaseClass=CPropertyPage
 Filter=D
 VirtualFilter=idWC
-LastObject=IDC_KEYBOARD_EDIT_CODES
+LastObject=IDC_KEYBOARD_TYPE
 
 [CLS:CKeyCodes]
 Type=0
@@ -484,10 +496,19 @@ VirtualFilter=dWC
 [DLG:IDD_PAGE_TOOLS]
 Type=1
 Class=CPageTools
-ControlCount=3
+ControlCount=12
 Control1=IDC_TOOLS_IS_ON_TOP,button,1342242819
 Control2=IDC_EXPERIMENT_LOWMEM_CACHE,button,1342242819
-Control3=IDC_TOOLS_GUI_AUTORESTART,combobox,1344339971
+Control3=IDC_TOOLS_DISABLE_SCREENSAVER,button,1342242819
+Control4=IDC_TOOLS_GUI_AUTORESTART,combobox,1344339971
+Control5=IDC_TOOLS_SLEEP_ENABLED,button,1342242819
+Control6=IDC_TOOLS_IDLE_SLEEP,edit,1350639744
+Control7=IDC_TOOLS_IDLE_MINUTES,edit,1350639744
+Control8=IDC_STATIC,button,1342177287
+Control9=IDC_STATIC,static,1342308352
+Control10=IDC_STATIC,static,1342308352
+Control11=IDC_STATIC,static,1342308352
+Control12=IDC_STATIC,static,1342308352
 
 [DLG:IDD_PAGE_ABOUT]
 Type=1
@@ -505,7 +526,7 @@ HeaderFile=PageTools.h
 ImplementationFile=PageTools.cpp
 BaseClass=CPropertyPage
 Filter=D
-LastObject=CPageTools
+LastObject=IDC_TOOLS_DISABLE_SCREENSAVER
 VirtualFilter=idWC
 
 [CLS:CPageAbout]
@@ -645,7 +666,7 @@ VirtualFilter=idWC
 [DLG:IDD_PAGE_AUDIO]
 Type=1
 Class=CPageAudio
-ControlCount=18
+ControlCount=17
 Control1=IDC_AUDIO_ENABLED,button,1342242819
 Control2=IDC_AUDIO_SWITCHOUT,button,1342242819
 Control3=IDC_AUDIO_MYST,button,1342242819
@@ -663,7 +684,6 @@ Control14=IDC_STATIC,static,1342308352
 Control15=IDC_STATIC,static,1342308352
 Control16=IDC_STATIC,static,1342308352
 Control17=IDC_STATIC,button,1342177287
-Control18=IDC_STATIC,static,1342308352
 
 [CLS:CPageAudio]
 Type=0
@@ -1155,7 +1175,7 @@ VirtualFilter=dWC
 [DLG:IDD_PAGE_MOUSE]
 Type=1
 Class=CPageMouse
-ControlCount=21
+ControlCount=20
 Control1=IDC_MOUSE_RIGHT_MOUSE,combobox,1344339971
 Control2=IDC_MOUSE_STICKY_MENU,button,1342242819
 Control3=IDC_MOUSE_MOVEMENT,combobox,1344339971
@@ -1176,7 +1196,6 @@ Control17=IDC_MOUSE_MOUSEWHEEL_STATIC3,static,1342308352
 Control18=IDC_MOUSE_MOUSEWHEEL_STATIC4,static,1342308352
 Control19=IDC_MOUSE_MOUSEWHEEL_STATIC5,static,1342308352
 Control20=IDC_MOUSE_MOUSEWHEEL_STATIC6,static,1342308352
-Control21=IDC_STATIC,static,1342308352
 
 [CLS:CPageMouse]
 Type=0
@@ -1854,4 +1873,89 @@ BaseClass=CPropertyPage
 Filter=D
 LastObject=CPageSMP
 VirtualFilter=idWC
+
+[DLG:IDD_PAGE_ROUTER]
+Type=1
+Class=CPageRouter
+ControlCount=12
+Control1=IDC_ROUTER_ENABLE,button,1342242819
+Control2=IDC_ROUTER_HELP,button,1342242816
+Control3=IDC_STATIC,button,1342177287
+Control4=IDC_ROUTER_FTP_PORT_LIST,listbox,1352728835
+Control5=IDC_ROUTER_NEW_FTP_PORT,button,1342242816
+Control6=IDC_ROUTER_DEL_FTP_PORT,button,1342242816
+Control7=IDC_STATIC,static,1342308352
+Control8=IDC_STATIC,button,1342177287
+Control9=IDC_ROUTER_LISTEN_PORT_LIST,listbox,1352728835
+Control10=IDC_ROUTER_NEW_LISTEN_PORT,button,1342242816
+Control11=IDC_ROUTER_DEL_LISTEN_PORT,button,1342242816
+Control12=IDC_STATIC,static,1342308352
+
+[CLS:CPageRouter]
+Type=0
+HeaderFile=PageRouter.h
+ImplementationFile=PageRouter.cpp
+BaseClass=CPropertyPage
+Filter=D
+VirtualFilter=dWC
+LastObject=CPageRouter
+
+[DLG:IDD_ROUTER_HELP]
+Type=1
+Class=RouterHelp
+ControlCount=8
+Control1=IDOK,button,1342242817
+Control2=IDC_STATIC,static,1342308352
+Control3=IDC_STATIC,static,1342308352
+Control4=IDC_STATIC,static,1342308352
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_STATIC,static,1342308352
+Control7=IDC_STATIC,static,1342308352
+Control8=IDC_STATIC,static,1342308352
+
+[CLS:RouterHelp]
+Type=0
+HeaderFile=RouterHelp.h
+ImplementationFile=RouterHelp.cpp
+BaseClass=CDialog
+Filter=D
+LastObject=IDOK
+
+[DLG:IDD_ASK_NEW_PORT]
+Type=1
+Class=CAskNewPort
+ControlCount=3
+Control1=IDC_NEW_PORT_NUMBER,edit,1350631552
+Control2=IDOK,button,1342242817
+Control3=IDCANCEL,button,1342242816
+
+[CLS:CAskNewPort]
+Type=0
+HeaderFile=AskNewPort.h
+ImplementationFile=AskNewPort.cpp
+BaseClass=CDialog
+Filter=D
+VirtualFilter=dWC
+LastObject=IDC_NEW_PORT_NUMBER
+
+[DLG:IDD_ASK_NEW_PORT_AND_IF]
+Type=1
+Class=CAskNewPortAndInterface
+ControlCount=7
+Control1=IDC_NEW_PORT_NUMBER,edit,1350631552
+Control2=IDC_NEW_INTERFACE_NUMBER,combobox,1344340226
+Control3=IDOK,button,1342242817
+Control4=IDCANCEL,button,1342242816
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_STATIC,static,1342308352
+Control7=IDC_STATIC,static,1342308352
+
+[CLS:CAskNewPortAndInterface]
+Type=0
+HeaderFile=AskNewPortAndInterface.h
+ImplementationFile=AskNewPortAndInterface.cpp
+BaseClass=CDialog
+Filter=D
+VirtualFilter=dWC
+LastObject=IDC_NEW_INTERFACE_NUMBER
 

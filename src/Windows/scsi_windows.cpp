@@ -347,7 +347,11 @@ static BOOL aspi_init( VOID )
   SetErrorMode( fuPrevErrorMode );
   if( !ghinstWNASPI32 ) {
 		char err[200];
-		wsprintf( err, "Could not load ASPI layer, error code %d", dwLastError );
+		if( dwLastError == ERROR_MOD_NOT_FOUND ) {
+			strcpy( err, "WNASPI32.DLL was not found. You need to install ASPI before you can use SCSI under Basilisk II." );
+		} else {
+			wsprintf( err, "Could not load ASPI layer, error code %d", dwLastError );
+		}
 		ErrorAlert( err );
     return( FALSE );
   }

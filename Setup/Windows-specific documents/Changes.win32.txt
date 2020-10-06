@@ -1,3 +1,49 @@
+Win32 - 06.January.2001, build 142
+  - BasiliskII.exe is now the assembly optimized version and should work on all
+    Windows versions. BasiliskII_old.exe is the unoptimized version provided for
+    testing purposes. Thanks to Gwenolé Beauchesne for his suggestions.
+  - Fix: the assembler version of MOVE (Ax)++,(Ay)++ [code 20d8] was faulty.
+    Thanks to Akihiko Matsuo for providing this fix.
+  - Fix: NUMLOCK keyboard code didn't have the extended flag set, again thanks to
+    Akihiko Matsuo. For this change to take effect, you need to delete your old
+    "BasiliskII_keyboard" keyboard file.
+  - Fix: the NAT/Router did not always send other (non-TCP/IP) ARP requests to the NIC.
+  - Fix: some other minor NAT issues.
+  - Fix: Basilisk II may have crashed when a video mode was selected that was larger
+    than the current Windows mode.
+  - Fix: a video tilt problem when switching from GDI mode to full screen mode
+    ("equal_scanline_lengths" was uninitialized if started in GDI mode).
+  - An option to disable Windows screen saver while B2 is running. GUI "Misc" page.
+  - An option to change the keyboard layout code. GUI "Keyboard" page.
+  - Updated "NAT-Router FAQ.html" and "Tech.win32.txt".
+
+
+Win32 - 26.December.2000, build 141
+  - An option to use Windows Internet connection. GUI "Router" page.
+    See the included document "NAT-Router FAQ.html" for details.
+  - Fixed a problem in ejecting (zip) removable media under Win9x.
+  - An option to enable/disable alt-enter (GUI keyboard page).
+  - Energy saving modes. In GUI "Misc" page.
+  - GUI window made a bit smaller so that fits onto a smaller screen
+    ( exactly how small depends on the small/large Windows system font and the video card drivers ).
+  - WinMe ethernet INF script fix, thanks to Mike Allison.
+  - Reverted back to the old timer.cpp code.
+  - More compatible timer code activated.
+
+
+Win32 - 15.July.2000, build 135 (INTERNAL)
+  - Win2k ethernet driver now works for users with no administrator rights.
+    However, it may be necessary to run Basilisk II once with admin right
+    after installing the ethernet packet driver.
+  - Prevented Windows from beeping with some Alt key combinations.
+  - An attempt to better tolerate faulty ASPI drivers.
+  - Fixed a bug in FPU FTAN opcode (didn't pop the value 1.0 that x86 partial
+    tangent FPTAN always pushes to stack for 8087/287 compatibility).
+  - One optimization bug fix.
+  - MMU32bit initialization fix.
+  - GUI memory page: displays some more ROM file info.
+
+
 Win32 - 18.June.2000, build 130
   - Workaround for one compiler bug.
   - Updated timer.cpp code.

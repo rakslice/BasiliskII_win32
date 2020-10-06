@@ -1,7 +1,5 @@
 /*
- * HFVExplorer
- * Copyright (C) 1997-1998 by Anygraaf Oy
- * Author: Lauri Pesonen, email: lpesonen@clinet.fi or lauri.pesonen@anygraaf.fi
+ * Copyright (C) 1997-1998 by Lauri Pesonen, lpesonen@nic.fi
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,23 +69,23 @@ protected:
 	void enable_items();
 	int set_item(
 		int index,
-		LPCSTR dos, 
-		LPCSTR type, 
+		LPCSTR dos,
+		LPCSTR type,
 		LPCSTR creator,
 		BOOL strip,
-		BOOL fat2hfs, 
+		BOOL fat2hfs,
 		BOOL hfs2fat,
 		LPCSTR comment,
 		BOOL update_selection
 	);
 	/*
-	void parse( 
-		LPCSTR buf, 
+	void parse(
+		LPCSTR buf,
 		CString & dos,
-		CString & type,	
+		CString & type,
 		CString & creator,
-		BOOL & strip, 
-		BOOL & fat2hfs, 
+		BOOL & strip,
+		BOOL & fat2hfs,
 		BOOL & hfs2fat,
 		char separator
 	);
@@ -99,9 +97,9 @@ protected:
 	CString ask_open_fname( void );
 	int find_item(
 		CString & x_dos,
-		CString & x_type,	
+		CString & x_type,
 		CString & x_creator,
-		BOOL x_fat2hfs, 
+		BOOL x_fat2hfs,
 		BOOL x_hfs2fat,
 		int ignore_index
 	);

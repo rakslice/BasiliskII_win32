@@ -69,7 +69,7 @@ CAPTION "About Basilisk II"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,91,164,50,14
-    CTEXT           "\n A free, portable Mac II emulator\n\n Copyright © 1997-2000 Christian Bauer et al.\n\n UAE CPU core Copyright © Bernd Schmidt\n\n Windows code Copyright © Lauri Pesonen\n\n Freely distributable.\n\nBuild 130 -- based on Basilisk II v0.8",
+    CTEXT           "\n A free, portable Mac II emulator\n\n Copyright © 1997-2000 Christian Bauer et al.\n\n UAE CPU core Copyright © Bernd Schmidt\n\n Windows code Copyright © Lauri Pesonen\n\n Freely distributable.\n\nBuild 142 -- based on Basilisk II v0.8",
                     IDC_STATIC,14,43,202,113,0,WS_EX_STATICEDGE
     ICON            IDI_B2_ICON,IDC_STATIC,13,9,20,20,0,WS_EX_DLGMODALFRAME
     LTEXT           "Basilisk II for Windows NT",IDC_ABOUT_CAPTION,45,13,184,
@@ -174,8 +174,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,130
- PRODUCTVERSION 0,8,0,130
+ FILEVERSION 0,8,0,142
+ PRODUCTVERSION 0,8,0,142
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -191,16 +191,16 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "Comments", "Basilisk II is copyright © 1997-2000 Christian Bauer et al. Windows specific code is copyright © Lauri Pesonen.\0"
-            VALUE "CompanyName", "Anygraaf Oy\0"
+            VALUE "CompanyName", "\0"
             VALUE "FileDescription", "BasiliskII\0"
-            VALUE "FileVersion", "0, 8, 0, 130\0"
+            VALUE "FileVersion", "0, 8, 0, 142\0"
             VALUE "InternalName", "BasiliskII\0"
             VALUE "LegalCopyright", "Basilisk II is copyright © 1997-2000 Christian Bauer et al. Windows specific code is copyright © Lauri Pesonen.\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "BasiliskII.EXE\0"
             VALUE "PrivateBuild", "Jos jonkun maan sanomalehdet ovat täynnä hyviä uutisia, sen maan vankilat ovat täynnä hyviä ihmisiä. --Daniel P. Moynihan\0"
             VALUE "ProductName", "BasiliskII\0"
-            VALUE "ProductVersion", "0, 8, 0, 130\0"
+            VALUE "ProductVersion", "0, 8, 0, 142\0"
             VALUE "SpecialBuild", "<public>\0"
         END
     END

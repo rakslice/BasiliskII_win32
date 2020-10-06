@@ -31,18 +31,22 @@
 
 
 // RAM and ROM pointers
-uint32 RAMBaseMac;			// RAM base (Mac address space)
-uint8 *RAMBaseHost;			// RAM base (host address space)
-uint32 RAMSize;				// Size of RAM
-uint32 ROMBaseMac;			// ROM base (Mac address space)
-uint8 *ROMBaseHost;			// ROM base (host address space)
-uint32 ROMSize;				// Size of ROM
+uint32 RAMBaseMac = 0;			// RAM base (Mac address space)
+uint8 *RAMBaseHost = 0;			// RAM base (host address space)
+uint32 RAMSize = 0;					// Size of RAM
+uint32 ROMBaseMac = 0;			// ROM base (Mac address space)
+uint8 *ROMBaseHost = 0;			// ROM base (host address space)
+uint32 ROMSize = 0;					// Size of ROM
+
+#ifdef OPTIMIZED_8BIT_MEMORY_ACCESS
+uint32 MacFrameBaseMac = 0;
+#endif
 
 #if !REAL_ADDRESSING
 // Mac frame buffer
-uint8 *MacFrameBaseHost;	// Frame buffer base (host address space)
-uint32 MacFrameSize;		// Size of frame buffer
-int MacFrameLayout;			// Frame buffer layout
+uint8 *MacFrameBaseHost = 0;	// Frame buffer base (host address space)
+uint32 MacFrameSize = 0;			// Size of frame buffer
+int MacFrameLayout = 0;				// Frame buffer layout
 #endif
 
 // From newcpu.cpp

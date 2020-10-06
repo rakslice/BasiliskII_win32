@@ -248,19 +248,15 @@ static void __inline__ set_very_dirty( void )
 	mainBuffer.dirty = 1;
 	mainBuffer.very_dirty = 1;
 
-#ifndef OPTIMIZED_8BIT_MEMORY_ACCESS
   if (pfnGetWriteWatch) {
 		// Compiler should not optimize this away
 		*the_buffer ^= (uint8)255;
 		*the_buffer ^= (uint8)255;
 	}
-#endif
 }
 
-#ifndef OPTIMIZED_8BIT_MEMORY_ACCESS
 #define MAX_WRITE_WATCH_PAGES 4096
 static DWORD rglAddr[MAX_WRITE_WATCH_PAGES];
-#endif
 
 static void Screen_Setup_fault_handler(void)
 {
@@ -361,7 +357,7 @@ static void set_video_monitor(int width, int height, int depth_win, int depth_ma
 	}
 }
 
-static int calc_bytes_per_row( int width, int depth )
+int calc_bytes_per_row( int width, int depth )
 {
 	if(depth == 15) depth = 16;
   return width * depth / 8;
@@ -478,7 +474,7 @@ static HRESULT mySetDisplayMode2( LPDIRECTDRAW lpDD, int width, int height, int 
 
 static HRESULT mySetDisplayMode( LPDIRECTDRAW lpDD, int width, int height, int &depth_win )
 {
-	HRESULT ddrval;
+	HRESULT ddrval = -1;
 
 	if(!b2_is_front_window()) return DDERR_CANTLOCKSURFACE;
 
@@ -964,14 +960,11 @@ static void start_video_thread(void)
 		SetThreadAffinityMask( threads[THREAD_SCREEN_LFB].h, threads[THREAD_SCREEN_LFB].affinity_mask );
   } else if(display_type == DISPLAY_DX) {
 		// Why not check everything possible already here.
-#ifndef OPTIMIZED_8BIT_MEMORY_ACCESS
     if(pfnGetWriteWatch && equal_scanline_lengths) {
 			threads[THREAD_SCREEN_DX].h = (HANDLE)_beginthreadex( 0, 0, redraw_thread_d3d_fullscreen, 0, 0, &threads[THREAD_SCREEN_DX].tid );
 			SetThreadPriority( threads[THREAD_SCREEN_DX].h, threads[THREAD_SCREEN_DX].priority_running );
 			SetThreadAffinityMask( threads[THREAD_SCREEN_DX].h, threads[THREAD_SCREEN_DX].affinity_mask );
-		} else
-#endif
-		{
+		} else {
 			threads[THREAD_SCREEN_DX].h = (HANDLE)_beginthreadex( 0, 0, redraw_thread_d3d, 0, 0, &threads[THREAD_SCREEN_DX].tid );
 			SetThreadPriority( threads[THREAD_SCREEN_DX].h, threads[THREAD_SCREEN_DX].priority_running );
 			SetThreadAffinityMask( threads[THREAD_SCREEN_DX].h, threads[THREAD_SCREEN_DX].affinity_mask );
@@ -1082,36 +1075,22 @@ int get_current_screen_depth()
 	return depth;
 }
 
-bool VideoInit(bool classic)
+void get_video_mode(
+	int &width, 
+	int &height, 
+	int &depth_mac, 
+	int &depth_win
+)
 {
-  int width, height, depth_mac, depth_win, i;
-	char error_str[512], msg[256];
+  const char *_mode_str = PrefsFindString("screen");
+  char mode_str[200];
 
-  if(screen_inited) return 0;
-
-	log_faults = GetPrivateProfileInt( "Debug", "log_faults", 0, ini_file_name );
-
-	is_windowed = false;
-
-  lppal = (LPLOGPALETTE)malloc( sizeof(LOGPALETTE) + sizeof(PALETTEENTRY) * 256 );
-  lppal->palVersion = 0x300;
-
-	if(pfnInitializeCriticalSectionAndSpinCount) {
-		pfnInitializeCriticalSectionAndSpinCount( &draw_csection, 7000 );
-		pfnInitializeCriticalSectionAndSpinCount( &fb_csection, 3000 );
-	} else {
-		InitializeCriticalSection( &draw_csection );
-		InitializeCriticalSection( &fb_csection );
-	}
+	int w_user=0, h_user=0, bits_user=0, got_args=0;
 
 	width  = GetSystemMetrics(SM_CXSCREEN);
 	height = GetSystemMetrics(SM_CYSCREEN);
   depth_mac = depth_win = get_current_screen_depth();
   display_type = DISPLAY_DX;
-
-	int w_user=0, h_user=0, bits_user=0, got_args=0;
-  const char *_mode_str = PrefsFindString("screen");
-  char mode_str[200];
 
   if(_mode_str == 0 || *_mode_str == 0) {
 		// Newbies cannot use the screen page and compare apples and oranges.
@@ -1121,7 +1100,6 @@ bool VideoInit(bool classic)
 	}
 
 	// Mac screen depth is always 1 bit in Classic mode
-	classic_mode = classic;
 	if (classic_mode) {
 		depth_mac = 1;
 	  if (mode_str && (strncmp(mode_str,"win",3) == 0)) {
@@ -1130,8 +1108,6 @@ bool VideoInit(bool classic)
 			strcpy( mode_str, "dx/512/342" );
 		}
 	}
-
-  if(classic_mode || PrefsFindBool("disable98optimizations")) pfnGetWriteWatch = 0;
 
   if (mode_str && *mode_str) {
     if (strncmp(mode_str, "win",3) == 0) {
@@ -1206,8 +1182,35 @@ bool VideoInit(bool classic)
 			display_type = DISPLAY_DX;
 		}
 	}
+}
 
-  m_show_real_fps = PrefsFindBool("showfps");
+bool VideoInit(bool /*classic*/)
+{
+	char error_str[512], msg[256];
+
+  if(screen_inited) return 0;
+
+	log_faults = GetPrivateProfileInt( "Debug", "log_faults", 0, ini_file_name );
+
+	is_windowed = false;
+
+  lppal = (LPLOGPALETTE)malloc( sizeof(LOGPALETTE) + sizeof(PALETTEENTRY) * 256 );
+  lppal->palVersion = 0x300;
+
+	if(pfnInitializeCriticalSectionAndSpinCount) {
+		pfnInitializeCriticalSectionAndSpinCount( &draw_csection, 7000 );
+		pfnInitializeCriticalSectionAndSpinCount( &fb_csection, 3000 );
+	} else {
+		InitializeCriticalSection( &draw_csection );
+		InitializeCriticalSection( &fb_csection );
+	}
+
+  int width, height, depth_mac, depth_win;
+	get_video_mode( width, height, depth_mac, depth_win );
+
+  if(classic_mode || PrefsFindBool("disable98optimizations")) pfnGetWriteWatch = 0;
+
+	m_show_real_fps = PrefsFindBool("showfps");
 	sleep_ticks = PrefsFindInt32("framesleepticks");
 	if(sleep_ticks < 1) sleep_ticks = 1;
 	if(sleep_ticks > 1000) sleep_ticks = 1000;
@@ -1284,7 +1287,7 @@ bool VideoInit(bool classic)
 			break;
 	}
 
-	for( i=0; i<pal_colors; i++ ) {
+	for( int i=0; i<pal_colors; i++ ) {
 		lppal->palPalEntry[0].peFlags = PC_NOCOLLAPSE; // PC_RESERVED|PC_NOCOLLAPSE
 		pbmi->bmiColors[0].rgbRed = lppal->palPalEntry[0].peRed;
 		pbmi->bmiColors[0].rgbGreen = lppal->palPalEntry[0].peGreen;
@@ -1492,6 +1495,7 @@ void toggle_full_screen_mode(void)
 			sprintf( msg, "Direct X problem: \"%s\".", error_str );
 		  WarningAlert(msg);
 		}
+		equal_scanline_lengths = (int)VideoMonitor.bytes_per_row == dx_pitch;
 	  set_video_monitor( width, height, depth_win, depth_mac, calc_bytes_per_row(width,depth_mac) );
 		memory_init();
 	} else {
@@ -1914,7 +1918,9 @@ static DWORD inline advance( struct _EXCEPTION_POINTERS *ExceptionInfo )
 			break;
 #endif
 		case 0x0f:
-			if(eip[1] == 0xb7) { // movzx   ebx,word ptr [edx+edi] (0fb71c17)
+			if( eip[1] == 0xb7 || // movzx   ebx,word ptr [edx+edi] (0fb71c17)
+					eip[1] == 0xb6 )  // movzx   ecx,byte ptr [ebp]			(0fb64d00)
+			{ 
 				ExceptionInfo->ContextRecord->Eip += inc + 3 + step_over_modrm(eip+2);
 				return 1;
 			}
@@ -3005,7 +3011,6 @@ unsigned int WINAPI redraw_thread_d3d(LPVOID param)
   return 0;
 }
 
-#ifndef OPTIMIZED_8BIT_MEMORY_ACCESS
 // Special optimization for Win98 full screen modes.
 // No need for the page bit table at all.
 void inline Screen_Draw_dx_fullscreen(void)
@@ -3107,7 +3112,6 @@ unsigned int WINAPI redraw_thread_d3d_fullscreen(LPVOID param)
 
   return 0;
 }
-#endif //OPTIMIZED_8BIT_MEMORY_ACCESS
 
 // When using linear frame buffer, graphics data is dumped
 // directly on the screen. However, when the user task-switches

@@ -2516,7 +2516,8 @@ static void gen_opcode (unsigned long int opcode)
                 printf ("\tput_long(memd+12, get_long(mems+12));\r\n");
                 printf ("#endif\r\n");
                 printf ("\tm68k_areg(regs, srcreg) += 16;\r\n");
-                printf ("\tm68k_areg(regs, dstreg) += 16;\r\n");
+                printf ("\tif(srcreg != dstreg)\r\n");
+				                printf ("\t\tm68k_areg(regs, dstreg) += 16;\r\n");
         } else {
                 printf ("\tm68k_incpc(2);\r\n");
                 printf ("\tuae_u32 regptr = m68k_areg(regs, srcreg) & 0xFFFFFFF0;\r\n");

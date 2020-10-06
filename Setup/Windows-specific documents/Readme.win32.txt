@@ -2,7 +2,7 @@ Basilisk II for Windows NT and Windows 2000 Professional.
 
 A free, portable Mac II emulator.
 
-Copyright (C) 1997-2000 Christian Bauer et al.
+Copyright (C) 1997-2001 Christian Bauer et al.
 UAE CPU emulation code copyright (C) Bernd Schmidt.
 Windows specific code copyright by (C) Lauri Pesonen.
 
@@ -679,7 +679,22 @@ Toshimitsu Tanaka
   Fix for Kanji character set in Mac -> Host clipboard text translation.
 
 Gwenolé Beauchesne
-  Faster memory bank method in the Windows 9x compatible version.	
+  Faster memory bank method in the Windows 9x compatible version, more...
+
+Mike Allison
+  Fix for Windows Me ethernet driver INF script.
+
+Stas Khirman and Raz Galili
+  MIB access code.
+
+Bernd Meyer
+  UAE JIT compiler (not yet integrated to the Windows port)
+
+Akihiko Matsuo
+  Fix for the assembler version of MOVE (Ax)++,(Ay)++, op code 20d8.
+  Fix for the NUMLOCK keyboard code extended flag.
+
+
 
 A lot of people have submitted bug reports and ran test versions
 of Basilisk II to find bugs. Thanks to all. To name a few:
@@ -692,12 +707,15 @@ of Basilisk II to find bugs. Thanks to all. To name a few:
   Peter Lambert
   Torsten Fastbinder
   Marc Hoffman
-	Tim Pratt
-	Sérgio
+  Tim Pratt
+  Paulo Bazaglia (Sérgio)
+  Vico Klump
 
   More ... 
 
 If you think that you (or someone else) should be mentioned here, please let me know.
+
+
 
 --
 Lauri

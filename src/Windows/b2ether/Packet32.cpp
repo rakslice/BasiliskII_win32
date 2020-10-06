@@ -105,16 +105,13 @@ LPADAPTER PacketOpenAdapter( LPCSTR AdapterName, int16 mode )
 		wsprintf(  lpAdapter->SymbolicLink, "\\\\.\\B2ether_%s", AdapterName );
 		wsprintf(  device_name, "\\Device\\B2ether_%s", AdapterName );
 
-		// if(osv.dwMajorVersion == 4) {
-			// Work around one subtle NT4 bug.
-			DefineDosDevice(
-					DDD_REMOVE_DEFINITION,
-					&lpAdapter->SymbolicLink[4],
-					NULL
-			);
-		// }
-
-		Result = DefineDosDevice(
+		// Work around one subtle NT4 bug.
+		DefineDosDevice(
+				DDD_REMOVE_DEFINITION,
+				&lpAdapter->SymbolicLink[4],
+				NULL
+		);
+		DefineDosDevice(
 				DDD_RAW_TARGET_PATH,
 				&lpAdapter->SymbolicLink[4],
 				device_name

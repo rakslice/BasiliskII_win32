@@ -21,6 +21,8 @@
 #include "clip_windows.h"
 #include "counter.h"
 
+#define INSTR_HISTORY 0
+
 // From main_windows.cpp -- test
 extern int m_disable_internal_wait;
 
@@ -142,6 +144,7 @@ static int do_specialties (void);
 void _declspec(naked) fake_cpufunctbl_all_funcs(void)
 {
 	if(do_specialties()) {
+		if(m_sleep_enabled) Sleep(m_sleep);
 		_asm {
 			add  esp, CPUOP_LOCAL_SPACE
 			pop  ebp
@@ -1969,17 +1972,38 @@ void m68k_dumpstate (uaecptr *nextpc)
 }
 #pragma optimize("",on)
 
+#endif // #if 0
+
+#if INSTR_HISTORY
+#define MAX_IH 1024
+static int ih_inx = 0;
+
+static int ih_instr[MAX_IH];
+static int ih_pc[MAX_IH];
+static int ih_pc_p[MAX_IH];
+static int _ecx_tmp;
+#endif //INSTR_HISTORY
+
 void dump_callback(void)
 {
+#if INSTR_HISTORY
+	_asm mov _ecx_tmp, ecx
+	ih_instr[ih_inx] = _ecx_tmp;
+	ih_pc[ih_inx] = regs.pc;
+	ih_pc_p[ih_inx] = (int)regs.pc_p;
+	ih_inx++;
+	ih_inx &= (MAX_IH-1);
+#endif //INSTR_HISTORY
+
+	/*
 	uaecptr pc = m68k_getpc();
 	if(pc >= 0x208EE516 && pc <= 0x208EE516 + 0x86) {
 	// if(pc >= 0x208edcac && pc <= 0x208edcac + 0x118) {
 	  uaecptr nextpc;
 		m68k_dumpstate(&nextpc);
 	}
+	*/
 }
-
-#endif // #if 0
 
 
 // tester only. not inlined.

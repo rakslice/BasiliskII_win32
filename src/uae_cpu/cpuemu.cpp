@@ -254,7 +254,9 @@ CPUOP_PREFIX(opcode);
 	put_long(memd+12, get_long(mems+12));
 #endif
 	m68k_areg(regs, srcreg) += 16;
-	m68k_areg(regs, dstreg) += 16;
+	if(srcreg != dstreg) {
+		m68k_areg(regs, dstreg) += 16;
+	}
 }return 100;
 }
 unsigned long REGPARAM2 op_d1c0_0(uae_u32 opcode) /* ADDA */

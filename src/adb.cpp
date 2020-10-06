@@ -31,6 +31,7 @@
 #include "main.h"
 #include "video.h"
 #include "adb.h"
+#include "prefs.h"
 
 #define DEBUG 0
 #include "debug.h"
@@ -56,6 +57,16 @@ static uint8 mouse_reg_3[2] = {0x63, 0x01};	// Mouse ADB register 3
 static uint8 key_reg_2[2] = {0xff, 0xff};	// Keyboard ADB register 2
 static uint8 key_reg_3[2] = {0x62, 0x05};	// Keyboard ADB register 3
 
+static uint8 m_keyboard_type = 0x05;
+
+
+
+void ADBInit(void)
+{
+	m_keyboard_type = (uint8)PrefsFindInt16("keyboardtype");
+  key_reg_3[1] = m_keyboard_type;
+}
+
 
 /*
  *  ADBOp() replacement
@@ -73,7 +84,7 @@ void ADBOp(uint8 op, uint8 *data)
 		key_reg_2[0] = 0xff;
 		key_reg_2[1] = 0xff;
 		key_reg_3[0] = 0x62;
-		key_reg_3[1] = 0x05;
+		key_reg_3[1] = m_keyboard_type;
 
 		return;
 	}

@@ -42,9 +42,13 @@
 #define IDD_PAGE_EXTFS                  152
 #define IDD_DX_FULL_SCREEN_HELP         153
 #define IDD_MOUNT_MODE_HELP             155
+#define IDD_ROUTER_HELP                 156
+#define IDD_ASK_NEW_PORT                157
 #define IDD_FILETYPE_MAPPINGS           162
 #define IDD_KEYBOARD_BACKUP             163
 #define IDD_PAGE_SMP                    164
+#define IDD_PAGE_ROUTER                 165
+#define IDD_ASK_NEW_PORT_AND_IF         166
 #define IDC_MAKEHFV_NAME                1002
 #define IDC_SCSI_LIST_REPLACE_FROM      1002
 #define IDC_PORTS_MODEM                 1003
@@ -63,6 +67,8 @@
 #define IDC_CPU                         1007
 #define IDC_TOOLS_GUI_AUTORESTART       1007
 #define IDC_DISK_MOUNT_MODE             1007
+#define IDC_NEW_INTERFACE_NUMBER        1007
+#define IDC_KEYBOARD_TYPE               1007
 #define IDC_K_2                         1008
 #define IDC_ETHERNET_MODE               1008
 #define IDC_K_3                         1009
@@ -229,7 +235,9 @@
 #define IDC_EXPERIMENT_LOWMEM_CACHE     1127
 #define IDC_SCREEN_NTDX5HACK            1128
 #define IDC_MEMORY_ROM_CHECKSUM         1128
+#define IDC_TOOLS_DISABLE_SCREENSAVER   1128
 #define IDC_KEYBOARD_MAP_FILE_PATH      1131
+#define IDC_MEMORY_INFO                 1131
 #define IDC_KEYBOARD_MAP_BROWSE         1132
 #define IDC_MAKEHFV_BROWSE              1133
 #define IDC_DISK_CREATE_HFV             1134
@@ -310,6 +318,7 @@
 #define IDC_KEYBOARD_USE_ALT_TAB        1204
 #define IDC_DEBUG_DISABLE_ACCURATE_TIMER 1205
 #define IDC_KEYBOARD_USE_ALT_SPACE      1205
+#define IDC_KEYBOARD_USE_ALT_ENTER      1206
 #define IDC_FLOPPY_RW                   1207
 #define IDC_EXTFS_TYPES                 1210
 #define IDC_DR_DUMP                     1210
@@ -451,14 +460,26 @@
 #define IDC_SMP_AUDIO_6                 1341
 #define IDC_SMP_AUDIO_7                 1342
 #define IDC_SMP_AUDIO_8                 1343
+#define IDC_TOOLS_IDLE_SLEEP            1346
+#define IDC_TOOLS_SLEEP_ENABLED         1347
+#define IDC_ROUTER_ENABLE               1348
+#define IDC_TOOLS_IDLE_MINUTES          1349
+#define IDC_ROUTER_HELP                 1349
+#define IDC_ROUTER_FTP_PORT_LIST        1350
+#define IDC_ROUTER_NEW_FTP_PORT         1351
+#define IDC_ROUTER_DEL_FTP_PORT         1352
+#define IDC_ROUTER_LISTEN_PORT_LIST     1353
+#define IDC_NEW_PORT_NUMBER             1353
+#define IDC_ROUTER_NEW_LISTEN_PORT      1354
+#define IDC_ROUTER_DEL_LISTEN_PORT      1355
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        156
+#define _APS_NEXT_RESOURCE_VALUE        159
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1249
+#define _APS_NEXT_CONTROL_VALUE         1354
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

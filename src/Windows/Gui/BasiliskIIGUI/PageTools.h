@@ -19,12 +19,18 @@ public:
 	CPageTools();
 	~CPageTools();
 
+	void enable_buttons();
+
 // Dialog Data
 	//{{AFX_DATA(CPageTools)
 	enum { IDD = IDD_PAGE_TOOLS };
 	BOOL	m_is_on_top;
 	int		m_gui_autorestart;
 	BOOL	m_lowmem_cache;
+	UINT	m_sleep;
+	BOOL	m_sleep_enabled;
+	UINT	m_idle_sleep_timeout;
+	BOOL	m_disable_screensaver;
 	//}}AFX_DATA
 
 
@@ -39,6 +45,10 @@ public:
 protected:
 	// Generated message map functions
 	//{{AFX_MSG(CPageTools)
+	afx_msg void OnUpdateToolsIdleMinutes();
+	virtual BOOL OnInitDialog();
+	afx_msg void OnToolsSleepEnabled();
+	afx_msg void OnUpdateToolsIdleSleep();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

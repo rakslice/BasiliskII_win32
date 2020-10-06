@@ -27,6 +27,8 @@ public:
 	BOOL	m_use_alt_tab;
 	BOOL	m_use_control_escape;
 	BOOL	m_use_alt_space;
+	BOOL	m_use_alt_enter;
+	CString	m_keyboard_type;
 	//}}AFX_DATA
 
 

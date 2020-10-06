@@ -42,7 +42,7 @@ _align_func macro
 endm
 
 
-; EXTRN	_dump_callback@0:NEAR
+EXTRN	_dump_callback@0:NEAR
 
 ; Slows down, used only when debugging
 _start_func macro name
@@ -51,6 +51,7 @@ _start_func macro name
 ;	db	'{[(', name, ')]}'
 ;SkipOver:
 
+	;INSTR_HISTORY
 	;pushad
 	;call	_dump_callback@0
 	;popad
@@ -296,7 +297,7 @@ _align_func
 
 
 _align_func
-@op_20d8_0@4 PROC NEAR					;MOVE (Ax)++,(Ay)++	OK (FIXED)
+@op_20d8_0@4 PROC NEAR					;MOVE (Ax)++,(Ay)++	OK (FIXED) (FIXED again by Akihiko Matsuo) 
 	_start_func  'op_20d8_0'
 	mov	ebx, ecx
 	mov	esi, DWORD PTR _MEMBaseDiff
@@ -307,10 +308,10 @@ _align_func
 	mov	edi, DWORD PTR _regs[ebx*4+32]			;srca
 	and	ecx, 14
 	mov	edx, DWORD PTR [edi+esi]						;src
-	mov	ebp, DWORD PTR _regs[ecx*2+32]			;dsta
 	add	edi, 4
-	mov	DWORD PTR [esi+ebp], edx
 	mov	DWORD PTR _regs[ebx*4+32], edi			;srcreg += 4
+	mov	ebp, DWORD PTR _regs[ecx*2+32]			;dsta
+	mov	DWORD PTR [esi+ebp], edx
 	add	ebp, 4
 	bswap	edx
 	xor	ebx, ebx
@@ -323,6 +324,33 @@ _align_func
 	mov	WORD PTR _regflags+2, bx
 	jmp	[ecx*4+esi]
 @op_20d8_0@4 ENDP
+;@op_20d8_0@4 PROC NEAR					;MOVE (Ax)++,(Ay)++	(Bug when srcreg == dstreg)
+;	_start_func  'op_20d8_0'
+;	mov	ebx, ecx
+;	mov	esi, DWORD PTR _MEMBaseDiff
+;	shr	ebx, 8
+;	add	eax, 2
+;	and	ebx, 7
+;	mov	DWORD PTR _regs+92, eax
+;	mov	edi, DWORD PTR _regs[ebx*4+32]			;srca
+;	and	ecx, 14
+;	mov	edx, DWORD PTR [edi+esi]						;src
+;	mov	ebp, DWORD PTR _regs[ecx*2+32]			;dsta
+;	add	edi, 4
+;	mov	DWORD PTR [esi+ebp], edx
+;	mov	DWORD PTR _regs[ebx*4+32], edi			;srcreg += 4
+;	add	ebp, 4
+;	bswap	edx
+;	xor	ebx, ebx
+;	mov	DWORD PTR _regs[ecx*2+32], ebp			;dstreg += 4
+;	cmp	edx, ebx														;FIXED
+;	mov	esi,[_cpufunctbl]
+;	setl	BYTE PTR _regflags
+;	sete	BYTE PTR _regflags+1
+;	movzx	ecx, word ptr[eax]
+;	mov	WORD PTR _regflags+2, bx
+;	jmp	[ecx*4+esi]
+;@op_20d8_0@4 ENDP
 
 
 _align_func
@@ -2629,11 +2657,10 @@ _align_func
 	add	ebp, DWORD PTR _MEMBaseDiff
 	and	edx, 7
 	add	ebp, DWORD PTR _regs[ecx*4+32]
-	mov	eax, DWORD PTR _regs+92
-	movzx	ecx, BYTE PTR [ebp]		;dst byte
 	add	eax, 6
-	btr	ecx, edx	;well...
+	movzx	ecx, BYTE PTR [ebp]		;dst byte
 	mov	DWORD PTR _regs+92, eax
+	btr	ecx, edx	;well...
 	mov	edx,[_cpufunctbl]
 
 	;RCHECK ebp										;MAC_BOOT_FIX

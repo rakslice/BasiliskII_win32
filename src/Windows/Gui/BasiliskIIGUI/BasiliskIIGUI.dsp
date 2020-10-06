@@ -92,6 +92,14 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\AskNewPort.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AskNewPortAndInterface.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\AskSCSIReplacement.cpp
 # End Source File
 # Begin Source File
@@ -213,6 +221,10 @@ SOURCE=.\PagePriorities.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\PageRouter.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\PageScreen.cpp
 # End Source File
 # Begin Source File
@@ -229,17 +241,25 @@ SOURCE=.\PageTools.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\StdAfx.cpp
-# ADD CPP /Yc"stdafx.h"
+SOURCE=.\RouterHelp.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\typemap_wrapper.cpp
+SOURCE=.\StdAfx.cpp
+# ADD CPP /Yc"stdafx.h"
 # End Source File
 # End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\AskNewPort.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AskNewPortAndInterface.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\AskSCSIReplacement.h
@@ -338,6 +358,10 @@ SOURCE=.\PagePriorities.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\PageRouter.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\PageScreen.h
 # End Source File
 # Begin Source File
@@ -355,6 +379,10 @@ SOURCE=.\PageTools.h
 # Begin Source File
 
 SOURCE=.\Resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\RouterHelp.h
 # End Source File
 # Begin Source File
 
@@ -385,7 +413,22 @@ SOURCE=.\res\idr_main.ico
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\router\dynsockets.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\router\mib\interfaces.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\keyboard_windows.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\router\mib\MibAccess.cpp
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
@@ -411,6 +454,11 @@ SOURCE=..\..\scsi_windows.cpp
 # Begin Source File
 
 SOURCE=..\..\threads_windows.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\typemap.cpp
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
@@ -538,7 +586,19 @@ SOURCE=..\..\wnaspi32.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\dynsockets_wrapper.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\interfaces_wrapper.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\keyboard_windows_wrapper.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\mibaccess_wrapper.cpp
 # End Source File
 # Begin Source File
 
@@ -559,6 +619,10 @@ SOURCE=.\scsi_windows_wrapper.cpp
 # Begin Source File
 
 SOURCE=.\thread_windows_wrapper.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\typemap_wrapper.cpp
 # End Source File
 # Begin Source File
 

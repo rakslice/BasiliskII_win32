@@ -83,7 +83,7 @@ LRESULT CALLBACK key_func(
 
 	LPKBDLLHOOKSTRUCT p = (LPKBDLLHOOKSTRUCT)lParam;
 
-	if( (p->vkCode == VK_RETURN) && (p->flags & LLKHF_ALTDOWN) ) {
+	if( m_use_alt_enter && (p->vkCode == VK_RETURN) && (p->flags & LLKHF_ALTDOWN) ) {
 		if( (p->flags & LLKHF_UP) == 0 ) {
 			toggle_full_screen_mode();
 		}
@@ -168,7 +168,7 @@ LRESULT CALLBACK key_func_w9x(
 	BOOL up  = (HIWORD(lParam) & KF_UP) != 0;
 	BOOL ext = (HIWORD(lParam) & KF_EXTENDED) != 0;
 
-	if( (wParam == VK_RETURN) && alt ) {
+	if( m_use_alt_enter && (wParam == VK_RETURN) && alt ) {
 		if(!up) {
 			toggle_full_screen_mode();
 		}

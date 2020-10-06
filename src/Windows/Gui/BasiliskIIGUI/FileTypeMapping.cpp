@@ -1,7 +1,5 @@
 /*
- * HFVExplorer
- * Copyright (C) 1997-1998 by Anygraaf Oy
- * Author: Lauri Pesonen, email: lpesonen@clinet.fi or lauri.pesonen@anygraaf.fi
+ * Copyright (C) 1997-1998 by Lauri Pesonen, lpesonen@nic.fi
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,7 +95,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CFileTypeMapping message handlers
 
-void CFileTypeMapping::OnFiletypeDelete() 
+void CFileTypeMapping::OnFiletypeDelete()
 {
 	int minx, i, count = m_list.GetSelCount();
 
@@ -133,13 +131,13 @@ void CFileTypeMapping::OnFiletypeDelete()
 	enable_items();
 }
 
-void parse( 
-	LPCSTR buf, 
+void parse(
+	LPCSTR buf,
 	CString & dos,
-	CString & type,	
+	CString & type,
 	CString & creator,
-	BOOL & strip, 
-	BOOL & fat2hfs, 
+	BOOL & strip,
+	BOOL & fat2hfs,
 	BOOL & hfs2fat,
 	CString & comment,
 	char separator
@@ -201,7 +199,7 @@ void parse(
 	}
 }
 
-void CFileTypeMapping::OnSelchangeFiletypeList() 
+void CFileTypeMapping::OnSelchangeFiletypeList()
 {
 	int sel_count = m_list.GetSelCount();
 	int index = m_list.GetCurSel();
@@ -223,7 +221,7 @@ void CFileTypeMapping::OnSelchangeFiletypeList()
 	enable_items();
 }
 
-void CFileTypeMapping::OnFiletypeNew() 
+void CFileTypeMapping::OnFiletypeNew()
 {
 	UpdateData(TRUE);
 	set_item(
@@ -242,7 +240,7 @@ void CFileTypeMapping::OnFiletypeNew()
 	GetDlgItem(IDC_FILETYPE_COMMENT)->SendMessage(EM_SETSEL,0,-1);
 }
 
-void CFileTypeMapping::OnFiletypeDuplicate() 
+void CFileTypeMapping::OnFiletypeDuplicate()
 {
 	UpdateData(TRUE);
 	set_item(
@@ -261,7 +259,7 @@ void CFileTypeMapping::OnFiletypeDuplicate()
 	GetDlgItem(IDC_FILETYPE_COMMENT)->SendMessage(EM_SETSEL,0,-1);
 }
 
-void CFileTypeMapping::OnFiletypeSelectAll() 
+void CFileTypeMapping::OnFiletypeSelectAll()
 {
 	int count = m_list.GetCount();
 	if(count == 1) { //KLUDGE
@@ -275,7 +273,7 @@ void CFileTypeMapping::OnFiletypeSelectAll()
 	enable_items();
 }
 
-void CFileTypeMapping::OnFiletypeSelectAll2() 
+void CFileTypeMapping::OnFiletypeSelectAll2()
 {
 	int count = m_list.GetCount();
 	if(count) {
@@ -285,14 +283,14 @@ void CFileTypeMapping::OnFiletypeSelectAll2()
 	enable_items();
 }
 
-void CFileTypeMapping::show_conflict( BOOL conflict ) 
+void CFileTypeMapping::show_conflict( BOOL conflict )
 {
 	CString cs;
 	if(conflict) cs = "C O N F L I C T ..."; else cs = "";
 	GetDlgItem(IDC_FILETYPE_CONFLICT)->SetWindowText( cs );
 }
 
-void CFileTypeMapping::enable_items() 
+void CFileTypeMapping::enable_items()
 {
 	int count = m_list.GetCount();
 	int sel_count = m_list.GetSelCount();
@@ -325,28 +323,28 @@ void CFileTypeMapping::enable_items()
 	show_conflict( conflict );
 }
 
-void CFileTypeMapping::list2control() 
+void CFileTypeMapping::list2control()
 {
 }
 
 int CFileTypeMapping::set_item(
 	int index,
-	LPCSTR dos, 
-	LPCSTR type, 
+	LPCSTR dos,
+	LPCSTR type,
 	LPCSTR creator,
 	BOOL strip,
-	BOOL fat2hfs, 
+	BOOL fat2hfs,
 	BOOL hfs2fat,
 	LPCSTR comment,
 	BOOL update_selection
-) 
+)
 {
 	CString cs;
 	int i;
 
-	cs.Format( 
+	cs.Format(
 		"%s\t%s\t%-4s\t%-4s\t%s\t%s\t%s",
-		dos, 
+		dos,
 		strip ? "x" : " ",
 		type, creator,
 		hfs2fat ? "x" : " ",
@@ -362,7 +360,7 @@ int CFileTypeMapping::set_item(
 	return(i);
 }
 
-void CFileTypeMapping::control2list() 
+void CFileTypeMapping::control2list()
 {
 	int i = m_list.GetCurSel();
 
@@ -386,22 +384,22 @@ void CFileTypeMapping::control2list()
 	enable_items();
 }
 
-void CFileTypeMapping::OnFiletypeStrip() 
+void CFileTypeMapping::OnFiletypeStrip()
 {
 	control2list();
 }
 
-void CFileTypeMapping::OnFiletypeFat2hfs() 
+void CFileTypeMapping::OnFiletypeFat2hfs()
 {
 	control2list();
 }
 
-void CFileTypeMapping::OnFiletypeHfs2fat() 
+void CFileTypeMapping::OnFiletypeHfs2fat()
 {
 	control2list();
 }
 
-void CFileTypeMapping::OnUpdateFiletypeDos() 
+void CFileTypeMapping::OnUpdateFiletypeDos()
 {
 	control2list();
 	if(m_dos.GetLength() == 3) {
@@ -410,7 +408,7 @@ void CFileTypeMapping::OnUpdateFiletypeDos()
 	}
 }
 
-void CFileTypeMapping::OnUpdateFiletypeType() 
+void CFileTypeMapping::OnUpdateFiletypeType()
 {
 	control2list();
 	if(m_type.GetLength() == 4) {
@@ -419,7 +417,7 @@ void CFileTypeMapping::OnUpdateFiletypeType()
 	}
 }
 
-void CFileTypeMapping::OnUpdateFiletypeCreator() 
+void CFileTypeMapping::OnUpdateFiletypeCreator()
 {
 	control2list();
 	if(m_creator.GetLength() == 4 && m_type.GetLength() < 4) {
@@ -428,12 +426,12 @@ void CFileTypeMapping::OnUpdateFiletypeCreator()
 	}
 }
 
-void CFileTypeMapping::OnUpdateFiletypeComment() 
+void CFileTypeMapping::OnUpdateFiletypeComment()
 {
 	control2list();
 }
 
-CString CFileTypeMapping::ask_save_fname( void ) 
+CString CFileTypeMapping::ask_save_fname( void )
 {
 	CString path, s;
 	CFileDialog dlg( FALSE, _T("FTM"), s,
@@ -445,7 +443,7 @@ CString CFileTypeMapping::ask_save_fname( void )
 	return( path );
 }
 
-CString CFileTypeMapping::ask_open_fname( void ) 
+CString CFileTypeMapping::ask_open_fname( void )
 {
 	CString path, s;
 	CFileDialog dlg( TRUE, _T("FTM"), s,
@@ -457,17 +455,17 @@ CString CFileTypeMapping::ask_open_fname( void )
 	return( path );
 }
 
-void CFileTypeMapping::OnFiletypeImport() 
+void CFileTypeMapping::OnFiletypeImport()
 {
 	import( ask_open_fname() );
 }
 
-void CFileTypeMapping::OnFiletypeExport() 
+void CFileTypeMapping::OnFiletypeExport()
 {
 	export( ask_save_fname(), FALSE );
 }
 
-void CFileTypeMapping::OnFiletypeExportSelected() 
+void CFileTypeMapping::OnFiletypeExportSelected()
 {
 	export( ask_save_fname(), TRUE );
 }
@@ -482,7 +480,7 @@ static CString long2str( unsigned long l )
 	return cs;
 }
 
-BOOL CFileTypeMapping::OnInitDialog() 
+BOOL CFileTypeMapping::OnInitDialog()
 {
   WORD DlgWidthUnits;
 	INT stops[10];
@@ -558,7 +556,7 @@ BOOL CFileTypeMapping::OnInitDialog()
 	return(retval);
 }
 
-void CFileTypeMapping::OnOK() 
+void CFileTypeMapping::OnOK()
 {
 	export( m_path, FALSE );
 	CDialog::OnOK();
@@ -566,9 +564,9 @@ void CFileTypeMapping::OnOK()
 
 int CFileTypeMapping::find_item(
 	CString & x_dos,
-	CString & x_type,	
+	CString & x_type,
 	CString & x_creator,
-	BOOL x_fat2hfs, 
+	BOOL x_fat2hfs,
 	BOOL x_hfs2fat,
 	int ignore_index
 )
@@ -583,7 +581,7 @@ int CFileTypeMapping::find_item(
 	CString	creator;
 	CString	type;
 	CString	comment;
-	
+
 	count = m_list.GetCount();
 	for(i=0; i<count; i++) {
 		if(i != ignore_index) {
@@ -604,7 +602,7 @@ int CFileTypeMapping::find_item(
 	return(-1);
 }
 
-void CFileTypeMapping::import( CString & path ) 
+void CFileTypeMapping::import( CString & path )
 {
 	CFile f;
 	char *buf;
@@ -641,7 +639,7 @@ void CFileTypeMapping::import( CString & path )
 					myquote((unsigned char *)linebuf,FALSE);
 					parse( (LPCSTR)linebuf, dos,	type,	creator, strip, fat2hfs, hfs2fat, comment, ',' );
 					free(linebuf);
-					
+
 					if(dos != "" && type.GetLength() == 4 && creator.GetLength() == 4) {
 						int i = find_item( dos, type, creator, fat2hfs, hfs2fat, -1 );
 						if(i < 0) { // New item.
@@ -671,7 +669,7 @@ void CFileTypeMapping::import( CString & path )
 	}
 }
 
-void CFileTypeMapping::export( CString & path, BOOL selected_items ) 
+void CFileTypeMapping::export( CString & path, BOOL selected_items )
 {
 	CFile f;
 	CString line;
@@ -704,10 +702,10 @@ void CFileTypeMapping::export( CString & path, BOOL selected_items )
 			myquote( creatorstr, TRUE );
 			strcpy( (char *)commentstr, comment );
 			myquote( commentstr, TRUE );
-			
-			line.Format( 
+
+			line.Format(
 				"%s,%s,%s,%s,%s,%s,\"%s\"\r\n",
-				dos, 
+				dos,
 				strip ? "x" : "",
 				typestr, creatorstr,
 				hfs2fat ? "x" : "",
@@ -728,7 +726,7 @@ void CFileTypeMapping::export( CString & path, BOOL selected_items )
 	}
 }
 
-void import_map( CString & path ) 
+void import_map( CString & path )
 {
 	CFile f;
 	char *buf;
@@ -791,7 +789,7 @@ void import_map( CString & path )
 	}
 }
 
-void CFileTypeMapping::OnFiletypeHelp() 
+void CFileTypeMapping::OnFiletypeHelp()
 {
 	AfxMessageBox(
 		"Please note that most of the parameters here are for compatibility with HFVExplorer, so some info on this page may not be relevant to you. Basilisk II uses only \"DOS extension\", \"Type\" and \"Creator\". It does not use \"Strip\", \"HFS->DOS\" or \"DOS->HFS\" flags.\r\n"

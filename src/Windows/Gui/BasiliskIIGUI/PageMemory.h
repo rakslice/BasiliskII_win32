@@ -28,6 +28,7 @@ public:
 	CString	m_rom_type;
 	CString	m_checksum;
 	CString	m_checksum_calc;
+	CString	m_info;
 	//}}AFX_DATA
 
 

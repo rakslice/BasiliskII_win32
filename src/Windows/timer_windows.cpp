@@ -49,7 +49,7 @@ const uint32 TIME_OFFSET = 0x7c25b080;
 // Fastest is to undefine both, but timers are skewed by 19 percents
 
 // Faster, skewed only by less than 0.5 percent
-#define ALMOST_ACCURATE 1
+#define ALMOST_ACCURATE 0
 
 // Exact calculation, a lot of IDIV's and IMUL's -- for 64 bit values!
 #define ACCURATE 1

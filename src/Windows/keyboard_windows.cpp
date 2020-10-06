@@ -117,7 +117,7 @@ keymap_type keymap[] = {
 { IDC_K_DOWN,						0x50,		1,		0x3D,			0,		"DOWN" },
 { IDC_K_RIGHT,					0x4D,		1,		0x3C,			0,		"RIGHT" },
 { IDC_K_UP,							0x48,		1,		0x3E,			0,		"UP" },
-{ IDC_K_NUMLOCK,				0x45,		0,		0x47,			0,		"NUM_LOCK" },
+{ IDC_K_NUMLOCK,				0x45,		1,		0x47,			0,		"NUM_LOCK" },
 { IDC_K_NUMPAD_DIVIDE,	0x35,		1,		0x4B,			0,		"NUMPAD_DIVIDE" },
 { IDC_K_NUMPAD_MULTIPLE,0x37,		0,		0x43,			0,		"NUMPAD_MULTIPLY" },
 { IDC_K_NUMPAD_MINUS,		0x4A,		0,		0x4E,			0,		"NUMPAD_SUBTRACT" },
@@ -142,7 +142,7 @@ void load_key_codes( LPCSTR path, keymap_type *map )
 	int i = 0, scan_code, extended, mac;
 	char buf[100];
 
-	D(bug("Mac code for scancode 0x%X is 0x%X\r\n", 0x150001, scancode_2_mac(0x150001) ));
+	// D(bug("Mac code for scancode 0x%X is 0x%X\r\n", 0x150001, scancode_2_mac(0x150001) ));
 
 	while(keymap[i].dlg_id) {
 		::GetPrivateProfileString( "Codes", keymap[i].name, "", buf, sizeof(buf), path );
@@ -156,8 +156,7 @@ void load_key_codes( LPCSTR path, keymap_type *map )
 		i++;
 	}
 
-	D(bug("Mac code for scancode 0x%X is 0x%X\r\n", 0x150001, scancode_2_mac(0x150001) ));
-
+	// D(bug("Mac code for scancode 0x%X is 0x%X\r\n", 0x150001, scancode_2_mac(0x150001) ));
 }
 
 void save_key_codes( LPCSTR path, keymap_type *map )
@@ -225,4 +224,3 @@ int keyname_2_scan_extended( char *name )
 
 	return ret;
 }
-

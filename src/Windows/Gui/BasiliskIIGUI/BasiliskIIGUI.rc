@@ -72,41 +72,41 @@ IDR_MAINFRAME           ICON    DISCARDABLE     "res\\BasiliskIIGUI.ico"
 // Dialog
 //
 
-IDD_PAGE_DISK DIALOG DISCARDABLE  0, 0, 217, 246
+IDD_PAGE_DISK DIALOG DISCARDABLE  0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Disk"
 FONT 8, "MS Sans Serif"
 BEGIN
-    LISTBOX         IDC_DISK_LIST_INSTALLED,7,33,92,80,LBS_OWNERDRAWFIXED | 
+    LISTBOX         IDC_DISK_LIST_INSTALLED,7,33,92,75,LBS_OWNERDRAWFIXED | 
                     LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    LISTBOX         IDC_DISK_LIST_AVAILABLE,118,33,92,80,LBS_SORT | 
+    LISTBOX         IDC_DISK_LIST_AVAILABLE,118,33,92,75,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
                     WS_TABSTOP
     PUSHBUTTON      "<<",IDC_DISK_INSTALL,102,55,13,14
     PUSHBUTTON      ">>",IDC_DISK_REMOVE,102,77,13,14
-    PUSHBUTTON      "&Up",IDC_DISK_UP,19,117,23,14
-    PUSHBUTTON      "&Down",IDC_DISK_DOWN,54,117,23,14
-    PUSHBUTTON      "&Browse ...",IDC_DISK_ADD_VOLUME_FILE,89,117,50,14
-    PUSHBUTTON      "&Create ...",IDC_DISK_CREATE_HFV,148,117,50,14
-    COMBOBOX        IDC_DISK_MOUNT_MODE,7,136,203,66,CBS_DROPDOWNLIST | 
+    PUSHBUTTON      "&Up",IDC_DISK_UP,19,112,23,14
+    PUSHBUTTON      "&Down",IDC_DISK_DOWN,54,112,23,14
+    PUSHBUTTON      "&Browse ...",IDC_DISK_ADD_VOLUME_FILE,89,112,50,14
+    PUSHBUTTON      "&Create ...",IDC_DISK_CREATE_HFV,148,112,50,14
+    COMBOBOX        IDC_DISK_MOUNT_MODE,7,131,203,66,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "",IDC_DISK_POLL_MEDIA,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,23,186,8,10
+                    WS_TABSTOP,13,176,8,10
     LTEXT           "The topmost item on the list has the highest boot priority.",
-                    IDC_STATIC,16,10,194,13
+                    IDC_STATIC,16,9,194,8
     LTEXT           "Installed disks:",IDC_STATIC,16,22,69,8
     LTEXT           "Available disks:",IDC_STATIC,130,22,69,8
-    GROUPBOX        " Enable polling ",IDC_STATIC,17,169,181,65
+    GROUPBOX        " Enable polling ",IDC_STATIC,7,164,203,53
     LTEXT           "Try to automatically detect new media except 1.44 MB floppies. Applies to all ""floppy"", ""cd"" or ""disk"" removable media. May cause modest slow down. If unchecked, use Ctrl-Shift-F11 to manually mount the new media.",
-                    IDC_STATIC,35,186,157,42
-    PUSHBUTTON      "Mount mode help ...",IDC_MOUNT_MODE_HELP,64,152,90,13
+                    IDC_STATIC,24,176,180,37
+    PUSHBUTTON      "Mount mode help ...",IDC_MOUNT_MODE_HELP,64,147,90,13
 END
 
-IDD_PAGE_FLOPPY DIALOGEX 0, 0, 217, 246
+IDD_PAGE_FLOPPY DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Floppy"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "Boot from floppy allowed",IDC_FLOPPY_BOOT_ALLOWED,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,15,119,10
@@ -115,174 +115,176 @@ BEGIN
                     WS_TABSTOP
     LISTBOX         IDC_FLOPPY_LIST_AVAILABLE,118,60,92,59,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "<<",IDC_FLOPPY_INSTALL,102,81,13,14
-    PUSHBUTTON      ">>",IDC_FLOPPY_REMOVE,102,103,13,14
-    PUSHBUTTON      "&Up",IDC_FLOPPY_UP,19,125,23,14
-    PUSHBUTTON      "&Down",IDC_FLOPPY_DOWN,54,125,23,14
+    PUSHBUTTON      "<<",IDC_FLOPPY_INSTALL,102,72,13,14
+    PUSHBUTTON      ">>",IDC_FLOPPY_REMOVE,102,94,13,14
+    PUSHBUTTON      "&Up",IDC_FLOPPY_UP,24,123,23,14
+    PUSHBUTTON      "&Down",IDC_FLOPPY_DOWN,59,123,23,14
     LTEXT           "The topmost item on the list has the highest boot priority.",
                     IDC_STATIC,16,32,194,13
-    LTEXT           "Installed floppies:",IDC_STATIC,16,49,74,8
-    LTEXT           "Available floppies:",IDC_STATIC,125,49,77,8
-    LTEXT           """Null floppy"" is not used anymore. If the list is empty, no floppies will be available.",
-                    IDC_STATIC,21,179,174,37,0,WS_EX_CLIENTEDGE
+    LTEXT           "Installed floppies:",IDC_STATIC,18,49,74,8
+    LTEXT           "Available floppies:",IDC_STATIC,124,49,77,8
+    LTEXT           "If the list is of ""Installed floppies"" is left empty, no floppies will be available.",
+                    IDC_STATIC,21,179,174,26,0,WS_EX_STATICEDGE
     PUSHBUTTON      "Select mount mode (read only, read/write)",
-                    IDC_FLOPPY_RW,19,147,179,14
+                    IDC_FLOPPY_RW,19,149,179,14
 END
 
-IDD_PAGE_CDROM DIALOGEX 0, 0, 217, 246
+IDD_PAGE_CDROM DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "CD-ROM"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+CAPTION "CD"
+FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "CD-ROM enabled",IDC_CD_ENABLED,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,15,15,91,10
-    LISTBOX         IDC_CD_LIST_INSTALLED,16,60,70,50,LBS_NOINTEGRALHEIGHT | 
+    LISTBOX         IDC_CD_LIST_INSTALLED,7,60,92,59,LBS_NOINTEGRALHEIGHT | 
                     WS_VSCROLL | WS_TABSTOP
-    LISTBOX         IDC_CD_LIST_AVAILABLE,122,60,70,50,LBS_SORT | 
+    LISTBOX         IDC_CD_LIST_AVAILABLE,118,60,92,59,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "<<",IDC_CD_INSTALL,92,67,23,14
-    PUSHBUTTON      ">>",IDC_CD_REMOVE,92,89,23,14
-    PUSHBUTTON      "&Up",IDC_CD_UP,20,116,23,14
-    PUSHBUTTON      "&Down",IDC_CD_DOWN,55,116,23,14
+    PUSHBUTTON      "<<",IDC_CD_INSTALL,102,72,13,14
+    PUSHBUTTON      ">>",IDC_CD_REMOVE,102,94,13,14
+    PUSHBUTTON      "&Up",IDC_CD_UP,24,123,23,14
+    PUSHBUTTON      "&Down",IDC_CD_DOWN,59,123,23,14
     LTEXT           "The topmost drive on the list has the highest boot priority.",
                     IDC_STATIC,16,32,194,13
-    LTEXT           "Installed cd's:",IDC_STATIC,16,49,69,8
-    LTEXT           "Available cd's:",IDC_STATIC,122,49,69,8
-    LTEXT           """Null CD-ROM"" is not used anymore. If the list is empty, no CD-ROMs will be available, except possible SCSI devices.",
-                    IDC_STATIC,18,143,174,33,0,WS_EX_CLIENTEDGE
+    LTEXT           "Installed cd's:",IDC_STATIC,18,49,69,8
+    LTEXT           "Available cd's:",IDC_STATIC,124,49,69,8
+    LTEXT           "If the list of ""Installed cd's"" is left empty, no CD-ROMs will be available, except possible SCSI devices.",
+                    IDC_STATIC,21,150,174,33,0,WS_EX_STATICEDGE
     CONTROL         "Use Windows 95/98 real mode CD drivers",
                     IDC_CD_REAL_MODE_CD,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,26,203,172,10
+                    WS_TABSTOP,30,195,160,10
 END
 
-IDD_PAGE_PORTS DIALOG DISCARDABLE  0, 0, 217, 246
+IDD_PAGE_PORTS DIALOG DISCARDABLE  0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ports"
 FONT 8, "MS Sans Serif"
 BEGIN
-    COMBOBOX        IDC_PORTS_MODEM,68,47,39,143,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PORTS_MODEM,66,47,39,143,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_PORTS_FILE0,68,65,135,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_PORTS_PRINTER,68,108,39,134,CBS_DROPDOWNLIST | 
+    EDITTEXT        IDC_PORTS_FILE0,66,65,135,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_PORTS_PRINTER,66,108,39,134,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_PORTS_FILE1,68,127,135,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "&Browse...",IDC_PORTS_FILE0_BROWSE,154,46,50,14
-    PUSHBUTTON      "&Browse...",IDC_PORTS_FILE1_BROWSE,154,108,50,14
-    LTEXT           "Modem port:",IDC_STATIC,17,49,48,8
-    LTEXT           "Printer port:",IDC_STATIC,17,110,48,8
-    LTEXT           "File:",IDC_STATIC,17,67,38,8
-    LTEXT           "File:",IDC_STATIC,17,129,38,8
+    EDITTEXT        IDC_PORTS_FILE1,66,127,135,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Browse...",IDC_PORTS_FILE0_BROWSE,152,46,50,14
+    PUSHBUTTON      "&Browse...",IDC_PORTS_FILE1_BROWSE,152,108,50,14
+    LTEXT           "Modem port:",IDC_STATIC,15,49,48,8
+    LTEXT           "Printer port:",IDC_STATIC,15,110,48,8
+    LTEXT           "File:",IDC_STATIC,15,67,38,8
+    LTEXT           "File:",IDC_STATIC,15,129,38,8
 END
 
-IDD_PAGE_MEMORY DIALOGEX 0, 0, 217, 246
+IDD_PAGE_MEMORY DIALOG DISCARDABLE  0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Memory"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
-    EDITTEXT        IDC_MEMORY_RAM_SIZE,68,26,28,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_MEMORY_ROM_PATH,24,84,174,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "&Browse...",IDC_MEMORY_ROM_BROWSE,148,68,50,14
-    CTEXT           "Not known",IDC_MEMORY_ROM_TYPE,62,114,137,12,0,
-                    WS_EX_CLIENTEDGE
-    CTEXT           "Not known",IDC_MEMORY_ROM_CHECKSUM,148,130,51,12,0,
-                    WS_EX_CLIENTEDGE
-    CTEXT           "Not known",IDC_MEMORY_ROM_CHECKSUM_CALC,148,146,51,12,0,
-                    WS_EX_CLIENTEDGE
-    LTEXT           "ROM file path:",IDC_STATIC,24,72,114,8
-    LTEXT           "RAM size:",IDC_STATIC,24,28,40,8
-    LTEXT           "ROM type:",IDC_STATIC,19,116,39,8
-    LTEXT           "ROM checksum (calculated):",IDC_STATIC,19,148,118,8
-    LTEXT           "ROM checksum (from ROM file):",IDC_STATIC,19,132,122,8
-    LTEXT           "megabytes",IDC_STATIC,101,28,51,8
+    EDITTEXT        IDC_MEMORY_RAM_SIZE,68,23,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MEMORY_ROM_PATH,24,71,174,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Browse...",IDC_MEMORY_ROM_BROWSE,148,55,50,14
+    EDITTEXT        IDC_MEMORY_ROM_TYPE,62,101,137,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_MEMORY_ROM_CHECKSUM,148,117,51,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_MEMORY_ROM_CHECKSUM_CALC,148,133,51,12,
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_MEMORY_INFO,19,173,180,38,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "ROM file path:",IDC_STATIC,24,59,114,8
+    LTEXT           "RAM size:",IDC_STATIC,24,25,40,8
+    LTEXT           "ROM type:",IDC_STATIC,19,103,39,8
+    LTEXT           "ROM checksum (calculated):",IDC_STATIC,19,135,118,8
+    LTEXT           "ROM checksum (from ROM file):",IDC_STATIC,19,119,122,8
+    LTEXT           "megabytes",IDC_STATIC,101,25,51,8
+    LTEXT           "More info:",IDC_STATIC,19,161,59,8
 END
 
-IDD_PAGE_SCREEN DIALOGEX 0, 0, 217, 246
+IDD_PAGE_SCREEN DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Screen"
 FONT 8, "MS Sans Serif"
 BEGIN
-    COMBOBOX        IDC_SCREEN_TYPE,84,79,110,64,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_SCREEN_TYPE,84,67,110,64,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_SCREEN_WIDTH,84,93,53,94,CBS_DROPDOWN | WS_VSCROLL | 
+    COMBOBOX        IDC_SCREEN_WIDTH,84,81,53,94,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
-    COMBOBOX        IDC_SCREEN_HEIGHT,84,107,53,84,CBS_DROPDOWN | WS_VSCROLL | 
+    COMBOBOX        IDC_SCREEN_HEIGHT,84,95,53,84,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
-    COMBOBOX        IDC_SCREEN_BITS,84,121,110,94,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_SCREEN_BITS,84,109,110,94,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_SCREEN_REFRESH_RATE,84,135,67,94,CBS_DROPDOWN | 
+    COMBOBOX        IDC_SCREEN_REFRESH_RATE,84,123,67,94,CBS_DROPDOWN | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_SCREEN_SLEEP_TICKS,136,161,21,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SCREEN_SLEEP_TICKS,136,149,21,12,ES_AUTOHSCROLL
     CONTROL         "Display real frame rate",IDC_SCREEN_SHOW_FPS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,29,185,107,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,29,173,107,10
     CONTROL         "Disable Windows 98 screen optimizations",
                     IDC_SCREEN_DISABLE_98OPT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,29,208,175,10
-    LTEXT           "Screen type:",IDC_STATIC,24,81,49,8
-    LTEXT           "Screen width:",IDC_STATIC,24,95,58,8
-    LTEXT           "Screen height:",IDC_STATIC,24,109,58,8
-    LTEXT           "Colors:",IDC_STATIC,24,123,57,8
-    LTEXT           "Milliseconds between frames:",IDC_STATIC,30,163,102,8
-    LTEXT           "Linear frame buffer works under NT only. The windowed Direct X mode supports 15, 16 and 32 bits only and has some known screen update bugs.\nFor full screen modes, Width/Height must be a valid Direct X screen size.",
-                    IDC_STATIC,7,9,203,48,0,WS_EX_CLIENTEDGE
-    LTEXT           "Refresh rate:",IDC_STATIC,24,137,57,8
-    PUSHBUTTON      "Modes ...",IDC_SCREEN_REFRESH_RATE_HELP,154,135,39,12
+                    WS_DISABLED | WS_TABSTOP,29,196,175,10
+    LTEXT           "Screen type:",IDC_STATIC,24,69,49,8
+    LTEXT           "Screen width:",IDC_STATIC,24,83,58,8
+    LTEXT           "Screen height:",IDC_STATIC,24,97,58,8
+    LTEXT           "Colors:",IDC_STATIC,24,111,57,8
+    LTEXT           "Milliseconds between frames:",IDC_STATIC,30,151,102,8
+    LTEXT           "Linear frame buffer works under NT only. The windowed Direct X mode supports 15, 16 and 32 bits only and has some known screen update bugs. For full screen modes, Width/Height must be a valid Direct X screen size.",
+                    IDC_STATIC,7,7,203,41,0,WS_EX_STATICEDGE
+    LTEXT           "Refresh rate:",IDC_STATIC,24,125,57,8
+    PUSHBUTTON      "Modes ...",IDC_SCREEN_REFRESH_RATE_HELP,154,123,39,12
 END
 
-IDD_PAGE_SCSI DIALOGEX 0, 0, 217, 246
+IDD_PAGE_SCSI DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "SCSI"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "&SCSI enabled",IDC_SCSI_ENABLED,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,7,99,10
-    LISTBOX         IDC_SCSI_LIST_REPLACE_FROM,7,39,99,54,
+    LISTBOX         IDC_SCSI_LIST_REPLACE_FROM,7,36,99,54,
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LISTBOX         IDC_SCSI_LIST_REPLACE_TO,111,39,99,54,
+    LISTBOX         IDC_SCSI_LIST_REPLACE_TO,111,36,99,54,
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "&Source...",IDC_SCSI_ADD_FROM,9,96,46,14
-    PUSHBUTTON      "R&emove",IDC_SCSI_DEL_FROM,58,96,46,14
-    PUSHBUTTON      "&Target...",IDC_SCSI_ADD_TO,113,96,46,14
-    PUSHBUTTON      "Re&move",IDC_SCSI_DEL_TO,162,96,46,14
-    LISTBOX         IDC_SCSI_LIST_DISABLED,7,136,99,81,LBS_NOINTEGRALHEIGHT | 
+    PUSHBUTTON      "&Source...",IDC_SCSI_ADD_FROM,9,93,46,14
+    PUSHBUTTON      "R&emove",IDC_SCSI_DEL_FROM,58,93,46,14
+    PUSHBUTTON      "&Target...",IDC_SCSI_ADD_TO,113,93,46,14
+    PUSHBUTTON      "Re&move",IDC_SCSI_DEL_TO,162,93,46,14
+    LISTBOX         IDC_SCSI_LIST_DISABLED,7,131,99,70,LBS_NOINTEGRALHEIGHT | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "&Add...",IDC_SCSI_ADD_DISABLED,7,225,46,14
-    PUSHBUTTON      "Rem&ove",IDC_SCSI_DEL_DISABLED,56,225,46,14
-    LTEXT           "Replace this...",IDC_STATIC,7,28,89,8
-    LTEXT           "Installed SCSI devices:",IDC_STATIC,7,122,89,8
-    LTEXT           "... by this.",IDC_STATIC,111,28,89,8
+    PUSHBUTTON      "&Add...",IDC_SCSI_ADD_DISABLED,7,204,46,14
+    PUSHBUTTON      "Rem&ove",IDC_SCSI_DEL_DISABLED,56,204,46,14
+    LTEXT           "Replace this...",IDC_STATIC,7,25,89,8
+    LTEXT           "Installed SCSI devices:",IDC_STATIC,7,117,89,8
+    LTEXT           "... by this.",IDC_STATIC,111,25,89,8
     LTEXT           "The ""Add"" button replaces the selected free SCSI slot, or the first free one if the selected slot is already occupied.",
-                    IDC_STATIC,118,136,92,81,0,WS_EX_CLIENTEDGE
+                    IDC_STATIC,118,131,92,70,0,WS_EX_STATICEDGE
 END
 
-IDD_PAGE_GENERAL DIALOGEX 0, 0, 217, 246
+IDD_PAGE_GENERAL DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "General"
 FONT 8, "MS Sans Serif"
 BEGIN
     EDITTEXT        IDC_GENERAL_BOOT_DRIVE,68,17,21,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_GENERAL_BOOT_DRIVER,68,39,135,85,CBS_DROPDOWN | 
+    COMBOBOX        IDC_GENERAL_BOOT_DRIVER,68,41,135,85,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_GENERAL_MODEL_ID,68,62,135,117,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_GENERAL_MODEL_ID,68,64,135,117,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    CONTROL         "&FPU enabled",IDC_GENERAL_FPU_ENABLED,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,116,63,10
-    COMBOBOX        IDC_CPU,141,115,48,71,CBS_DROPDOWNLIST | WS_VSCROLL | 
+    CONTROL         "68881 or 68040 &FPU emulation enabled",
+                    IDC_GENERAL_FPU_ENABLED,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,135,168,10
+    COMBOBOX        IDC_CPU,68,110,48,71,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    EDITTEXT        IDC_GENERAL_PREFS_PATH,14,199,188,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_GENERAL_PREFS_PATH,14,181,188,14,ES_AUTOHSCROLL
     PUSHBUTTON      "Register ""BII"" file type ...",
-                    IDC_GENERAL_PREFS_ASSOCIATE,15,215,94,14
-    PUSHBUTTON      "Browse ...",IDC_GENERAL_PREFS_BROWSE,146,215,55,14
+                    IDC_GENERAL_PREFS_ASSOCIATE,15,197,94,14
+    PUSHBUTTON      "Save As ...",IDC_GENERAL_PREFS_BROWSE,146,197,55,14
     LTEXT           "Boot drive:",IDC_STATIC,16,20,43,8
-    LTEXT           "Boot driver:",IDC_STATIC,16,42,43,8
-    LTEXT           "Model ID:",IDC_STATIC,16,63,43,8
-    LTEXT           "The FPU is enabled by default since it has no known bugs any more. In case you find some, try SoftwareFPU instead.",
-                    IDC_STATIC,14,137,189,33,0,WS_EX_CLIENTEDGE
-    LTEXT           "Model is compatible with MacOS 8:",IDC_STATIC,16,84,129,
+    LTEXT           "Boot driver:",IDC_STATIC,16,43,43,8
+    LTEXT           "Model ID:",IDC_STATIC,16,66,43,8
+    LTEXT           "Model is compatible with MacOS 8:",IDC_STATIC,16,89,129,
                     8
-    LTEXT           "Not known",IDC_GENERAL_OS8_OK,149,83,39,11,0,
+    LTEXT           "Not known",IDC_GENERAL_OS8_OK,149,87,39,11,0,
                     WS_EX_CLIENTEDGE
-    LTEXT           "CPU:",IDC_STATIC,113,117,24,8
-    LTEXT           "Preference file name:",IDC_STATIC,15,188,88,8
+    LTEXT           "CPU:",IDC_STATIC,16,112,50,8
+    LTEXT           "Preference file name:",IDC_STATIC,15,170,88,8
 END
 
 IDD_KEYBOARD DIALOGEX 0, 0, 305, 131
@@ -406,80 +408,103 @@ BEGIN
     LTEXT           "MacOS:",IDC_STATIC,116,112,37,8
 END
 
-IDD_PAGE_KEYBOARD DIALOG DISCARDABLE  0, 0, 217, 246
+IDD_PAGE_KEYBOARD DIALOG DISCARDABLE  0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Keyboard"
 FONT 8, "MS Sans Serif"
 BEGIN
-    EDITTEXT        IDC_KEYBOARD_MAP_FILE_PATH,20,50,174,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "&Browse...",IDC_KEYBOARD_MAP_BROWSE,144,32,50,14
-    PUSHBUTTON      "&Edit keyboard codes...",IDC_KEYBOARD_EDIT_CODES,63,82,
+    COMBOBOX        IDC_KEYBOARD_TYPE,20,23,174,211,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_KEYBOARD_MAP_FILE_PATH,20,69,174,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Browse...",IDC_KEYBOARD_MAP_BROWSE,144,51,50,14
+    PUSHBUTTON      "&Edit keyboard codes...",IDC_KEYBOARD_EDIT_CODES,63,92,
                     91,14
-    LTEXT           "Custom keyboard file:",IDC_STATIC,21,37,118,8
+    CONTROL         "Use Alt-enter to switch windowed/full screen",
+                    IDC_KEYBOARD_USE_ALT_ENTER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,23,123,159,10
     CONTROL         "Reserve Alt-escape for MacOS (NT only)",
                     IDC_KEYBOARD_USE_ALT_ESCAPE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,34,125,159,10
+                    WS_TABSTOP,23,148,159,10
     CONTROL         "Reserve Control-escape for MacOS (NT only)",
                     IDC_KEYBOARD_USE_CONTROL_ESCAPE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,34,140,176,10
+                    WS_TABSTOP,23,163,176,10
     CONTROL         "Reserve Alt-tab for MacOS (NT only)",
                     IDC_KEYBOARD_USE_ALT_TAB,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,34,155,159,10
+                    WS_TABSTOP,23,178,159,10
     CONTROL         "Reserve Alt-space for MacOS (NT only)",
                     IDC_KEYBOARD_USE_ALT_SPACE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,34,170,159,10
+                    WS_TABSTOP,23,193,159,10
+    LTEXT           "Keyboard type:",IDC_STATIC,21,12,54,8
+    LTEXT           "Custom keyboard file:",IDC_STATIC,21,56,118,8
 END
 
-IDD_PAGE_TOOLS DIALOG DISCARDABLE  0, 0, 217, 246
+IDD_PAGE_TOOLS DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Misc"
 FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "Always &Topmost window",IDC_TOOLS_IS_ON_TOP,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,28,38,133,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,28,12,133,10
     CONTROL         "Disable low memory caching (may speed up OS8)",
                     IDC_EXPERIMENT_LOWMEM_CACHE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,28,64,182,10
-    COMBOBOX        IDC_TOOLS_GUI_AUTORESTART,26,100,144,73,CBS_DROPDOWNLIST | 
+                    WS_TABSTOP,28,28,175,10
+    CONTROL         "Disable screen saver while B2 is running",
+                    IDC_TOOLS_DISABLE_SCREENSAVER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,28,44,176,10
+    COMBOBOX        IDC_TOOLS_GUI_AUTORESTART,28,63,157,73,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Start in low power mode",IDC_TOOLS_SLEEP_ENABLED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,40,97,90,10
+    EDITTEXT        IDC_TOOLS_IDLE_SLEEP,120,113,17,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_TOOLS_IDLE_MINUTES,35,198,17,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    GROUPBOX        " Low power mode ",IDC_STATIC,18,81,181,137
+    LTEXT           "Milliseconds to sleep:",IDC_STATIC,40,115,76,8
+    LTEXT           "Use this option to slow down Basilisk II on laptops, thus allowing the system idle thread to stop the CPU for short periods of time. A value greater than 10 will likely hang the emulation. Can be enabled/disabled in B2 system menu.",
+                    IDC_STATIC,26,132,166,46,0,WS_EX_STATICEDGE
+    LTEXT           "Automatically switch to low power mode after",
+                    IDC_STATIC,37,187,150,8
+    LTEXT           "minute(s) of mouse and keyboard inactivity.",IDC_STATIC,
+                    55,199,140,8
 END
 
-IDD_PAGE_ABOUT DIALOGEX 0, 0, 217, 246
+IDD_PAGE_ABOUT DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Info"
 FONT 8, "MS Sans Serif"
 BEGIN
     CTEXT           "\n A free, portable Mac II emulator\n\n Copyright © 1997-2000 Christian Bauer et al.\n\n UAE CPU core Copyright © Bernd Schmidt\n\n Windows code Copyright © Lauri Pesonen\n\n Freely distributable.",
-                    IDC_STATIC,20,49,177,102,0,WS_EX_CLIENTEDGE
+                    IDC_STATIC,20,49,177,102,0,WS_EX_STATICEDGE
     ICON            IDR_MAINFRAME,IDC_STATIC,15,16,20,20
-    LTEXT           "Basilisk II for Windows NT v0.8 [build 130]",IDC_STATIC,
+    LTEXT           "Basilisk II for Windows NT v0.8 [build 142]",IDC_STATIC,
                     46,20,156,8
     CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,42,
                     187,1
     CTEXT           "\nChanges in preferences take effect after\nBasilisk II is restarted.",
-                    IDC_STATIC,20,178,177,35,0,WS_EX_CLIENTEDGE
+                    IDC_STATIC,20,171,177,35,0,WS_EX_STATICEDGE
 END
 
-IDD_PAGE_ETHERNET DIALOG DISCARDABLE  0, 0, 217, 246
+IDD_PAGE_ETHERNET DIALOG DISCARDABLE  0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ethernet"
 FONT 8, "MS Sans Serif"
 BEGIN
-    COMBOBOX        IDC_ETHERNET_MAC,20,43,181,63,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_ETHERNET_MAC,20,27,181,63,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_ETHERNET_FAKE_ADDRESS,20,129,84,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_ETHERNET_MODE,20,169,150,63,CBS_DROPDOWNLIST | 
+    EDITTEXT        IDC_ETHERNET_FAKE_ADDRESS,20,109,84,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_ETHERNET_MODE,20,150,150,63,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_ETHERNET_PERMANENT,20,204,150,63,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_ETHERNET_PERMANENT,20,191,150,63,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_ETHERNET_HARDWARE_ADDRESS,20,77,74,12,ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_ETHERNET_HARDWARE_ADDRESS,20,67,74,12,ES_AUTOHSCROLL | 
                     ES_READONLY
-    LTEXT           "Network card NDIS driver:",IDC_STATIC,20,31,87,8
-    LTEXT           "Multicast packets:",IDC_STATIC,20,158,119,8
-    LTEXT           "Identifying self:",IDC_STATIC,20,193,119,8
-    LTEXT           "Hardware address:",IDC_STATIC,20,65,70,8
-    LTEXT           "Fake hardware address. 12 digits with no blanks. Normally leave empty:",
-                    IDC_STATIC,20,104,160,22
+    LTEXT           "Network card NDIS driver:",IDC_STATIC,20,15,87,8
+    LTEXT           "Multicast packets:",IDC_STATIC,20,139,119,8
+    LTEXT           "Identifying self:",IDC_STATIC,20,180,119,8
+    LTEXT           "Hardware address:",IDC_STATIC,20,56,70,8
+    LTEXT           "Optional ""fake"" hardware address (12 digits, no spaces)",
+                    IDC_STATIC,20,98,181,8
 END
 
 IDD_NEW_HFV DIALOG DISCARDABLE  0, 0, 237, 175
@@ -515,134 +540,132 @@ BEGIN
     LTEXT           "Product name:",IDC_STATIC,16,53,65,8
 END
 
-IDD_PAGE_PRIORITIES DIALOGEX 0, 0, 217, 246
+IDD_PAGE_PRIORITIES DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Priorities"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
-    COMBOBOX        IDC_PRI_ETHERNET_RUN,65,76,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_ETHERNET_RUN,65,62,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_ETHERNET_IDLE,145,76,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_ETHERNET_IDLE,145,62,65,144,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_SERIAL_IN_RUN,65,89,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_SERIAL_IN_RUN,65,75,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_SERIAL_IN_IDLE,145,89,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_SERIAL_IN_IDLE,145,75,65,144,CBS_DROPDOWNLIST | 
                     WS_DISABLED | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_SERIAL_OUT_RUN,65,102,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_SERIAL_OUT_RUN,65,88,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_SERIAL_OUT_IDLE,145,102,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_SERIAL_OUT_IDLE,145,88,65,144,CBS_DROPDOWNLIST | 
                     WS_DISABLED | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_CPU_RUN,65,115,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_CPU_RUN,65,101,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_CPU_IDLE,145,115,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_CPU_IDLE,145,101,65,144,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_60HZ_RUN,65,128,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_60HZ_RUN,65,114,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_60HZ_IDLE,145,128,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_60HZ_IDLE,145,114,65,144,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_1HZ_RUN,65,141,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_1HZ_RUN,65,127,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_1HZ_IDLE,145,141,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_1HZ_IDLE,145,127,65,144,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_PRAM_RUN,65,154,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_PRAM_RUN,65,140,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_PRAM_IDLE,145,154,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_PRAM_IDLE,145,140,65,144,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_MOUSE_RUN,65,167,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_MOUSE_RUN,65,153,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_MOUSE_IDLE,145,167,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_MOUSE_IDLE,145,153,65,144,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_GDI_RUN,65,180,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_GDI_RUN,65,166,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_GDI_IDLE,145,180,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_GDI_IDLE,145,166,65,144,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_DX_RUN,65,193,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_DX_RUN,65,179,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_DX_IDLE,145,193,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_DX_IDLE,145,179,65,144,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_LFB_RUN,65,206,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_LFB_RUN,65,192,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_LFB_IDLE,145,206,65,144,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_LFB_IDLE,145,192,65,144,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_SOUND_STREAM_RUN,65,219,65,145,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_PRI_SOUND_STREAM_RUN,65,205,65,145,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PRI_SOUND_STREAM_IDLE,145,219,65,144,
+    COMBOBOX        IDC_PRI_SOUND_STREAM_IDLE,145,205,65,144,
                     CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Set &Defaults",IDC_PRI_DEFAULTS,7,51,48,12
-    LTEXT           "Ethernet",IDC_STATIC,7,78,51,8
-    LTEXT           "Serial port In",IDC_STATIC,7,91,50,8
-    LTEXT           "Serial port out",IDC_STATIC,7,104,52,8
-    LTEXT           "CPU",IDC_STATIC,7,117,52,8
-    LTEXT           "60 Hz && mouse",IDC_STATIC,7,130,51,8
-    LTEXT           "1 Hz",IDC_STATIC,7,143,52,8
-    LTEXT           "Param. RAM",IDC_STATIC,7,156,52,8
-    LTEXT           "GUI",IDC_STATIC,7,169,50,8
-    LTEXT           "GDI",IDC_STATIC,7,182,51,8
-    LTEXT           "Direct X",IDC_STATIC,7,195,49,8
-    LTEXT           "Frame buffer",IDC_STATIC,7,208,52,8
+    PUSHBUTTON      "&Defaults",IDC_PRI_DEFAULTS,7,42,46,12
+    LTEXT           "Ethernet",IDC_STATIC,7,64,51,8
+    LTEXT           "Serial port In",IDC_STATIC,7,77,50,8
+    LTEXT           "Serial port out",IDC_STATIC,7,90,52,8
+    LTEXT           "CPU",IDC_STATIC,7,103,52,8
+    LTEXT           "60 Hz && mouse",IDC_STATIC,7,116,51,8
+    LTEXT           "1 Hz",IDC_STATIC,7,129,52,8
+    LTEXT           "Param. RAM",IDC_STATIC,7,142,52,8
+    LTEXT           "GUI",IDC_STATIC,7,155,50,8
+    LTEXT           "GDI",IDC_STATIC,7,168,51,8
+    LTEXT           "Direct X",IDC_STATIC,7,181,49,8
+    LTEXT           "Frame buffer",IDC_STATIC,7,194,52,8
     LTEXT           "By adjusting the priorities of the basic system threads, you can boost the responsiveness of the components that may not be optimal for you. The values need to be carefully balanced.",
-                    IDC_STATIC,7,7,203,37,0,WS_EX_CLIENTEDGE
-    LTEXT           "Basilisk II active",IDC_STATIC,65,58,62,8
-    LTEXT           "Basilisk II inactive",IDC_STATIC,145,58,65,8
-    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,61,72,149,1,
+                    IDC_STATIC,7,7,203,31,0,WS_EX_STATICEDGE
+    LTEXT           "Basilisk II active",IDC_STATIC,65,44,62,8
+    LTEXT           "Basilisk II inactive",IDC_STATIC,145,44,65,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,61,58,149,1,
                     WS_EX_STATICEDGE
-    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,137,78,1,152,
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,137,64,1,152,
                     WS_EX_STATICEDGE
-    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,60,78,1,152,
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,60,64,1,152,
                     WS_EX_STATICEDGE
-    LTEXT           "Sound stream",IDC_STATIC,7,221,52,8
+    LTEXT           "Sound stream",IDC_STATIC,7,207,52,8
 END
 
-IDD_PAGE_AUDIO DIALOGEX 0, 0, 217, 246
+IDD_PAGE_AUDIO DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Audio"
 FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "&Enable the audio component",IDC_AUDIO_ENABLED,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,31,54,119,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,31,56,119,10
     CONTROL         "&Disable audio when Basilisk II is inactive",
                     IDC_AUDIO_SWITCHOUT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,31,66,169,10
+                    WS_TABSTOP,31,68,169,10
     CONTROL         "&Get hardware volume (alert beeps)",IDC_AUDIO_MYST,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,78,173,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,80,173,10
     CONTROL         "&Enable startup sound (some 1MB ROMs)",
                     IDC_AUDIO_STARTUP_SOUND,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,31,90,164,10
-    EDITTEXT        IDC_AUDIO_BUFFER_COUNT,19,164,22,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUDIO_BUFFER_SIZE_8000,149,147,31,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUDIO_BUFFER_SIZE_11025,149,160,31,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUDIO_BUFFER_SIZE_22050,149,173,31,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUDIO_BUFFER_SIZE_44100,149,186,31,12,ES_AUTOHSCROLL
+                    WS_TABSTOP,31,92,164,10
+    EDITTEXT        IDC_AUDIO_BUFFER_COUNT,19,176,22,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUDIO_BUFFER_SIZE_8000,149,159,31,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUDIO_BUFFER_SIZE_11025,149,172,31,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUDIO_BUFFER_SIZE_22050,149,185,31,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUDIO_BUFFER_SIZE_44100,149,198,31,12,ES_AUTOHSCROLL
     LTEXT           "Audio settings are defined in the MacOS Sound control panel. Some of these settings are saved in BasiliskII.ini file in your Windows directory. Volume control settings are not saved anywhere but the changes are applied to your current Windows settings.",
-                    IDC_STATIC,7,7,203,41,0,WS_EX_CLIENTEDGE
-    LTEXT           "Number of buffers:",IDC_STATIC,19,151,68,8
-    LTEXT           "Increasing the values below reduces jerkiness but causes more delay. Use the smallest values that don't cause breaks in the sound.",
-                    IDC_STATIC,14,107,189,28,0,WS_EX_CLIENTEDGE
-    LTEXT           "8000 Hz:",IDC_STATIC,110,149,36,8
-    LTEXT           "11025 Hz:",IDC_STATIC,110,162,36,8
-    LTEXT           "22050 Hz:",IDC_STATIC,110,175,36,8
-    LTEXT           "44100 Hz:",IDC_STATIC,110,188,36,8
-    GROUPBOX        " Buffer sizes ",IDC_STATIC,101,136,96,68
-    LTEXT           "Note that the buffer sizes should be multiples of 1024, otherwise gradual slowdown may occur as the memory gets fragmented.",
-                    IDC_STATIC,14,209,189,30,0,WS_EX_CLIENTEDGE
+                    IDC_STATIC,7,7,203,41,0,WS_EX_STATICEDGE
+    LTEXT           "Number of buffers:",IDC_STATIC,19,163,68,8
+    LTEXT           "Increasing the values below reduces jerkiness but causes more delay. Use the smallest values that don't cause breaks in the sound. The buffer sizes should be multiples of 1024.",
+                    IDC_STATIC,7,110,203,30,0,WS_EX_STATICEDGE
+    LTEXT           "8000 Hz:",IDC_STATIC,110,161,36,8
+    LTEXT           "11025 Hz:",IDC_STATIC,110,174,36,8
+    LTEXT           "22050 Hz:",IDC_STATIC,110,187,36,8
+    LTEXT           "44100 Hz:",IDC_STATIC,110,200,36,8
+    GROUPBOX        " Buffer sizes ",IDC_STATIC,101,148,96,68
 END
 
-IDD_PAGE_DEBUG DIALOGEX 0, 0, 217, 246
+IDD_PAGE_DEBUG DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Debug"
 FONT 8, "MS Sans Serif"
 BEGIN
-    COMBOBOX        IDC_DEBUG_SCSI_LOG_LEVEL,32,104,152,112,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_DEBUG_SCSI_LOG_LEVEL,32,100,152,112,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_DEBUG_SERIAL_LOG_LEVEL,32,127,152,112,
+    COMBOBOX        IDC_DEBUG_SERIAL_LOG_LEVEL,32,123,152,112,
                     CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_DEBUG_FILESYS_LOG_LEVEL,32,150,152,112,
+    COMBOBOX        IDC_DEBUG_FILESYS_LOG_LEVEL,32,146,152,112,
                     CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Disable accurate 60 Hz timer",
                     IDC_DEBUG_DISABLE_ACCURATE_TIMER,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,33,179,131,10
-    LTEXT           "The options on this page are for debugging purposes. They should be turned ON only when advised by the developers that can decipher the resulting log files.\n\nNormally keep all options OFF. Failing to do so will substantially degrade the performance.",
-                    IDC_STATIC,19,19,180,64,0,WS_EX_CLIENTEDGE
+                    BS_AUTOCHECKBOX | WS_TABSTOP,45,178,131,10
+    LTEXT           "The options on this page are for debugging purposes. They should be turned ON only when advised by the developers that can decipher the log files.\n\nNormally keep the three logging options OFF. Failing to do so will substantially degrade the performance.",
+                    IDC_STATIC,7,7,203,58,0,WS_EX_STATICEDGE
 END
 
 IDD_DASD_CONFIRM DIALOG DISCARDABLE  0, 0, 229, 124
@@ -682,65 +705,63 @@ BEGIN
                     IDC_STATIC,17,200,212,28
 END
 
-IDD_PAGE_MOUSE DIALOGEX 0, 0, 217, 246
+IDD_PAGE_MOUSE DIALOG DISCARDABLE  0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Mouse"
 FONT 8, "MS Sans Serif"
 BEGIN
-    COMBOBOX        IDC_MOUSE_RIGHT_MOUSE,25,20,125,66,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_MOUSE_RIGHT_MOUSE,25,22,125,66,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Sticky menu bar (OS8 style mouse clicks)",
                     IDC_MOUSE_STICKY_MENU,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,25,39,162,10
-    COMBOBOX        IDC_MOUSE_MOVEMENT,25,54,145,66,CBS_DROPDOWNLIST | 
+                    WS_TABSTOP,25,41,162,10
+    COMBOBOX        IDC_MOUSE_MOVEMENT,25,56,145,66,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_MOUSE_MOUSEWHEEL,31,88,89,66,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_MOUSE_MOUSEWHEEL,31,90,89,66,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_MOUSE_MOUSELINES,136,88,19,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MOUSE_MOUSELINES,136,90,19,12,ES_AUTOHSCROLL
     CONTROL         "Reverse x direction",IDC_MOUSE_MOUSEWHEEL_REVERSE_X,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,39,107,87,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,39,109,87,10
     CONTROL         "Reverse y direction",IDC_MOUSE_MOUSEWHEEL_REVERSE_Y,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,39,120,87,10
-    COMBOBOX        IDC_MOUSE_MOUSEWHEEL_CLICK_MODE,32,135,155,59,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,39,122,87,10
+    COMBOBOX        IDC_MOUSE_MOUSEWHEEL_CLICK_MODE,32,137,155,59,
                     CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_MOUSE_MOUSEWHEEL_CUST_00,77,152,108,12,
+    EDITTEXT        IDC_MOUSE_MOUSEWHEEL_CUST_00,77,154,108,12,
                     ES_AUTOHSCROLL
-    EDITTEXT        IDC_MOUSE_MOUSEWHEEL_CUST_01,77,165,108,12,
+    EDITTEXT        IDC_MOUSE_MOUSEWHEEL_CUST_01,77,167,108,12,
                     ES_AUTOHSCROLL
-    EDITTEXT        IDC_MOUSE_MOUSEWHEEL_CUST_10,77,178,108,12,
+    EDITTEXT        IDC_MOUSE_MOUSEWHEEL_CUST_10,77,180,108,12,
                     ES_AUTOHSCROLL
-    EDITTEXT        IDC_MOUSE_MOUSEWHEEL_CUST_11,77,191,108,12,
+    EDITTEXT        IDC_MOUSE_MOUSEWHEEL_CUST_11,77,193,108,12,
                     ES_AUTOHSCROLL
-    LTEXT           "Right mouse button is used to:",IDC_STATIC,25,9,113,8
-    LTEXT           "lines.",IDC_MOUSE_MOUSEWHEEL_STATIC2,158,90,24,8
-    LTEXT           ",",IDC_MOUSE_MOUSEWHEEL_STATIC1,125,90,8,8
-    GROUPBOX        " Mouse wheel ",IDC_STATIC,18,73,180,136
-    LTEXT           "Normal:",IDC_MOUSE_MOUSEWHEEL_STATIC3,33,154,42,8
-    LTEXT           "Shift:",IDC_MOUSE_MOUSEWHEEL_STATIC4,33,167,42,8
-    LTEXT           "Cntrl:",IDC_MOUSE_MOUSEWHEEL_STATIC5,33,180,42,8
-    LTEXT           "Shift+Cntrl:",IDC_MOUSE_MOUSEWHEEL_STATIC6,33,193,42,8
-    LTEXT           "A ""+"" is a key down, a ""-"" is a key being released. See ""Edit keyboard codes"" dialog for available codes.",
-                    IDC_STATIC,18,215,180,24,0,WS_EX_CLIENTEDGE
+    LTEXT           "Right mouse button is used to:",IDC_STATIC,25,11,113,8
+    LTEXT           "lines.",IDC_MOUSE_MOUSEWHEEL_STATIC2,158,92,24,8
+    LTEXT           ",",IDC_MOUSE_MOUSEWHEEL_STATIC1,125,92,8,8
+    GROUPBOX        " Mouse wheel ",IDC_STATIC,18,75,180,136
+    LTEXT           "Normal:",IDC_MOUSE_MOUSEWHEEL_STATIC3,33,156,42,8
+    LTEXT           "Shift:",IDC_MOUSE_MOUSEWHEEL_STATIC4,33,169,42,8
+    LTEXT           "Cntrl:",IDC_MOUSE_MOUSEWHEEL_STATIC5,33,182,42,8
+    LTEXT           "Shift+Cntrl:",IDC_MOUSE_MOUSEWHEEL_STATIC6,33,195,42,8
 END
 
-IDD_PAGE_EXPERIMENT DIALOGEX 0, 0, 217, 246
+IDD_PAGE_EXPERIMENT DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Experiment"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     LTEXT           "The options on this page are used to enable experimental features. Some of them may cause your Mac to run more slowly, some will make things faster. Feel free to play with them, they are always safe to try.",
-                    IDC_STATIC,19,19,180,46,0,WS_EX_CLIENTEDGE
+                    IDC_STATIC,19,19,180,46,0,WS_EX_STATICEDGE
     LTEXT           "If you think that some of the features should be included in Basilisk II, please let me know. Features that don't stir any comments will be automatically removed.",
-                    IDC_STATIC,19,70,180,39,0,WS_EX_CLIENTEDGE
+                    IDC_STATIC,19,70,180,39,0,WS_EX_STATICEDGE
 END
 
-IDD_PAGE_DR DIALOGEX 0, 0, 217, 246
+IDD_PAGE_DR DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "DR"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     CTEXT           "This build seems to have DR technology disabled.",-1,19,
-                    19,180,19,SS_CENTERIMAGE,WS_EX_CLIENTEDGE
+                    19,180,19,SS_CENTERIMAGE,WS_EX_STATICEDGE
     CONTROL         "Dump code blocks",IDC_DR_DUMP,"Button",BS_AUTOCHECKBOX | 
                     WS_DISABLED | WS_TABSTOP,55,54,123,10
     CONTROL         "Disassemble 68k code",IDC_DR_DIS68K,"Button",
@@ -753,73 +774,73 @@ BEGIN
                     WS_DISABLED | WS_TABSTOP,55,110,119,10
 END
 
-IDD_PAGE_EXTFS DIALOGEX 0, 0, 217, 246
+IDD_PAGE_EXTFS DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "My Computer"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "Enable external file system",IDC_EXTFS_ENABLED,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,32,45,135,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,32,40,135,10
     CONTROL         "&A:",IDC_EXTFS_A,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    50,81,22,10
+                    50,73,22,10
     CONTROL         "&B:",IDC_EXTFS_B,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    50,92,22,10
+                    50,84,22,10
     CONTROL         "&C:",IDC_EXTFS_C,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    50,103,22,10
+                    50,95,22,10
     CONTROL         "&D:",IDC_EXTFS_D,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    50,114,23,10
+                    50,106,23,10
     CONTROL         "&E:",IDC_EXTFS_E,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    50,125,22,10
+                    50,117,22,10
     CONTROL         "&F:",IDC_EXTFS_F,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    50,136,22,10
+                    50,128,22,10
     CONTROL         "&G:",IDC_EXTFS_G,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    50,147,23,10
+                    50,139,23,10
     CONTROL         "&H:",IDC_EXTFS_H,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    50,158,23,10
+                    50,150,23,10
     CONTROL         "&I:",IDC_EXTFS_I,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    50,169,19,10
+                    50,161,19,10
     CONTROL         "&J:",IDC_EXTFS_J,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    87,81,21,10
+                    87,73,21,10
     CONTROL         "&K:",IDC_EXTFS_K,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    87,92,22,10
+                    87,84,22,10
     CONTROL         "&L:",IDC_EXTFS_L,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    87,103,21,10
+                    87,95,21,10
     CONTROL         "&M:",IDC_EXTFS_M,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    87,114,23,10
+                    87,106,23,10
     CONTROL         "&N:",IDC_EXTFS_N,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    87,125,23,10
+                    87,117,23,10
     CONTROL         "&O:",IDC_EXTFS_O,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    87,136,23,10
+                    87,128,23,10
     CONTROL         "&P:",IDC_EXTFS_P,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    87,147,22,10
+                    87,139,22,10
     CONTROL         "&Q:",IDC_EXTFS_Q,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    87,158,23,10
+                    87,150,23,10
     CONTROL         "&R:",IDC_EXTFS_R,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    87,169,23,10
+                    87,161,23,10
     CONTROL         "&S:",IDC_EXTFS_S,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    124,81,22,10
+                    124,73,22,10
     CONTROL         "&T:",IDC_EXTFS_T,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    124,92,22,10
+                    124,84,22,10
     CONTROL         "&U:",IDC_EXTFS_U,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    124,103,23,10
+                    124,95,23,10
     CONTROL         "&V:",IDC_EXTFS_V,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    124,114,22,10
+                    124,106,22,10
     CONTROL         "&W:",IDC_EXTFS_W,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    124,125,24,10
+                    124,117,24,10
     CONTROL         "&X:",IDC_EXTFS_X,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    124,136,22,10
+                    124,128,22,10
     CONTROL         "&Y:",IDC_EXTFS_Y,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    124,147,22,10
+                    124,139,22,10
     CONTROL         "&Z:",IDC_EXTFS_Z,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    124,158,22,10
-    PUSHBUTTON      "All",IDC_EXTFS_ALL,157,154,26,10
-    PUSHBUTTON      "None",IDC_EXTFS_NONE,157,170,26,10
-    PUSHBUTTON      "File type mappings",IDC_EXTFS_TYPES,30,202,156,14
-    GROUPBOX        " Mount drives: ",IDC_STATIC,25,64,167,126
+                    124,150,22,10
+    PUSHBUTTON      "All",IDC_EXTFS_ALL,157,146,26,10
+    PUSHBUTTON      "None",IDC_EXTFS_NONE,157,162,26,10
+    PUSHBUTTON      "File type mappings",IDC_EXTFS_TYPES,30,186,156,14
+    GROUPBOX        " Mount drives: ",IDC_STATIC,25,57,167,123
     LTEXT           "When enabled, installs a ""My Computer"" icon on your Mac desktop, allowing you to access data on your Windows drives. UNC paths are not yet supported.",
-                    IDC_STATIC,21,7,174,31,0,WS_EX_CLIENTEDGE
-    EDITTEXT        IDC_EXTFS_PATH,25,223,143,12,ES_AUTOHSCROLL
-    PUSHBUTTON      ">>",IDC_EXTFS_BROWSE_PATH,172,223,20,12
+                    IDC_STATIC,7,7,203,29,0,WS_EX_STATICEDGE
+    EDITTEXT        IDC_EXTFS_PATH,25,205,143,12,ES_AUTOHSCROLL
+    PUSHBUTTON      ">>",IDC_EXTFS_BROWSE_PATH,172,205,20,12
 END
 
 IDD_FILETYPE_MAPPINGS DIALOGEX 0, 0, 278, 190
@@ -988,7 +1009,7 @@ END
 IDD_DX_FULL_SCREEN_HELP DIALOGEX 0, 0, 266, 228
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Select DirectX full-screen video mode"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Select",IDOK,209,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,209,24,50,14
@@ -1020,218 +1041,290 @@ BEGIN
                     IDC_STATIC,7,185,321,30
 END
 
-IDD_PAGE_SMP DIALOGEX 0, 0, 217, 246
+IDD_PAGE_SMP DIALOGEX 0, 0, 217, 225
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "SMP"
 FONT 8, "MS Sans Serif"
 BEGIN
-    LTEXT           "Ethernet",IDC_STATIC,7,78,51,8
-    LTEXT           "Serial port In",IDC_STATIC,7,91,50,8
-    LTEXT           "Serial port out",IDC_STATIC,7,104,52,8
-    LTEXT           "CPU",IDC_STATIC,7,117,52,8
-    LTEXT           "60 Hz && mouse",IDC_STATIC,7,130,51,8
-    LTEXT           "1 Hz",IDC_STATIC,7,143,52,8
-    LTEXT           "Param. RAM",IDC_STATIC,7,156,52,8
-    LTEXT           "GUI",IDC_STATIC,7,169,50,8
-    LTEXT           "GDI",IDC_STATIC,7,182,51,8
-    LTEXT           "Direct X",IDC_STATIC,7,195,49,8
-    LTEXT           "Frame buffer",IDC_STATIC,7,208,52,8
-    LTEXT           "Under a Windows NT or Windows 2000 SMP system, you can select on which CPU(s) different Basilisk II threads are allowed to run. Windows 9x does not support SMP. Leave all unchecked to use the affinity mask set in Explorer.",
-                    IDC_STATIC,7,7,203,42,0,WS_EX_CLIENTEDGE
-    LTEXT           "Sound stream",IDC_STATIC,7,221,52,8
+    LTEXT           "Ethernet",IDC_STATIC,7,60,51,8
+    LTEXT           "Serial port In",IDC_STATIC,7,73,50,8
+    LTEXT           "Serial port out",IDC_STATIC,7,86,52,8
+    LTEXT           "CPU",IDC_STATIC,7,99,52,8
+    LTEXT           "60 Hz && mouse",IDC_STATIC,7,112,51,8
+    LTEXT           "1 Hz",IDC_STATIC,7,125,52,8
+    LTEXT           "Param. RAM",IDC_STATIC,7,138,52,8
+    LTEXT           "GUI",IDC_STATIC,7,151,50,8
+    LTEXT           "GDI",IDC_STATIC,7,164,51,8
+    LTEXT           "Direct X",IDC_STATIC,7,177,49,8
+    LTEXT           "Frame buffer",IDC_STATIC,7,190,52,8
+    LTEXT           "Under a Windows NT or Windows 2000 SMP system, you can select on which CPU(s) different Basilisk II threads are allowed to run. Windows 9x does not support SMP. Leave all unchecked to use the default affinity mask.",
+                    IDC_STATIC,7,7,203,38,0,WS_EX_STATICEDGE
+    LTEXT           "Sound stream",IDC_STATIC,7,203,52,8
     CONTROL         "1",IDC_SMP_ETHERNET_1,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,79,77,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,79,59,10,10
     CONTROL         "2",IDC_SMP_ETHERNET_2,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,93,77,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,93,59,10,10
     CONTROL         "3",IDC_SMP_ETHERNET_3,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,107,77,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,107,59,10,10
     CONTROL         "4",IDC_SMP_ETHERNET_4,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,121,77,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,121,59,10,10
     CONTROL         "5",IDC_SMP_ETHERNET_5,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,135,77,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,135,59,10,10
     CONTROL         "6",IDC_SMP_ETHERNET_6,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,149,77,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,149,59,10,10
     CONTROL         "7",IDC_SMP_ETHERNET_7,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,163,77,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,163,59,10,10
     CONTROL         "8",IDC_SMP_ETHERNET_8,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,177,77,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,177,59,10,10
     CONTROL         "1",IDC_SMP_SERIALIN_1,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,79,90,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,79,72,10,10
     CONTROL         "2",IDC_SMP_SERIALIN_2,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,93,90,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,93,72,10,10
     CONTROL         "3",IDC_SMP_SERIALIN_3,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,107,90,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,107,72,10,10
     CONTROL         "4",IDC_SMP_SERIALIN_4,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,121,90,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,121,72,10,10
     CONTROL         "5",IDC_SMP_SERIALIN_5,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,135,90,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,135,72,10,10
     CONTROL         "6",IDC_SMP_SERIALIN_6,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,149,90,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,149,72,10,10
     CONTROL         "7",IDC_SMP_SERIALIN_7,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,163,90,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,163,72,10,10
     CONTROL         "8",IDC_SMP_SERIALIN_8,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,177,90,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,177,72,10,10
     CONTROL         "1",IDC_SMP_SERIALOUT_1,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,79,103,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,79,85,10,10
     CONTROL         "2",IDC_SMP_SERIALOUT_2,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,93,103,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,93,85,10,10
     CONTROL         "3",IDC_SMP_SERIALOUT_3,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,107,103,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,107,85,10,10
     CONTROL         "4",IDC_SMP_SERIALOUT_4,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,121,103,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,121,85,10,10
     CONTROL         "5",IDC_SMP_SERIALOUT_5,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,135,103,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,135,85,10,10
     CONTROL         "6",IDC_SMP_SERIALOUT_6,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,149,103,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,149,85,10,10
     CONTROL         "7",IDC_SMP_SERIALOUT_7,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,163,103,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,163,85,10,10
     CONTROL         "8",IDC_SMP_SERIALOUT_8,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,177,103,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,177,85,10,10
     CONTROL         "1",IDC_SMP_CPU_1,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,79,116,10,10
+                    WS_TABSTOP,79,98,10,10
     CONTROL         "2",IDC_SMP_CPU_2,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,93,116,10,10
+                    WS_TABSTOP,93,98,10,10
     CONTROL         "3",IDC_SMP_CPU_3,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,107,116,10,10
+                    WS_TABSTOP,107,98,10,10
     CONTROL         "4",IDC_SMP_CPU_4,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,121,116,10,10
+                    WS_TABSTOP,121,98,10,10
     CONTROL         "5",IDC_SMP_CPU_5,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,135,116,10,10
+                    WS_TABSTOP,135,98,10,10
     CONTROL         "6",IDC_SMP_CPU_6,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,149,116,10,10
+                    WS_TABSTOP,149,98,10,10
     CONTROL         "7",IDC_SMP_CPU_7,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,163,116,10,10
+                    WS_TABSTOP,163,98,10,10
     CONTROL         "8",IDC_SMP_CPU_8,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,177,116,10,10
+                    WS_TABSTOP,177,98,10,10
     CONTROL         "1",IDC_SMP_60HZ_1,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,79,129,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,79,111,10,10
     CONTROL         "2",IDC_SMP_60HZ_2,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,93,129,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,93,111,10,10
     CONTROL         "3",IDC_SMP_60HZ_3,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,107,129,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,107,111,10,10
     CONTROL         "4",IDC_SMP_60HZ_4,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,121,129,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,121,111,10,10
     CONTROL         "5",IDC_SMP_60HZ_5,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,135,129,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,135,111,10,10
     CONTROL         "6",IDC_SMP_60HZ_6,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,149,129,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,149,111,10,10
     CONTROL         "7",IDC_SMP_60HZ_7,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,163,129,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,163,111,10,10
     CONTROL         "8",IDC_SMP_60HZ_8,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,177,129,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,177,111,10,10
     CONTROL         "1",IDC_SMP_1HZ_1,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,79,142,10,10
+                    WS_TABSTOP,79,124,10,10
     CONTROL         "2",IDC_SMP_1HZ_2,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,93,142,10,10
+                    WS_TABSTOP,93,124,10,10
     CONTROL         "3",IDC_SMP_1HZ_3,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,107,142,10,10
+                    WS_TABSTOP,107,124,10,10
     CONTROL         "4",IDC_SMP_1HZ_4,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,121,142,10,10
+                    WS_TABSTOP,121,124,10,10
     CONTROL         "5",IDC_SMP_1HZ_5,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,135,142,10,10
+                    WS_TABSTOP,135,124,10,10
     CONTROL         "6",IDC_SMP_1HZ_6,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,149,142,10,10
+                    WS_TABSTOP,149,124,10,10
     CONTROL         "7",IDC_SMP_1HZ_7,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,163,142,10,10
+                    WS_TABSTOP,163,124,10,10
     CONTROL         "8",IDC_SMP_1HZ_8,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,177,142,10,10
+                    WS_TABSTOP,177,124,10,10
     CONTROL         "1",IDC_SMP_PRAM_1,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,79,155,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,79,137,10,10
     CONTROL         "2",IDC_SMP_PRAM_2,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,93,155,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,93,137,10,10
     CONTROL         "3",IDC_SMP_PRAM_3,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,107,155,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,107,137,10,10
     CONTROL         "4",IDC_SMP_PRAM_4,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,121,155,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,121,137,10,10
     CONTROL         "5",IDC_SMP_PRAM_5,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,135,155,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,135,137,10,10
     CONTROL         "6",IDC_SMP_PRAM_6,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,149,155,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,149,137,10,10
     CONTROL         "7",IDC_SMP_PRAM_7,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,163,155,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,163,137,10,10
     CONTROL         "8",IDC_SMP_PRAM_8,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,177,155,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,177,137,10,10
     CONTROL         "1",IDC_SMP_GUI_1,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,79,168,10,10
+                    WS_TABSTOP,79,150,10,10
     CONTROL         "2",IDC_SMP_GUI_2,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,93,168,10,10
+                    WS_TABSTOP,93,150,10,10
     CONTROL         "3",IDC_SMP_GUI_3,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,107,168,10,10
+                    WS_TABSTOP,107,150,10,10
     CONTROL         "4",IDC_SMP_GUI_4,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,121,168,10,10
+                    WS_TABSTOP,121,150,10,10
     CONTROL         "5",IDC_SMP_GUI_5,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,135,168,10,10
+                    WS_TABSTOP,135,150,10,10
     CONTROL         "6",IDC_SMP_GUI_6,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,149,168,10,10
+                    WS_TABSTOP,149,150,10,10
     CONTROL         "7",IDC_SMP_GUI_7,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,163,168,10,10
+                    WS_TABSTOP,163,150,10,10
     CONTROL         "8",IDC_SMP_GUI_8,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,177,168,10,10
+                    WS_TABSTOP,177,150,10,10
     CONTROL         "1",IDC_SMP_GDI_1,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,79,181,10,10
+                    WS_TABSTOP,79,163,10,10
     CONTROL         "2",IDC_SMP_GDI_2,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,93,181,10,10
+                    WS_TABSTOP,93,163,10,10
     CONTROL         "3",IDC_SMP_GDI_3,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,107,181,10,10
+                    WS_TABSTOP,107,163,10,10
     CONTROL         "4",IDC_SMP_GDI_4,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,121,181,10,10
+                    WS_TABSTOP,121,163,10,10
     CONTROL         "5",IDC_SMP_GDI_5,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,135,181,10,10
+                    WS_TABSTOP,135,163,10,10
     CONTROL         "6",IDC_SMP_GDI_6,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,149,181,10,10
+                    WS_TABSTOP,149,163,10,10
     CONTROL         "7",IDC_SMP_GDI_7,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,163,181,10,10
+                    WS_TABSTOP,163,163,10,10
     CONTROL         "8",IDC_SMP_GDI_8,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,177,181,10,10
+                    WS_TABSTOP,177,163,10,10
     CONTROL         "1",IDC_SMP_DX_1,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,79,194,10,10
+                    WS_TABSTOP,79,176,10,10
     CONTROL         "2",IDC_SMP_DX_2,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,93,194,10,10
+                    WS_TABSTOP,93,176,10,10
     CONTROL         "3",IDC_SMP_DX_3,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,107,194,10,10
+                    WS_TABSTOP,107,176,10,10
     CONTROL         "4",IDC_SMP_DX_4,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,121,194,10,10
+                    WS_TABSTOP,121,176,10,10
     CONTROL         "5",IDC_SMP_DX_5,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,135,194,10,10
+                    WS_TABSTOP,135,176,10,10
     CONTROL         "6",IDC_SMP_DX_6,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,149,194,10,10
+                    WS_TABSTOP,149,176,10,10
     CONTROL         "7",IDC_SMP_DX_7,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,163,194,10,10
+                    WS_TABSTOP,163,176,10,10
     CONTROL         "8",IDC_SMP_DX_8,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,177,194,10,10
+                    WS_TABSTOP,177,176,10,10
     CONTROL         "1",IDC_SMP_FB_1,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,79,207,10,10
+                    WS_TABSTOP,79,189,10,10
     CONTROL         "2",IDC_SMP_FB_2,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,93,207,10,10
+                    WS_TABSTOP,93,189,10,10
     CONTROL         "3",IDC_SMP_FB_3,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,107,207,10,10
+                    WS_TABSTOP,107,189,10,10
     CONTROL         "4",IDC_SMP_FB_4,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,121,207,10,10
+                    WS_TABSTOP,121,189,10,10
     CONTROL         "5",IDC_SMP_FB_5,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,135,207,10,10
+                    WS_TABSTOP,135,189,10,10
     CONTROL         "6",IDC_SMP_FB_6,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,149,207,10,10
+                    WS_TABSTOP,149,189,10,10
     CONTROL         "7",IDC_SMP_FB_7,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,163,207,10,10
+                    WS_TABSTOP,163,189,10,10
     CONTROL         "8",IDC_SMP_FB_8,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
-                    WS_TABSTOP,177,207,10,10
+                    WS_TABSTOP,177,189,10,10
     CONTROL         "1",IDC_SMP_AUDIO_1,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,79,220,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,79,202,10,10
     CONTROL         "2",IDC_SMP_AUDIO_2,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,93,220,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,93,202,10,10
     CONTROL         "3",IDC_SMP_AUDIO_3,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,107,220,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,107,202,10,10
     CONTROL         "4",IDC_SMP_AUDIO_4,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,121,220,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,121,202,10,10
     CONTROL         "5",IDC_SMP_AUDIO_5,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,135,220,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,135,202,10,10
     CONTROL         "6",IDC_SMP_AUDIO_6,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,149,220,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,149,202,10,10
     CONTROL         "7",IDC_SMP_AUDIO_7,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,163,220,10,10
+                    BS_PUSHLIKE | WS_TABSTOP,163,202,10,10
     CONTROL         "8",IDC_SMP_AUDIO_8,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,177,220,10,10
-    GROUPBOX        " Allowed CPUs ",IDC_STATIC,66,63,134,176
+                    BS_PUSHLIKE | WS_TABSTOP,177,202,10,10
+    GROUPBOX        " Allowed CPUs ",IDC_STATIC,66,47,134,171
+END
+
+IDD_PAGE_ROUTER DIALOGEX 0, 0, 217, 225
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Router"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Enable NAT/Router module",IDC_ROUTER_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,16,131,10
+    PUSHBUTTON      "Help...",IDC_ROUTER_HELP,160,7,50,14
+    GROUPBOX        " FTP ports ",IDC_STATIC,7,37,203,83
+    LISTBOX         IDC_ROUTER_FTP_PORT_LIST,19,51,37,28,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add...",IDC_ROUTER_NEW_FTP_PORT,67,58,50,14
+    PUSHBUTTON      "Delete",IDC_ROUTER_DEL_FTP_PORT,133,58,50,14
+    LTEXT           "The FTP ports need to be specified if your FTP client does not use PASV mode, or if you run FTP server.",
+                    IDC_STATIC,19,85,180,28,0,WS_EX_STATICEDGE
+    GROUPBOX        " Server ports  ",IDC_STATIC,7,127,203,90
+    LISTBOX         IDC_ROUTER_LISTEN_PORT_LIST,19,138,98,34,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add...",IDC_ROUTER_NEW_LISTEN_PORT,146,138,50,14
+    PUSHBUTTON      "Delete",IDC_ROUTER_DEL_LISTEN_PORT,146,157,50,14
+    LTEXT           "If you run any server software (FTP, HTTP, anything really) on Basilisk II, you need to define the TCP port numbers here.",
+                    IDC_STATIC,19,179,180,35,0,WS_EX_STATICEDGE
+END
+
+IDD_ROUTER_HELP DIALOG DISCARDABLE  0, 0, 273, 258
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "NAT/Router help"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,111,237,50,14
+    LTEXT           "When enabled, Basilisk II uses your Windows Internet connection for TCP/IP traffic. Ethernet needs not to be enabled in GUI, but must be installed on the emulated Mac.",
+                    IDC_STATIC,7,7,259,31
+    LTEXT           "If you have both the ethernet and the NAT/Router module enabled, all IP traffic goes through Windows, but AppleTalk uses the real NIC.",
+                    IDC_STATIC,7,42,259,29
+    LTEXT           "Please consult to your network administrator before using any form of Basilisk II networking on a corporate network.",
+                    IDC_STATIC,7,207,259,24
+    LTEXT           "For more information, please read the document ""NAT-Router FAQ.html"" found in the distribution archive.",
+                    IDC_STATIC,7,178,259,25
+    LTEXT           "If you can already access the Internet from Basilisk II, you have little (if any) reason to use the router module and should leave this option unchecked.",
+                    IDC_STATIC,7,75,259,25
+    LTEXT           "Do not open any ""Server ports"" if you don't need them. The security hazards are the same as with any other server software.",
+                    IDC_STATIC,7,108,259,25
+    LTEXT           "Defining FTP ports is safe. Basilisk II needs to change the IP address in the FTP client ""PORT"" command so that the server can connect back, and needs to know which port numbers to monitor.",
+                    IDC_STATIC,7,137,259,32
+END
+
+IDD_ASK_NEW_PORT DIALOG DISCARDABLE  0, 0, 127, 46
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "New port"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_NEW_PORT_NUMBER,13,15,40,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,70,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,70,24,50,14
+END
+
+IDD_ASK_NEW_PORT_AND_IF DIALOGEX 0, 0, 192, 102
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "New port and interface"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_NEW_PORT_NUMBER,7,26,36,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_NEW_INTERFACE_NUMBER,53,26,73,60,CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,135,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,135,24,50,14
+    LTEXT           "Port:",IDC_STATIC,7,14,37,8
+    LTEXT           "Interface:",IDC_STATIC,53,14,37,8
+    LTEXT           "The interface IP address is optional. Leaving it blank binds to all interfaces. For security reasons, on a multi-homed system you might want to bind to only one interface.",
+                    IDC_STATIC,7,52,178,43,0,WS_EX_STATICEDGE
 END
 
 
@@ -1242,8 +1335,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,130
- PRODUCTVERSION 0,8,0,130
+ FILEVERSION 0,8,0,142
+ PRODUCTVERSION 0,8,0,142
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -1259,16 +1352,16 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "Comments", "Basilisk II is copyright © 1997-2000 Christian Bauer et al. Windows specific code is copyright © Lauri Pesonen.\0"
-            VALUE "CompanyName", "Anygraaf Oy\0"
+            VALUE "CompanyName", "\0"
             VALUE "FileDescription", "BasiliskII GUI\0"
-            VALUE "FileVersion", "0, 8, 0, 130\0"
+            VALUE "FileVersion", "0, 8, 0, 142\0"
             VALUE "InternalName", "BasiliskII GUI\0"
             VALUE "LegalCopyright", "Basilisk II is copyright © 1997-2000 Christian Bauer et al. Windows specific code is copyright © Lauri Pesonen.\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "BasiliskIIGUI.EXE\0"
             VALUE "PrivateBuild", "Demokratiassa idiootit saavat valita, diktatuurissa he saavat hallita. --Bernand Russel\0"
             VALUE "ProductName", "BasiliskII GUI\0"
-            VALUE "ProductVersion", "0, 8, 0, 130\0"
+            VALUE "ProductVersion", "0, 8, 0, 142\0"
             VALUE "SpecialBuild", "<public>\0"
         END
     END
@@ -1294,7 +1387,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_FLOPPY, DIALOG
@@ -1302,7 +1395,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_CDROM, DIALOG
@@ -1310,7 +1403,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_PORTS, DIALOG
@@ -1318,7 +1411,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_MEMORY, DIALOG
@@ -1326,7 +1419,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_SCREEN, DIALOG
@@ -1334,7 +1427,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_SCSI, DIALOG
@@ -1342,7 +1435,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_GENERAL, DIALOG
@@ -1350,7 +1443,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_KEYBOARD, DIALOG
@@ -1366,7 +1459,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_TOOLS, DIALOG
@@ -1374,7 +1467,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_ABOUT, DIALOG
@@ -1382,7 +1475,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_ETHERNET, DIALOG
@@ -1390,7 +1483,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_NEW_HFV, DIALOG
@@ -1414,7 +1507,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_AUDIO, DIALOG
@@ -1422,7 +1515,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_DEBUG, DIALOG
@@ -1430,7 +1523,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_DASD_CONFIRM, DIALOG
@@ -1454,7 +1547,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_EXPERIMENT, DIALOG
@@ -1462,7 +1555,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_DR, DIALOG
@@ -1470,7 +1563,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_PAGE_EXTFS, DIALOG
@@ -1478,7 +1571,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
     END
 
     IDD_FILETYPE_MAPPINGS, DIALOG
@@ -1518,7 +1611,39 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 210
         TOPMARGIN, 7
-        BOTTOMMARGIN, 239
+        BOTTOMMARGIN, 218
+    END
+
+    IDD_PAGE_ROUTER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 217
+    END
+
+    IDD_ROUTER_HELP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 266
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 251
+    END
+
+    IDD_ASK_NEW_PORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 120
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 39
+    END
+
+    IDD_ASK_NEW_PORT_AND_IF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 185
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 95
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -3163,6 +3288,87 @@ BEGIN
 0x7830, 0x4546, "\000" 
     IDC_K_LIST, 0x403, 5, 0
 0x7830, 0x4646, "\000" 
+    0
+END
+
+IDD_PAGE_KEYBOARD DLGINIT
+BEGIN
+    IDC_KEYBOARD_TYPE, 0x403, 27, 0
+0x2031, 0x203a, 0x7041, 0x6c70, 0x2065, 0x654b, 0x6279, 0x616f, 0x6472, 
+0x4920, 0x2049, 0x5528, 0x2953, "\000" 
+    IDC_KEYBOARD_TYPE, 0x403, 36, 0
+0x2032, 0x203a, 0x7041, 0x6c70, 0x2065, 0x7845, 0x6574, 0x646e, 0x6465, 
+0x4b20, 0x7965, 0x6f62, 0x7261, 0x2064, 0x4949, 0x2820, 0x5355, 0x0029, 
+
+    IDC_KEYBOARD_TYPE, 0x403, 39, 0
+0x2033, 0x203a, 0x6d53, 0x6c61, 0x206c, 0x614d, 0x6963, 0x746e, 0x736f, 
+0x2068, 0x3135, 0x6b32, 0x4b20, 0x7965, 0x6f62, 0x7261, 0x2064, 0x5528, 
+0x2953, "\000" 
+    IDC_KEYBOARD_TYPE, 0x403, 25, 0
+0x2034, 0x203a, 0x7041, 0x6c70, 0x2065, 0x654b, 0x6279, 0x616f, 0x6472, 
+0x2820, 0x5349, 0x294f, "\000" 
+    IDC_KEYBOARD_TYPE, 0x403, 37, 0
+0x2035, 0x203a, 0x7041, 0x6c70, 0x2065, 0x7845, 0x6574, 0x646e, 0x6465, 
+0x4b20, 0x7965, 0x6f62, 0x7261, 0x2064, 0x4949, 0x2820, 0x5349, 0x294f, 
+"\000" 
+    IDC_KEYBOARD_TYPE, 0x403, 43, 0
+0x2036, 0x203a, 0x7041, 0x6c70, 0x2065, 0x614d, 0x6963, 0x746e, 0x736f, 
+0x2068, 0x6f50, 0x7472, 0x6261, 0x656c, 0x4b20, 0x7965, 0x6f62, 0x7261, 
+0x2064, 0x5528, 0x2953, "\000" 
+    IDC_KEYBOARD_TYPE, 0x403, 44, 0
+0x2037, 0x203a, 0x7041, 0x6c70, 0x2065, 0x614d, 0x6963, 0x746e, 0x736f, 
+0x2068, 0x6f50, 0x7472, 0x6261, 0x656c, 0x4b20, 0x7965, 0x6f62, 0x7261, 
+0x2064, 0x4928, 0x4f53, 0x0029, 
+    IDC_KEYBOARD_TYPE, 0x403, 37, 0
+0x2038, 0x203a, 0x7041, 0x6c70, 0x2065, 0x614d, 0x6963, 0x746e, 0x736f, 
+0x2068, 0x654b, 0x6279, 0x616f, 0x6472, 0x4920, 0x2049, 0x5528, 0x2953, 
+"\000" 
+    IDC_KEYBOARD_TYPE, 0x403, 38, 0
+0x2039, 0x203a, 0x7041, 0x6c70, 0x2065, 0x614d, 0x6963, 0x746e, 0x736f, 
+0x2068, 0x654b, 0x6279, 0x616f, 0x6472, 0x4920, 0x2049, 0x4928, 0x4f53, 
+0x0029, 
+    IDC_KEYBOARD_TYPE, 0x403, 40, 0
+0x3131, 0x203a, 0x614d, 0x6963, 0x746e, 0x736f, 0x2068, 0x6c50, 0x7375, 
+0x4b20, 0x7965, 0x6f62, 0x7261, 0x2064, 0x6977, 0x6874, 0x6b20, 0x7965, 
+0x6170, 0x0064, 
+    IDC_KEYBOARD_TYPE, 0x403, 38, 0
+0x3231, 0x203a, 0x614d, 0x6963, 0x746e, 0x736f, 0x2068, 0x6f50, 0x6577, 
+0x4272, 0x6f6f, 0x206b, 0x654b, 0x6279, 0x616f, 0x6472, 0x2820, 0x5355, 
+0x0029, 
+    IDC_KEYBOARD_TYPE, 0x403, 39, 0
+0x3331, 0x203a, 0x614d, 0x6963, 0x746e, 0x736f, 0x2068, 0x6f50, 0x6577, 
+0x4272, 0x6f6f, 0x206b, 0x654b, 0x6279, 0x616f, 0x6472, 0x2820, 0x5349, 
+0x294f, "\000" 
+    IDC_KEYBOARD_TYPE, 0x403, 33, 0
+0x3431, 0x203a, 0x7041, 0x6c70, 0x2065, 0x6441, 0x756a, 0x7473, 0x6261, 
+0x656c, 0x4b20, 0x7965, 0x6170, 0x2064, 0x5528, 0x2953, "\000" 
+    IDC_KEYBOARD_TYPE, 0x403, 30, 0
+0x3531, 0x203a, 0x7041, 0x6c70, 0x2065, 0x6441, 0x756a, 0x7473, 0x6261, 
+0x656c, 0x4b20, 0x7965, 0x6f62, 0x7261, 0x0064, 
+    IDC_KEYBOARD_TYPE, 0x403, 36, 0
+0x3831, 0x203a, 0x7041, 0x6c70, 0x2065, 0x6441, 0x756a, 0x7473, 0x6261, 
+0x656c, 0x4b20, 0x7965, 0x6f62, 0x7261, 0x2064, 0x4a28, 0x5349, 0x0029, 
+
+    IDC_KEYBOARD_TYPE, 0x403, 43, 0
+0x3132, 0x203a, 0x6f50, 0x6577, 0x4272, 0x6f6f, 0x206b, 0x3035, 0x2c30, 
+0x3431, 0x3030, 0x332c, 0x3034, 0x2c30, 0x3347, 0x6f20, 0x6972, 0x2e67, 
+0x2820, 0x494a, 0x2953, "\000" 
+    IDC_KEYBOARD_TYPE, 0x403, 28, 0
+0x3232, 0x203a, 0x7041, 0x6c70, 0x2065, 0x654b, 0x6279, 0x616f, 0x6472, 
+0x4920, 0x2049, 0x4a28, 0x5349, 0x0029, 
+    IDC_KEYBOARD_TYPE, 0x403, 32, 0
+0x3033, 0x203a, 0x6f50, 0x6577, 0x4272, 0x6f6f, 0x206b, 0x3432, 0x3030, 
+0x5320, 0x7265, 0x6569, 0x2073, 0x4a28, 0x5349, 0x0029, 
+    IDC_KEYBOARD_TYPE, 0x403, 30, 0
+0x3931, 0x3a37, 0x6f50, 0x6577, 0x4272, 0x6f6f, 0x206b, 0x3347, 0x5320, 
+0x7265, 0x6569, 0x2073, 0x4a28, 0x5349, 0x0029, 
+    IDC_KEYBOARD_TYPE, 0x403, 26, 0
+0x3032, 0x3a30, 0x4d69, 0x6361, 0x202c, 0x3347, 0x2820, 0x6c42, 0x6575, 
+0x2029, 0x4a28, 0x5349, 0x0029, 
+    IDC_KEYBOARD_TYPE, 0x403, 40, 0
+0x3532, 0x3a39, 0x6d53, 0x6c61, 0x206c, 0x614d, 0x6963, 0x746e, 0x736f, 
+0x2068, 0x3135, 0x6b32, 0x4b20, 0x7965, 0x6f62, 0x7261, 0x2064, 0x4928, 
+0x4f53, 0x0029, 
     0
 END
 

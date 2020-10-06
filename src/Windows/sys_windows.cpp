@@ -2026,7 +2026,7 @@ void SysEject(void *arg)
 				}
 				*/
 			} else {
-				EjectMedia_w9x( fh->drive );
+				EjectMedia_w9x( fh->drive + 1 );
 			}
 			/*
 			char msg[300];

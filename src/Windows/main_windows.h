@@ -34,12 +34,17 @@ extern int win_os;
 extern int win_os_major;
 extern BOOL win_os_old;
 extern BOOL mem_8_only;
-
 extern int m_right_mouse;
+extern int32 m_sleep;
+extern bool m_sleep_enabled;
+
+#ifdef __cplusplus
 extern bool m_use_alt_escape;
 extern bool m_use_alt_tab;
 extern bool m_use_control_escape;
 extern bool m_use_alt_space;
+extern bool m_use_alt_enter;
+#endif
 
 extern HANDLE ether_th1;
 extern HANDLE ether_th2;
